@@ -4,7 +4,7 @@ A GitHub Pages site showcasing custom-built tools, Chrome extensions, and automa
 
 ## Live Site
 
-Visit the portfolio at: `https://yourusername.github.io/work-tools-portfolio/`
+Visit the portfolio at: `https://qrsouther.github.io/work-tools-portfolio/`
 
 ## Projects Featured
 
@@ -93,7 +93,7 @@ git commit -m "Initial commit: Work tools portfolio site"
 ### Step 3: Push to GitHub
 
 ```bash
-git remote add origin https://github.com/yourusername/work-tools-portfolio.git
+git remote add origin https://github.com/qrsouther/work-tools-portfolio.git
 git branch -M main
 git push -u origin main
 ```
@@ -105,7 +105,7 @@ git push -u origin main
 3. Scroll to "Pages" section
 4. Under "Source", select "main" branch and "/ (root)" folder
 5. Click "Save"
-6. Your site will be published at `https://yourusername.github.io/work-tools-portfolio/`
+6. Your site will be published at `https://qrsouther.github.io/work-tools-portfolio/`
 
 ## Customization
 
