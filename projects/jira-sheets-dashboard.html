@@ -10,7 +10,7 @@
     <header>
         <div class="container">
             <h1>Jira Google Sheets Dashboard</h1>
-            <p class="subtitle">Forge app for visualizing Google Sheets data in Jira</p>
+            <p class="subtitle">A custom Atlassian Forge app that creates a Jira dashboard gadget displaying data from Google Sheets. This app fetches data from all tabs/sheets in your Google Sheets workbook and presents them with customizable visualizations.</p>
         </div>
     </header>
 
@@ -22,249 +22,228 @@
                 <a href="https://github.com/qrsouther/jira-sheets-dashboard" class="btn btn-primary" target="_blank">View on GitHub</a>
             </div>
 
-            <div class="quick-start">
-                <h3>Quick Start - Deploy to Your Jira</h3>
-                <pre><code># Install dependencies
-npm install
-npm run install-frontend
+            <h2>Jira Google Sheets Dashboard</h2>
 
-# Build the frontend
-npm run build
+<p>A custom Atlassian Forge app that creates a Jira dashboard gadget displaying data from Google Sheets. This app fetches data from all tabs/sheets in your Google Sheets workbook and presents them with customizable visualizations.</p>
 
-# Register and deploy
-forge register
-forge deploy
-forge install</code></pre>
-            </div>
+<h2>Features</h2>
 
-            <h2>Overview</h2>
-            <p>A custom Atlassian Forge app that creates a Jira dashboard gadget displaying data from Google Sheets. This app fetches data from all tabs/sheets in your Google Sheets workbook and presents them with customizable visualizations.</p>
+<ul><li><strong>Multiple Sheet Support</strong>: Automatically fetches data from all tabs in your Google Sheets workbook</li>
+<li><strong>Interactive Visualizations</strong>: Create bar charts, line charts, and pie charts from your data</li>
+<li><strong>Dynamic Tables</strong>: View raw data in sortable, paginated tables</li>
+<li><strong>Easy Configuration</strong>: Simple UI to connect your Google Sheets</li>
+<li><strong>Real-time Refresh</strong>: Update data on demand with the refresh button</li>
+<li><strong>Tab Navigation</strong>: Switch between different sheets using an intuitive tab interface</li>
 
-            <h2>Features</h2>
-            <ul>
-                <li><strong>Multiple Sheet Support:</strong> Automatically fetches data from all tabs in your Google Sheets workbook</li>
-                <li><strong>Interactive Visualizations:</strong> Create bar charts, line charts, and pie charts from your data</li>
-                <li><strong>Dynamic Tables:</strong> View raw data in sortable, paginated tables</li>
-                <li><strong>Easy Configuration:</strong> Simple UI to connect your Google Sheets</li>
-                <li><strong>Real-time Refresh:</strong> Update data on demand with the refresh button</li>
-                <li><strong>Tab Navigation:</strong> Switch between different sheets using an intuitive tab interface</li>
-            </ul>
+<h2>Prerequisites</h2>
 
-            <h2>Prerequisites</h2>
-            <ol>
-                <li><strong>Atlassian Forge CLI</strong> (version 12.7.0+)</li>
-                <li><strong>Node.js</strong> (v14 or higher)</li>
-                <li><strong>Jira Cloud instance</strong> with admin access</li>
-                <li><strong>Google Cloud Platform account</strong> for API access</li>
-            </ol>
+<li><strong>Atlassian Forge CLI</strong> (already installed - version 12.7.0)</li>
+<li><strong>Node.js</strong> (v14 or higher)</li>
+<li><strong>Jira Cloud instance</strong> with admin access</li>
+<li><strong>Google Cloud Platform account</strong> for API access</li>
 
-            <h2>Setup Instructions</h2>
+<h2>Setup Instructions</h2>
 
-            <h3>Step 1: Google Cloud Setup</h3>
-            <ol>
-                <li>Go to <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a></li>
-                <li>Create a new project or select an existing one</li>
-                <li>Enable the <strong>Google Sheets API</strong>:
-                    <ul>
-                        <li>Navigate to "APIs & Services" → "Library"</li>
-                        <li>Search for "Google Sheets API"</li>
-                        <li>Click "Enable"</li>
-                    </ul>
-                </li>
-                <li>Create an API Key:
-                    <ul>
-                        <li>Go to "APIs & Services" → "Credentials"</li>
-                        <li>Click "Create Credentials" → "API Key"</li>
-                        <li>Copy the API key (you'll need this later)</li>
-                        <li><strong>IMPORTANT:</strong> Click "Restrict Key" and limit it to "Google Sheets API" for security</li>
-                    </ul>
-                </li>
-            </ol>
+<h3>Step 1: Google Cloud Setup</h3>
 
-            <h3>Step 2: Google Sheets Setup</h3>
-            <ol>
-                <li>Open your Google Sheets workbook</li>
-                <li>Set sharing permissions:
-                    <ul>
-                        <li>Click "Share" button</li>
-                        <li>Change to "Anyone with the link can view"</li>
-                    </ul>
-                </li>
-                <li>Copy the Spreadsheet ID from the URL:
-                    <pre><code>https://docs.google.com/spreadsheets/d/SPREADSHEET_ID_HERE/edit</code></pre>
-                </li>
-            </ol>
+<li>Go to [Google Cloud Console](https://console.cloud.google.com)</li>
+<li>Create a new project or select an existing one</li>
+<li>Enable the <strong>Google Sheets API</strong>:</li>
+<p>   - Navigate to "APIs & Services" > "Library"</p>
+<p>   - Search for "Google Sheets API"</p>
+<p>   - Click "Enable"</p>
+<li>Create an API Key:</li>
+<p>   - Go to "APIs & Services" > "Credentials"</p>
+<p>   - Click "Create Credentials" > "API Key"</p>
+<p>   - Copy the API key (you'll need this later)</p>
+<p>   - <strong>IMPORTANT</strong>: Click "Restrict Key" and limit it to "Google Sheets API" for security</p>
 
-            <h3>Step 3: Install Dependencies</h3>
-            <pre><code>cd jira-sheets-dashboard
+<h3>Step 2: Google Sheets Setup</h3>
 
-# Install backend dependencies
-npm install
+<li>Open your Google Sheets workbook</li>
+<li>Set sharing permissions:</li>
+<p>   - Click "Share" button</p>
+<p>   - Change to "Anyone with the link can view"</p>
+<li>Copy the Spreadsheet ID from the URL:</li>
+<p>   ``<code></p>
+<p>   https://docs.google.com/spreadsheets/d/SPREADSHEET_ID_HERE/edit</p>
+<p>   </code>`<code></p>
 
-# Install frontend dependencies
-npm run install-frontend</code></pre>
+<h3>Step 3: Install Dependencies</h3>
 
-            <h3>Step 4: Build the Frontend</h3>
-            <pre><code>npm run build</code></pre>
+<p></code>`<code>bash</p>
+<p>cd jira-sheets-dashboard</p>
 
-            <h3>Step 5: Register the App</h3>
-            <pre><code># Register the app with Forge (first time only)
-forge register
+<h2>Install backend dependencies</h2>
+<p>npm install</p>
 
-# This will update your manifest.yml with your app ID</code></pre>
+<h2>Install frontend dependencies</h2>
+<p>npm run install-frontend</p>
+<p></code>`<code></p>
 
-            <h3>Step 6: Deploy the App</h3>
-            <pre><code># Deploy to development environment
-forge deploy
+<h3>Step 4: Build the Frontend</h3>
 
-# Install to your Jira site
-forge install</code></pre>
+<p></code>`<code>bash</p>
+<p>npm run build</p>
+<p></code>`<code></p>
 
-            <p>During installation, you'll be prompted to:</p>
-            <ol>
-                <li>Select your Jira site</li>
-                <li>Confirm the installation</li>
-            </ol>
+<h3>Step 5: Register the App</h3>
 
-            <h3>Step 7: Add to Dashboard</h3>
-            <ol>
-                <li>Go to your Jira instance</li>
-                <li>Navigate to any dashboard or create a new one</li>
-                <li>Click "Add gadget"</li>
-                <li>Search for "Google Sheets Dashboard"</li>
-                <li>Add it to your dashboard</li>
-                <li>Configure with your Spreadsheet ID and API Key</li>
-            </ol>
+<p></code>`<code>bash</p>
+<h2>Register the app with Forge (first time only)</h2>
+<p>forge register</p>
 
-            <h2>Configuration</h2>
-            <p>When you first add the gadget to your dashboard, you'll see a configuration screen:</p>
-            <ol>
-                <li><strong>Spreadsheet ID:</strong> Paste the ID from your Google Sheets URL</li>
-                <li><strong>API Key:</strong> Paste your Google Cloud API key</li>
-            </ol>
-            <p>Click "Save Configuration" and the dashboard will load your data.</p>
+<h2>This will update your manifest.yml with your app ID</h2>
+<p></code>`<code></p>
 
-            <h2>Usage</h2>
+<h3>Step 6: Deploy the App</h3>
 
-            <h3>Viewing Data</h3>
-            <ul>
-                <li><strong>Tabs:</strong> Each sheet/tab from your workbook appears as a separate tab</li>
-                <li><strong>Visualizations:</strong> Use dropdowns to select:
-                    <ul>
-                        <li>Chart type (Bar, Line, or Pie)</li>
-                        <li>X-axis column (labels)</li>
-                        <li>Y-axis column (numeric values)</li>
-                    </ul>
-                </li>
-                <li><strong>Raw Data:</strong> Scroll down to see the complete data in table format</li>
-            </ul>
+<p></code>`<code>bash</p>
+<h2>Deploy to development environment</h2>
+<p>forge deploy</p>
 
-            <h3>Refreshing Data</h3>
-            <p>Click the "Refresh" button to fetch the latest data from your Google Sheets.</p>
+<h2>Install to your Jira site</h2>
+<p>forge install</p>
+<p></code>`<code></p>
 
-            <h3>Reconfiguring</h3>
-            <p>Click the "Configure" button to change the connected spreadsheet or API key.</p>
+<p>During installation, you'll be prompted to:</p>
+<li>Select your Jira site</li>
+<li>Confirm the installation</li>
 
-            <h2>Development</h2>
+<h3>Step 7: Add to Dashboard</h3>
 
-            <h3>Project Structure</h3>
-            <pre><code>jira-sheets-dashboard/
-├── manifest.yml                 # Forge app configuration
-├── src/
-│   ├── index.js                 # Backend resolver (API handlers)
-│   └── config.js                # Configuration handler
-├── static/dashboard/            # Frontend React app
-│   ├── src/
-│   │   ├── App.js               # Main dashboard component
-│   │   ├── ConfigForm.js        # Configuration UI
-│   │   ├── DataVisualizations.js # Chart components
-│   │   └── App.css              # Styles
-│   └── package.json
-└── package.json</code></pre>
+<li>Go to your Jira instance</li>
+<li>Navigate to any dashboard or create a new one</li>
+<li>Click "Add gadget"</li>
+<li>Search for "Google Sheets Dashboard"</li>
+<li>Add it to your dashboard</li>
+<li>Configure with your Spreadsheet ID and API Key</li>
 
-            <h3>Local Development</h3>
-            <pre><code># Watch for changes and auto-deploy
-forge tunnel
+<h2>Configuration</h2>
 
-# View logs
-forge logs</code></pre>
+<p>When you first add the gadget to your dashboard, you'll see a configuration screen:</p>
 
-            <h3>Making Changes</h3>
-            <ol>
-                <li>Edit the code</li>
-                <li>Rebuild frontend if needed: <code>npm run build</code></li>
-                <li>Deploy changes: <code>forge deploy</code></li>
-            </ol>
+<li><strong>Spreadsheet ID</strong>: Paste the ID from your Google Sheets URL</li>
+<li><strong>API Key</strong>: Paste your Google Cloud API key</li>
 
-            <h2>Customization Ideas</h2>
+<p>Click "Save Configuration" and the dashboard will load your data.</p>
 
-            <h3>Adding More Chart Types</h3>
-            <p>Edit <code>static/dashboard/src/DataVisualizations.js</code> and add more chart types from recharts:</p>
-            <ul>
-                <li>Area charts</li>
-                <li>Scatter plots</li>
-                <li>Radar charts</li>
-                <li>Composed charts</li>
-            </ul>
+<h2>Usage</h2>
 
-            <h3>Custom Styling</h3>
-            <p>Modify <code>static/dashboard/src/App.css</code> to match your team's brand colors.</p>
+<h3>Viewing Data</h3>
 
-            <h3>Data Filtering</h3>
-            <p>Add filtering logic in <code>DataVisualizations.js</code> to allow users to filter data before charting.</p>
+<li><strong>Tabs</strong>: Each sheet/tab from your workbook appears as a separate tab</li>
+<li><strong>Visualizations</strong>: Use dropdowns to select:</li>
+<p>  - Chart type (Bar, Line, or Pie)</p>
+<p>  - X-axis column (labels)</p>
+<p>  - Y-axis column (numeric values)</p>
+<li><strong>Raw Data</strong>: Scroll down to see the complete data in table format</li>
 
-            <h3>Multiple Visualizations</h3>
-            <p>Extend the app to show multiple charts simultaneously for different data perspectives.</p>
+<h3>Refreshing Data</h3>
 
-            <h3>Scheduled Refresh</h3>
-            <p>Add a backend function to automatically refresh data on a schedule using Forge scheduled triggers.</p>
+<p>Click the "Refresh" button to fetch the latest data from your Google Sheets.</p>
 
-            <h2>Security Notes</h2>
-            <ul>
-                <li><strong>API Key:</strong> The API key is stored securely in Forge's storage API</li>
-                <li><strong>Permissions:</strong> Make sure to restrict your Google API key to only the Sheets API</li>
-                <li><strong>Data Privacy:</strong> Only use this with data you're comfortable storing in Atlassian's systems</li>
-                <li><strong>Sheet Permissions:</strong> Ensure your sheets are set to "view only" to prevent unauthorized edits</li>
-            </ul>
+<h3>Reconfiguring</h3>
 
-            <h2>Troubleshooting</h2>
+<p>Click the "Configure" button to change the connected spreadsheet or API key.</p>
 
-            <h3>"Missing spreadsheet configuration" Error</h3>
-            <p>Make sure you've configured the gadget with both Spreadsheet ID and API Key</p>
+<h2>Development</h2>
 
-            <h3>"Failed to fetch spreadsheet" Error</h3>
-            <ul>
-                <li>Verify your Google Sheet is set to "Anyone with the link can view"</li>
-                <li>Check that your API key is valid and not restricted from accessing the sheet</li>
-                <li>Confirm the Spreadsheet ID is correct</li>
-            </ul>
+<h3>Project Structure</h3>
 
-            <h3>Charts Not Displaying</h3>
-            <ul>
-                <li>Ensure you have numeric data in the Y-axis column</li>
-                <li>Check that your sheet has at least a header row and one data row</li>
-            </ul>
+<p></code>`<code></p>
+<p>jira-sheets-dashboard/</p>
+<p>├── manifest.yml                 # Forge app configuration</p>
+<p>├── src/</p>
+<p>│   ├── index.js                 # Backend resolver (API handlers)</p>
+<p>│   └── config.js                # Configuration handler</p>
+<p>├── static/dashboard/            # Frontend React app</p>
+<p>│   ├── src/</p>
+<p>│   │   ├── App.js               # Main dashboard component</p>
+<p>│   │   ├── ConfigForm.js        # Configuration UI</p>
+<p>│   │   ├── DataVisualizations.js # Chart components</p>
+<p>│   │   └── App.css              # Styles</p>
+<p>│   └── package.json</p>
+<p>└── package.json</p>
+<p></code>`<code></p>
 
-            <h3>Build Errors</h3>
-            <ul>
-                <li>Delete <code>node_modules</code> in both root and <code>static/dashboard</code> directories</li>
-                <li>Run <code>npm install</code> and <code>npm run install-frontend</code> again</li>
-            </ul>
+<h3>Local Development</h3>
 
-            <h2>Technologies</h2>
-            <ul>
-                <li>Atlassian Forge</li>
-                <li>React</li>
-                <li>Recharts (charting library)</li>
-                <li>Google Sheets API</li>
-                <li>JavaScript</li>
-            </ul>
+<p></code>`<code>bash</p>
+<h2>Watch for changes and auto-deploy</h2>
+<p>forge tunnel</p>
 
-            <h2>Resources</h2>
-            <ul>
-                <li><a href="https://developer.atlassian.com/platform/forge/" target="_blank">Atlassian Forge Documentation</a></li>
-                <li><a href="https://developers.google.com/sheets/api" target="_blank">Google Sheets API Documentation</a></li>
-            </ul>
+<h2>View logs</h2>
+<p>forge logs</p>
+<p></code>`<code></p>
+
+<h3>Making Changes</h3>
+
+<li>Edit the code</li>
+<li>Rebuild frontend if needed: </code>npm run build<code></li>
+<li>Deploy changes: </code>forge deploy<code></li>
+
+<h2>Customization Ideas</h2>
+
+<h3>Adding More Chart Types</h3>
+
+<p>Edit </code>static/dashboard/src/DataVisualizations.js<code> and add more chart types from recharts:</p>
+<li>Area charts</li>
+<li>Scatter plots</li>
+<li>Radar charts</li>
+<li>Composed charts</li>
+
+<h3>Custom Styling</h3>
+
+<p>Modify </code>static/dashboard/src/App.css<code> to match your team's brand colors.</p>
+
+<h3>Data Filtering</h3>
+
+<p>Add filtering logic in </code>DataVisualizations.js<code> to allow users to filter data before charting.</p>
+
+<h3>Multiple Visualizations</h3>
+
+<p>Extend the app to show multiple charts simultaneously for different data perspectives.</p>
+
+<h3>Scheduled Refresh</h3>
+
+<p>Add a backend function to automatically refresh data on a schedule using Forge scheduled triggers.</p>
+
+<h2>Security Notes</h2>
+
+<li><strong>API Key</strong>: The API key is stored securely in Forge's storage API</li>
+<li><strong>Permissions</strong>: Make sure to restrict your Google API key to only the Sheets API</li>
+<li><strong>Data Privacy</strong>: Only use this with data you're comfortable storing in Atlassian's systems</li>
+<li><strong>Sheet Permissions</strong>: Ensure your sheets are set to "view only" to prevent unauthorized edits</li>
+
+<h2>Troubleshooting</h2>
+
+<h3>"Missing spreadsheet configuration" Error</h3>
+<li>Make sure you've configured the gadget with both Spreadsheet ID and API Key</li>
+
+<h3>"Failed to fetch spreadsheet" Error</h3>
+<li>Verify your Google Sheet is set to "Anyone with the link can view"</li>
+<li>Check that your API key is valid and not restricted from accessing the sheet</li>
+<li>Confirm the Spreadsheet ID is correct</li>
+
+<h3>Charts Not Displaying</h3>
+<li>Ensure you have numeric data in the Y-axis column</li>
+<li>Check that your sheet has at least a header row and one data row</li>
+
+<h3>Build Errors</h3>
+<li>Delete </code>node_modules<code> in both root and </code>static/dashboard<code> directories</li>
+<li>Run </code>npm install<code> and </code>npm run install-frontend` again</li>
+
+<h2>License</h2>
+
+<p>ISC</p>
+
+<h2>Support</h2>
+
+<p>For issues with:</p>
+<li><strong>Forge Platform</strong>: [Atlassian Forge Documentation](https://developer.atlassian.com/platform/forge/)</li>
+<li><strong>Google Sheets API</strong>: [Google Sheets API Documentation](https://developers.google.com/sheets/api)</li>
+</ul>
         </div>
     </main>
 

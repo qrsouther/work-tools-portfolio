@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confluence Macro Error Checker - Work Tools Portfolio</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Confluence Macro Error Checker</h1>
+            <p class="subtitle">This script crawls your company's Confluence instance to find pages with a specific keyword in their title, checks for macro rendering errors, and exports the results to Google Sheets.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+        <div class="project-detail">
+            <div class="launch-buttons">
+                <a href="https://github.com/qrsouther/confluence-macro-checker" class="btn btn-primary" target="_blank">View on GitHub</a>
+            </div>
+
+            <h2>Confluence Macro Error Checker</h2>
+
+<p>This script crawls your company's Confluence instance to find pages with a specific keyword in their title, checks for macro rendering errors, and exports the results to Google Sheets.</p>
+
+<h2>Features</h2>
+
+<ul><li>Searches Confluence pages by title keyword</li>
+<li>Detects macro rendering errors including:</li>
+<p>  - Error placeholder elements</p>
+<p>  - Macro error messages</p>
+<p>  - Unknown or failed macros</p>
+<li>Exports results to Google Sheets with:</li>
+<p>  - Page title</p>
+<p>  - Page URL (clickable)</p>
+<p>  - Error type</p>
+<p>  - Exact error message</p>
+<li>Optional JSON export for backup/processing</li>
+
+<h2>Prerequisites</h2>
+
+<li><strong>Python 3.7+</strong></li>
+<li><strong>Confluence API Access</strong></li>
+<p>   - Confluence instance URL</p>
+<p>   - Username/email</p>
+<p>   - API token</p>
+
+<li><strong>Google Cloud Service Account</strong></li>
+<p>   - Service account credentials JSON file</p>
+<p>   - Google Sheets API enabled</p>
+<p>   - Google Drive API enabled</p>
+
+<h2>Setup Instructions</h2>
+
+<h3>1. Install Python Dependencies</h3>
+
+<p>``<code>bash</p>
+<p>pip install -r requirements.txt</p>
+<p></code>`<code></p>
+
+<h3>2. Get Confluence API Token</h3>
+
+<li>Log in to your Confluence instance</li>
+<li>Go to Account Settings → Security → API Token</li>
+<li>Click "Create API token"</li>
+<li>Give it a name (e.g., "Macro Checker")</li>
+<li>Copy the token (you won't be able to see it again)</li>
+
+<h3>3. Set Up Google Cloud Service Account</h3>
+
+<li>Go to [Google Cloud Console](https://console.cloud.google.com/)</li>
+<li>Create a new project or select an existing one</li>
+<li>Enable the following APIs:</li>
+<p>   - Google Sheets API</p>
+<p>   - Google Drive API</p>
+<li>Create a service account:</li>
+<p>   - Go to "IAM & Admin" → "Service Accounts"</p>
+<p>   - Click "Create Service Account"</p>
+<p>   - Give it a name (e.g., "confluence-macro-checker")</p>
+<p>   - Grant it the "Editor" role</p>
+<p>   - Click "Done"</p>
+<li>Create a key:</li>
+<p>   - Click on the service account you just created</p>
+<p>   - Go to "Keys" tab</p>
+<p>   - Click "Add Key" → "Create new key"</p>
+<p>   - Choose "JSON" format</p>
+<p>   - Download the file (save it securely)</p>
+
+<h2>Usage</h2>
+
+<h3>Basic Usage</h3>
+
+<p></code>`<code>bash</p>
+<p>python confluence_macro_checker.py \</p>
+<p>  --confluence-url "https://yourcompany.atlassian.net" \</p>
+<p>  --username "your.email@company.com" \</p>
+<p>  --api-token "your-confluence-api-token" \</p>
+<p>  --keyword "YourKeyword" \</p>
+<p>  --google-credentials "path/to/service-account-credentials.json"</p>
+<p></code>`<code></p>
+
+<h3>With Custom Sheet Name</h3>
+
+<p></code>`<code>bash</p>
+<p>python confluence_macro_checker.py \</p>
+<p>  --confluence-url "https://yourcompany.atlassian.net" \</p>
+<p>  --username "your.email@company.com" \</p>
+<p>  --api-token "your-confluence-api-token" \</p>
+<p>  --keyword "YourKeyword" \</p>
+<p>  --google-credentials "path/to/service-account-credentials.json" \</p>
+<p>  --sheet-name "Q4 2024 Macro Errors"</p>
+<p></code>`<code></p>
+
+<h3>With JSON Backup</h3>
+
+<p></code>`<code>bash</p>
+<p>python confluence_macro_checker.py \</p>
+<p>  --confluence-url "https://yourcompany.atlassian.net" \</p>
+<p>  --username "your.email@company.com" \</p>
+<p>  --api-token "your-confluence-api-token" \</p>
+<p>  --keyword "YourKeyword" \</p>
+<p>  --google-credentials "path/to/service-account-credentials.json" \</p>
+<p>  --save-json "errors_backup.json"</p>
+<p></code>`<code></p>
+
+<h2>Parameters</h2>
+
+<p>| Parameter | Required | Description |</p>
+<p>|-----------|----------|-------------|</p>
+<p>| </code>--confluence-url<code> | Yes | Base URL of your Confluence instance |</p>
+<p>| </code>--username<code> | Yes | Your Confluence username/email |</p>
+<p>| </code>--api-token<code> | Yes | Your Confluence API token |</p>
+<p>| </code>--keyword<code> | Yes | Keyword to search for in page titles |</p>
+<p>| </code>--google-credentials<code> | Yes | Path to Google service account JSON file |</p>
+<p>| </code>--sheet-name<code> | No | Name for the Google Sheet (default: "Confluence Macro Errors") |</p>
+<p>| </code>--save-json<code> | No | Optional path to save results as JSON |</p>
+
+<h2>How It Works</h2>
+
+<li><strong>Search</strong>: Uses Confluence REST API with CQL to find all pages containing the keyword in their title</li>
+<li><strong>Scan</strong>: For each page:</li>
+<p>   - Fetches rendered HTML and storage format</p>
+<p>   - Parses HTML for error indicators:</p>
+<p>     - Error CSS classes (confluence-macro-error, macro-error, etc.)</p>
+<p>     - Error text patterns (Unknown macro, Failed to render, etc.)</p>
+<p>   - Extracts error context and messages</p>
+<li><strong>Export</strong>: Creates a Google Sheet with:</li>
+<p>   - Formatted headers</p>
+<p>   - All error details</p>
+<p>   - Clickable URLs</p>
+<p>   - Auto-resized columns</p>
+<p>   - Public view-only sharing link</p>
+
+<h2>Output</h2>
+
+<p>The script will:</p>
+<li>Print progress as it searches and scans pages</li>
+<li>Display a summary of errors found</li>
+<li>Create a Google Sheet and print the URL</li>
+<li>Optionally save to JSON if specified</li>
+
+<h3>Google Sheet Format</h3>
+
+<p>| Page Title | Page URL | Error Type | Error Message |</p>
+<p>|------------|----------|------------|---------------|</p>
+<p>| Example Page | https://... | Macro Rendering Error | Unknown macro: customMacro |</p>
+
+<h2>Error Types Detected</h2>
+
+<li><strong>Macro Rendering Error</strong>: Detected via error HTML elements</li>
+<li><strong>Macro Error Text</strong>: Detected via error keywords in page text</li>
+<li><strong>API Error</strong>: Issues fetching page content</li>
+
+<h2>Common Error Messages</h2>
+
+<li>"Unknown macro: [macro-name]"</li>
+<li>"Macro not found"</li>
+<li>"Unable to render [macro-name]"</li>
+<li>"Cannot display macro"</li>
+<li>"Failed to render macro"</li>
+<li>"Invalid macro parameters"</li>
+
+<h2>Troubleshooting</h2>
+
+<h3>Authentication Issues</h3>
+
+<li><strong>Confluence</strong>: Verify your API token is valid and hasn't expired</li>
+<li><strong>Google</strong>: Ensure your service account credentials file is valid</li>
+
+<h3>No Pages Found</h3>
+
+<li>Check that the keyword matches your page titles (search is case-insensitive)</li>
+<li>Verify you have access to the pages in Confluence</li>
+
+<h3>Permission Errors (Google Sheets)</h3>
+
+<li>Ensure Google Sheets API is enabled in your project</li>
+<li>Verify service account has necessary permissions</li>
+
+<h3>Rate Limiting</h3>
+
+<p>If you have many pages, Confluence might rate limit requests. The script handles this automatically, but if you encounter issues:</p>
+<li>Add delays between requests</li>
+<li>Process pages in smaller batches</li>
+
+<h2>Security Notes</h2>
+
+<li><strong>Never commit</strong> your API tokens or credentials files to version control</li>
+<li>Store credentials securely (use environment variables or secret managers in production)</li>
+<li>The created Google Sheets are shared with "anyone with the link" (view-only)</li>
+<li>Consider restricting sheet access after creation if needed</li>
+</ul>
+<h2>Example Output</h2>
+
+<p></code>`<code></p>
+<p>Searching for pages with 'ProjectX' in title...</p>
+<p>  Found: ProjectX - Overview</p>
+<p>  Found: ProjectX - Architecture</p>
+<p>  Found: ProjectX - Deployment Guide</p>
+
+<p>Total pages found: 3</p>
+
+<p>Scanning 3 pages for macro errors...</p>
+
+<p>Checking: ProjectX - Overview</p>
+<p>  ✓ No errors found</p>
+<p>Checking: ProjectX - Architecture</p>
+<p>  ⚠️  Found 2 error(s)</p>
+<p>Checking: ProjectX - Deployment Guide</p>
+<p>  ⚠️  Found 1 error(s)</p>
+
+<p>============================================================</p>
+<p>SUMMARY: Found 3 macro error(s)</p>
+<p>============================================================</p>
+
+<p>✓ Exported 3 error(s) to Google Sheets</p>
+<p>  Spreadsheet URL: https://docs.google.com/spreadsheets/d/...</p>
+<p></code>``</p>
+
+<h2>License</h2>
+
+<p>This script is provided as-is for internal company use.</p>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>

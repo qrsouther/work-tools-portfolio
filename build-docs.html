@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Documentation - Work Tools Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Portfolio Build System</h1>
+            <p class="subtitle">Automatically rebuild the portfolio from your projects</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="index.html" class="back-link">← Back to Portfolio</a>
+
+        <div class="project-detail">
+            <div class="quick-start">
+                <h3>Quick Rebuild</h3>
+                <p>Run this command in the <code>work-tools-portfolio</code> directory:</p>
+                <pre><code>npm run build</code></pre>
+                <p>Or to rebuild and prepare for commit:</p>
+                <pre><code>npm run rebuild</code></pre>
+            </div>
+
+            <h2>Overview</h2>
+            <p>The portfolio build system automatically scans all project directories in your workspace and regenerates the portfolio site with updated information from README files. This means you never have to manually edit HTML files to add or update projects!</p>
+
+            <h2>How It Works</h2>
+            <ol>
+                <li><strong>Scans Projects:</strong> The build script looks through all directories in <code>Documents/Code projects/</code></li>
+                <li><strong>Reads READMEs:</strong> For each project with a README.md file, it extracts:
+                    <ul>
+                        <li>Project title (from the first heading)</li>
+                        <li>Description (from the first paragraph)</li>
+                        <li>Technologies used (detected from keywords)</li>
+                        <li>Status and stats (if present)</li>
+                    </ul>
+                </li>
+                <li><strong>Generates HTML:</strong> Creates:
+                    <ul>
+                        <li>Updated <code>index.html</code> with all project cards</li>
+                        <li>Individual detail pages in <code>projects/</code> folder</li>
+                        <li>Proper badges based on detected technologies</li>
+                    </ul>
+                </li>
+                <li><strong>Preserves Styling:</strong> All existing CSS and design stays intact</li>
+            </ol>
+
+            <h2>When to Rebuild</h2>
+            <p>Run the build script whenever you:</p>
+            <ul>
+                <li>✨ Create a new project in your workspace</li>
+                <li>📝 Update a project's README file</li>
+                <li>🔄 Want to refresh project information on the site</li>
+                <li>🏷️ Change project descriptions or features</li>
+            </ul>
+
+            <h2>Build Script Commands</h2>
+
+            <h3>npm run build</h3>
+            <p>Rebuilds the entire portfolio site:</p>
+            <pre><code>cd work-tools-portfolio
+npm run build</code></pre>
+            <p><strong>What it does:</strong></p>
+            <ul>
+                <li>Scans parent directory for projects</li>
+                <li>Generates new index.html</li>
+                <li>Creates/updates project pages</li>
+                <li>Shows summary of changes</li>
+            </ul>
+
+            <h3>npm run rebuild</h3>
+            <p>Rebuilds and prepares for Git commit:</p>
+            <pre><code>npm run rebuild</code></pre>
+            <p><strong>What it does:</strong></p>
+            <ul>
+                <li>Runs the build script</li>
+                <li>Stages all changes with <code>git add .</code></li>
+                <li>Shows git status so you can review changes</li>
+            </ul>
+
+            <h2>Step-by-Step: Adding a New Project</h2>
+
+            <h3>1. Create Your Project</h3>
+            <p>Build your project in the parent directory (same level as other projects):</p>
+            <pre><code>cd "Documents/Code projects"
+mkdir my-new-project
+cd my-new-project
+# ... create your project ...</code></pre>
+
+            <h3>2. Write a README</h3>
+            <p>Create a README.md file with at least:</p>
+            <pre><code># My New Project
+
+A brief description of what this project does.
+
+## Features
+
+- Feature 1
+- Feature 2
+
+## Technologies
+
+- Node.js
+- React
+- etc.</code></pre>
+
+            <h3>3. Rebuild the Portfolio</h3>
+            <pre><code>cd work-tools-portfolio
+npm run build</code></pre>
+
+            <h3>4. Review and Commit</h3>
+            <pre><code>git add .
+git commit -m "Add new project: My New Project"
+git push</code></pre>
+
+            <h3>5. Wait for GitHub Pages</h3>
+            <p>GitHub Pages will automatically rebuild your site in 1-2 minutes. Your new project will appear!</p>
+
+            <h2>Technology Detection</h2>
+            <p>The build script automatically detects technologies and adds appropriate badges:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Keywords in README</th>
+                        <th>Badge Added</th>
+                        <th>Badge Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>forge, atlassian</td>
+                        <td>Forge App</td>
+                        <td class="badge badge-forge">badge-forge</td>
+                    </tr>
+                    <tr>
+                        <td>react</td>
+                        <td>React</td>
+                        <td class="badge badge-react">badge-react</td>
+                    </tr>
+                    <tr>
+                        <td>python</td>
+                        <td>Python</td>
+                        <td class="badge badge-python">badge-python</td>
+                    </tr>
+                    <tr>
+                        <td>cloud function, google cloud</td>
+                        <td>Cloud Function</td>
+                        <td class="badge badge-cloud">badge-cloud</td>
+                    </tr>
+                    <tr>
+                        <td>automation, scheduled</td>
+                        <td>Automation</td>
+                        <td class="badge badge-automation">badge-automation</td>
+                    </tr>
+                    <tr>
+                        <td>chrome extension</td>
+                        <td>Chrome Extension</td>
+                        <td class="badge badge-tool">badge-tool</td>
+                    </tr>
+                    <tr>
+                        <td>cli, command line</td>
+                        <td>CLI Tool</td>
+                        <td class="badge badge-tool">badge-tool</td>
+                    </tr>
+                    <tr>
+                        <td>visualization, chart</td>
+                        <td>Visualization</td>
+                        <td class="badge badge-visualization">badge-visualization</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Configuration</h2>
+            <p>The build script can be configured by editing <code>build-portfolio.js</code>:</p>
+
+            <h3>Excluded Directories</h3>
+            <p>By default, these directories are skipped:</p>
+            <pre><code>excludeDirs: [
+  'work-tools-portfolio',  // The portfolio itself
+  'node_modules',          // Dependencies
+  '.git',                  // Git metadata
+  '.DS_Store',            // macOS files
+  '.claude'               // Claude Code files
+]</code></pre>
+
+            <h3>GitHub Username</h3>
+            <p>Update the GitHub username if needed:</p>
+            <pre><code>githubUsername: 'qrsouther'</code></pre>
+
+            <h2>Troubleshooting</h2>
+
+            <h3>Project Not Appearing</h3>
+            <ul>
+                <li>✓ Ensure the project has a README.md file</li>
+                <li>✓ Check that the directory isn't in the exclude list</li>
+                <li>✓ Verify the README has at least a title (# heading)</li>
+                <li>✓ Run the build script and check console output</li>
+            </ul>
+
+            <h3>Wrong Information Displayed</h3>
+            <ul>
+                <li>Update the README.md in your project</li>
+                <li>Run <code>npm run build</code> again</li>
+                <li>Commit and push the changes</li>
+            </ul>
+
+            <h3>Build Script Fails</h3>
+            <ul>
+                <li>Ensure you're in the <code>work-tools-portfolio</code> directory</li>
+                <li>Check that Node.js is installed: <code>node --version</code></li>
+                <li>Check console output for specific errors</li>
+            </ul>
+
+            <h2>Manual Override</h2>
+            <p>If you need to manually edit a project page:</p>
+            <ol>
+                <li>Find the page in <code>projects/project-name.html</code></li>
+                <li>Edit the HTML directly</li>
+                <li><strong>Note:</strong> Your changes will be overwritten next time you run the build script</li>
+            </ol>
+            <p>For persistent custom changes, modify the <code>generateProjectPage()</code> function in <code>build-portfolio.js</code>.</p>
+
+            <h2>Build Output Example</h2>
+            <p>When you run <code>npm run build</code>, you'll see:</p>
+            <pre><code>============================================================
+  Portfolio Build Script
+============================================================
+
+[SCAN] Scanning for projects...
+  ✓ Found: blueprint-standard-adherence-master-tracker
+  ✓ Found: confluence-macro-checker
+  ✓ Found: jira-sheets-dashboard
+  ✓ Found: blueprint-standards-chart-custom-ui-react
+  ✓ Found: confluence-json-editor
+  ✓ Found: lozenge-donut-chart-v2-claude-code
+  → Total projects found: 6
+
+[BUILD] Generating index.html...
+  ✓ index.html created
+
+[BUILD] Generating project pages...
+  ✓ blueprint-standard-adherence-master-tracker.html created
+  ✓ confluence-macro-checker.html created
+  ✓ jira-sheets-dashboard.html created
+  ✓ blueprint-standards-chart-custom-ui-react.html created
+  ✓ confluence-json-editor.html created
+  ✓ lozenge-donut-chart-v2-claude-code.html created
+
+============================================================
+  ✓ Build Complete!
+============================================================
+  → Generated 6 project pages
+  → Output directory: /Users/quinnsouther/Documents/Code projects/work-tools-portfolio
+
+Next steps:
+  1. Review the generated files
+  2. Commit changes: git add . && git commit -m "Rebuild portfolio"
+  3. Push to GitHub: git push</code></pre>
+
+            <h2>Files Created/Modified</h2>
+            <p>Each build updates:</p>
+            <ul>
+                <li><code>index.html</code> - Main landing page with all project cards</li>
+                <li><code>projects/*.html</code> - Individual project detail pages</li>
+            </ul>
+            <p><strong>Not modified:</strong></p>
+            <ul>
+                <li><code>styles.css</code> - Your styling stays intact</li>
+                <li><code>build-portfolio.js</code> - The build script itself</li>
+                <li><code>build-docs.html</code> - This documentation page</li>
+                <li><code>README.md</code> - Portfolio repository README</li>
+            </ul>
+
+            <h2>Advanced: Customizing the Build</h2>
+            <p>You can extend the build script to:</p>
+            <ul>
+                <li>Add custom metadata extraction from READMEs</li>
+                <li>Change the HTML templates</li>
+                <li>Add more badge types</li>
+                <li>Customize project card layouts</li>
+                <li>Generate additional pages</li>
+            </ul>
+            <p>Edit <code>build-portfolio.js</code> and modify the generator functions.</p>
+
+            <h2>Why This Approach?</h2>
+            <p>This build system gives you:</p>
+            <ul>
+                <li>✅ <strong>Single source of truth:</strong> Project info lives in README files</li>
+                <li>✅ <strong>Automatic detection:</strong> New projects appear automatically</li>
+                <li>✅ <strong>Consistency:</strong> All projects follow the same format</li>
+                <li>✅ <strong>Easy updates:</strong> One command rebuilds everything</li>
+                <li>✅ <strong>No manual HTML:</strong> Never edit project cards directly</li>
+                <li>✅ <strong>Version controlled:</strong> Everything tracked in Git</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>

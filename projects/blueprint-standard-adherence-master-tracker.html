@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint Standard Adherence Master Tracker - Work Tools Portfolio</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Blueprint Standard Adherence Master Tracker</h1>
+            <p class="subtitle">Automatically scans Confluence Blueprint pages for status lozenges (status badges), counts them by label and color, and writes the results to individual Google Sheet tabs for tracking and dashboard integration.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+        <div class="project-detail">
+            <div class="launch-buttons">
+                <a href="https://github.com/qrsouther/blueprint-standard-adherence-master-tracker" class="btn btn-primary" target="_blank">View on GitHub</a>
+            </div>
+
+            <h2>Blueprint Standard Adherence Master Tracker</h2>
+
+<p>Automatically scans Confluence Blueprint pages for status lozenges (status badges), counts them by label and color, and writes the results to individual Google Sheet tabs for tracking and dashboard integration.</p>
+
+<h2>📚 Quick Navigation</h2>
+
+<ul><li>📄 <strong>[SUMMARY.md](./SUMMARY.md)</strong> - One-page quick reference</li>
+<li>📊 <strong>[STATUS.md](./STATUS.md)</strong> - Detailed deployment status and monitoring</li>
+<li>🏗️ <strong>[ARCHITECTURE.md](./ARCHITECTURE.md)</strong> - Visual architecture and data flow diagrams</li>
+<li>🚀 <strong>[QUICKSTART-GCF.md](./QUICKSTART-GCF.md)</strong> - Fast cloud deployment guide</li>
+<li>📖 <strong>[DEPLOYMENT.md](./DEPLOYMENT.md)</strong> - Comprehensive cloud setup guide</li>
+<li>📑 <strong>[DOCS-INDEX.md](./DOCS-INDEX.md)</strong> - Complete documentation index</li>
+
+<h2>⚡ Current Status</h2>
+
+<p><strong>✅ DEPLOYED AND RUNNING AUTOMATICALLY</strong></p>
+
+<p>This application is currently deployed to Google Cloud Functions and runs automatically:</p>
+<li><strong>Schedule:</strong> Every day at 9:00 AM Eastern Time</li>
+<li><strong>Platform:</strong> Google Cloud Functions (Gen 2)</li>
+<li><strong>Region:</strong> us-central1</li>
+<li><strong>Runtime:</strong> Node.js 20</li>
+<li><strong>Cost:</strong> $0/month (within free tier)</li>
+
+<h2>🎯 What It Does</h2>
+
+<li><strong>Searches Confluence</strong> for all pages with "Blueprint" in the title within the <code>cs</code> space</li>
+<li><strong>Filters intelligently:</strong></li>
+<p>   - ✅ Includes: Team Blueprint pages (e.g., "Blueprint: Utah Jazz")</p>
+<p>   - ❌ Excludes: Pages with "Generic", "Template", "Templates", or "Client Summaries" in title</p>
+<li><strong>Counts lozenges</strong> that appear within header elements (h2, h3, h4, etc.) only</li>
+<li><strong>Normalizes labels</strong> for consistency:</li>
+<p>   - Title Case for most labels: "Standard", "Semi-Standard", "Non-Standard"</p>
+<p>   - UPPERCASE for exceptions: "TBD", "N/A"</p>
+<li><strong>Creates individual sheet tabs</strong> for each team in Google Sheets</li>
+<li><strong>Updates automatically</strong> every morning</li>
+
+<p>Currently processing <strong>~70 Blueprint pages</strong> with <strong>~4,900 lozenges</strong> total.</p>
+
+<h2>📊 Features</h2>
+
+<li><strong>Dynamic page discovery</strong> - Automatically finds all Blueprint pages (no hardcoded list)</li>
+<li><strong>Smart filtering</strong> - Excludes templates, generic pages, and meta pages</li>
+<li><strong>Header-only counting</strong> - Only counts lozenges in headers where they should be</li>
+<li><strong>Case normalization</strong> - Handles inconsistent capitalization while preserving data quality indicators</li>
+<li><strong>Individual sheet tabs</strong> - Each team gets its own tab named after the team</li>
+<li><strong>Rate limiting</strong> - Respects Google Sheets API quotas (1.5s delay between writes)</li>
+<li><strong>OAuth 2.0 authentication</strong> - No service account needed</li>
+<li><strong>Cloud-native</strong> - Runs serverless with automatic scaling</li>
+<li><strong>Zero maintenance</strong> - Fully automated daily runs</li>
+
+<h2>🔍 What's Included vs Excluded</h2>
+
+<h3>✅ Included Pages</h3>
+<p>All Confluence pages in the <code>cs</code> space with "Blueprint" in the title, EXCEPT:</p>
+
+<h3>❌ Excluded Pages</h3>
+<p>Pages containing any of these terms in their title:</p>
+<li><code>Generic</code> (e.g., "Blueprint: [Generic NBA team]")</li>
+<li><code>Template</code> or <code>Templates</code> (e.g., "Blueprint Templates")</li>
+<li><code>Client Summaries</code> (e.g., "US Client Summaries + Blueprints")</li>
+<li><code>What are Blueprint MultiExcerpts</code></li>
+<li><code>Best Practice Templates</code></li>
+
+<h3>📍 Lozenge Counting Rules</h3>
+<li>✅ <strong>Counted:</strong> Lozenges that are child elements of headers (h1, h2, h3, h4, h5, h6)</li>
+<li>❌ <strong>Not Counted:</strong> Lozenges in body text, tables, or other non-header locations</li>
+
+<p>This ensures we're only tracking the status indicators that are properly placed in section headers.</p>
+
+<h2>🚀 How It Works</h2>
+
+<h3>Architecture</h3>
+
+<p>``<code></p>
+<p>┌─────────────────────────────────────────────────────────────┐</p>
+<p>│  Cloud Scheduler (Daily at 9 AM ET)                         │</p>
+<p>└────────────────────┬────────────────────────────────────────┘</p>
+<p>                     │ HTTP POST trigger</p>
+<p>                     ▼</p>
+<p>┌─────────────────────────────────────────────────────────────┐</p>
+<p>│  Google Cloud Function (blueprint-tracker)                  │</p>
+<p>│  ├─ Searches Confluence for Blueprint pages                 │</p>
+<p>│  ├─ Filters out excluded pages                              │</p>
+<p>│  ├─ Parses lozenges from headers only                       │</p>
+<p>│  ├─ Normalizes label text (Title Case / UPPERCASE)          │</p>
+<p>│  ├─ Deletes excluded sheet tabs                             │</p>
+<p>│  └─ Writes to individual Google Sheet tabs                  │</p>
+<p>└────────────────────┬────────────────────────────────────────┘</p>
+<p>                     │</p>
+<p>        ┌────────────┴────────────┐</p>
+<p>        │                         │</p>
+<p>        ▼                         ▼</p>
+<p>┌───────────────┐         ┌──────────────┐</p>
+<p>│  Confluence   │         │ Google Sheet │</p>
+<p>│  REST API     │         │  (70 tabs)   │</p>
+<p>└───────────────┘         └──────────────┘</p>
+<p></code>`<code></p>
+
+<h3>Execution Flow</h3>
+
+<li><strong>Cloud Scheduler</strong> triggers the function via HTTP POST</li>
+<li><strong>Cloud Function</strong> starts:</li>
+<p>   - Loads environment variables and OAuth token from Secret Manager</p>
+<p>   - Connects to Confluence REST API</p>
+<p>   - Searches for all pages: </code>space = "cs" AND title ~ "Blueprint"<code></p>
+<li><strong>Page Filtering</strong>:</li>
+<p>   - Fetches all found pages</p>
+<p>   - Filters out excluded terms (Generic, Template, etc.)</p>
+<li><strong>Lozenge Parsing</strong>:</li>
+<p>   - Extracts only lozenges within header elements</p>
+<p>   - Normalizes text to Title Case (with TBD/N/A exceptions)</p>
+<p>   - Groups and counts by text + color</p>
+<li><strong>Google Sheets Update</strong>:</li>
+<p>   - Deletes any excluded sheet tabs</p>
+<p>   - Creates/updates individual tabs for each team</p>
+<p>   - Writes lozenge counts with timestamp</p>
+<li><strong>Returns</strong> success response</li>
+
+<p><strong>Typical execution time:</strong> ~2-3 minutes for 70 pages</p>
+
+<h2>📁 Output Format</h2>
+
+<p>Each team gets its own sheet tab (e.g., "Utah Jazz", "Arizona Cardinals"):</p>
+
+<p>| Page ID    | Page Title                | Lozenge Text  | Lozenge Color | Count | Last Updated             |</p>
+<p>|------------|---------------------------|---------------|---------------|-------|--------------------------|</p>
+<p>| 4187848753 | Blueprint: Utah Jazz      | Standard      | green         | 57    | 2025-10-17T09:00:00.000Z |</p>
+<p>| 4187848753 | Blueprint: Utah Jazz      | Bespoke       | purple        | 6     | 2025-10-17T09:00:00.000Z |</p>
+<p>| 4187848753 | Blueprint: Utah Jazz      | Semi-Standard | yellow        | 6     | 2025-10-17T09:00:00.000Z |</p>
+<p>| 4187848753 | Blueprint: Utah Jazz      | N/A           | default       | 2     | 2025-10-17T09:00:00.000Z |</p>
+
+<p><strong>Note:</strong> Label variations like "Semi Standard" (no hyphen) or "Na" (typo) are preserved intentionally to help identify data quality issues in the source Confluence pages.</p>
+
+<h2>🛠️ Local Development</h2>
+
+<h3>Prerequisites</h3>
+
+<li>Node.js 18 or higher</li>
+<li>A Confluence Cloud account with API access</li>
+<li>A Google Cloud account</li>
+<li>Google Sheets API enabled</li>
+<li>OAuth 2.0 credentials (Desktop app type)</li>
+
+<h3>Setup Instructions</h3>
+
+<h4>1. Install Dependencies</h4>
+
+<p></code>`<code>bash</p>
+<p>cd blueprint-standard-adherence-master-tracker</p>
+<p>npm install</p>
+<p></code>`<code></p>
+
+<h4>2. Configure Environment Variables</h4>
+
+<p>Create </code>.env<code> file:</p>
+
+<p></code>`<code>bash</p>
+<p>cp .env.example .env</p>
+<p></code>`<code></p>
+
+<p>Edit </code>.env<code> with your credentials:</p>
+
+<p></code>`<code>env</p>
+<h2>Confluence Configuration</h2>
+<p>CONFLUENCE_BASE_URL=https://yourcompany.atlassian.net</p>
+<p>CONFLUENCE_EMAIL=your.email@company.com</p>
+<p>CONFLUENCE_API_TOKEN=your_confluence_api_token</p>
+
+<h2>Google OAuth Configuration</h2>
+<p>GOOGLE_CLIENT_ID=your_client_id.apps.googleusercontent.com</p>
+<p>GOOGLE_CLIENT_SECRET=your_client_secret</p>
+<p>GOOGLE_REDIRECT_URI=http://localhost</p>
+
+<h2>Google Sheets Configuration</h2>
+<p>GOOGLE_SHEET_ID=your_google_sheet_id</p>
+<p></code>`<code></p>
+
+<h4>3. Configure Search Parameters</h4>
+
+<p>Edit </code>config.json<code>:</p>
+
+<p></code>`<code>json</p>
+<p>{</p>
+<p>  "spaceKey": "cs",</p>
+<p>  "titleSearch": "Blueprint"</p>
+<p>}</p>
+<p></code>`<code></p>
+
+<p>This tells the app to search for pages with "Blueprint" in the title within the "cs" space.</p>
+
+<h4>4. Authenticate with Google</h4>
+
+<p></code>`<code>bash</p>
+<p>npm run auth</p>
+<p></code>`<code></p>
+
+<p>Follow the prompts to authorize the app. This creates </code>.google-token.json<code> which is reused automatically.</p>
+
+<h4>5. Build and Run</h4>
+
+<p></code>`<code>bash</p>
+<h2>Build TypeScript</h2>
+<p>npm run build</p>
+
+<h2>Run the tracker</h2>
+<p>npm start</p>
+<p></code>`<code></p>
+
+<h3>Development Scripts</h3>
+
+<li></code>npm run build<code> - Compile TypeScript to JavaScript</li>
+<li></code>npm start<code> - Run the tracker (requires build first)</li>
+<li></code>npm run dev<code> - Run with ts-node (for development)</li>
+<li></code>npm run auth<code> - Run OAuth authentication flow</li>
+
+<h2>☁️ Cloud Deployment</h2>
+
+<p>The application is deployed to Google Cloud Functions. See detailed guides:</p>
+
+<li><strong>Quick Start:</strong> [QUICKSTART-GCF.md](./QUICKSTART-GCF.md) (~10 minutes)</li>
+<li><strong>Full Guide:</strong> [DEPLOYMENT.md](./DEPLOYMENT.md) (comprehensive)</li>
+
+<h3>Deployment Summary</h3>
+
+<p><strong>Current Deployment:</strong></p>
+<li><strong>Project ID:</strong> blueprint-tracker-475402</li>
+<li><strong>Function Name:</strong> blueprint-tracker</li>
+<li><strong>Region:</strong> us-central1</li>
+<li><strong>Schedule:</strong> Daily at 9:00 AM ET (</code>0 9 * * *<code>)</li>
+<li><strong>URL:</strong> https://us-central1-blueprint-tracker-475402.cloudfunctions.net/blueprint-tracker</li>
+
+<p><strong>To redeploy after changes:</strong></p>
+
+<p></code>`<code>bash</p>
+<h2>1. Update code locally</h2>
+<h2>2. Build</h2>
+<p>npm run build</p>
+
+<h2>3. Deploy</h2>
+<p>./deploy.sh</p>
+<p></code>`<code></p>
+
+<h3>Monitoring</h3>
+
+<p><strong>View logs:</strong></p>
+<p></code>`<code>bash</p>
+<p>gcloud functions logs read blueprint-tracker --gen2 --region=us-central1 --limit=50</p>
+<p></code>`<code></p>
+
+<p><strong>Cloud Console:</strong></p>
+<p>https://console.cloud.google.com/functions/details/us-central1/blueprint-tracker?project=blueprint-tracker-475402</p>
+
+<p><strong>Scheduler Jobs:</strong></p>
+<p></code>`<code>bash</p>
+<p>gcloud scheduler jobs list --location=us-central1</p>
+<p></code>`<code></p>
+
+<p><strong>Test manually:</strong></p>
+<p></code>`<code>bash</p>
+<h2>Trigger the function</h2>
+<p>curl -X POST https://us-central1-blueprint-tracker-475402.cloudfunctions.net/blueprint-tracker</p>
+
+<h2>Or trigger the scheduled job</h2>
+<p>gcloud scheduler jobs run blueprint-tracker-daily --location=us-central1</p>
+<p></code>`<code></p>
+
+<h2>📝 Configuration Reference</h2>
+
+<h3>config.json</h3>
+
+<p></code>`<code>json</p>
+<p>{</p>
+<p>  "spaceKey": "cs",           // Confluence space key to search</p>
+<p>  "titleSearch": "Blueprint"  // Search term for page titles</p>
+<p>}</p>
+<p></code>`<code></p>
+
+<p><strong>Optional:</strong> You can add </code>testPageIds<code> array for testing specific pages:</p>
+
+<p></code>`<code>json</p>
+<p>{</p>
+<p>  "spaceKey": "cs",</p>
+<p>  "titleSearch": "Blueprint",</p>
+<p>  "testPageIds": ["4187848753", "4403593346"]  // Only process these pages</p>
+<p>}</p>
+<p></code>`<code></p>
+
+<h3>Exclusion Terms</h3>
+
+<p>To modify which pages are excluded, edit:</p>
+<li><strong>src/index.ts</strong> - Lines 64-71 (page filtering)</li>
+<li><strong>src/googleSheets.ts</strong> - Lines 168-175 (sheet tab deletion)</li>
+
+<p>Current exclusion terms:</p>
+<p></code>`<code>typescript</p>
+<p>const exclusionTerms = [</p>
+<p>  'Generic',</p>
+<p>  'Template',</p>
+<p>  'Templates',</p>
+<p>  'Client Summaries',</p>
+<p>  'What are Blueprint MultiExcerpts',</p>
+<p>  'Best Practice Templates'</p>
+<p>];</p>
+<p></code>`<code></p>
+
+<h3>Case Normalization</h3>
+
+<p>To modify text normalization rules, edit <strong>src/lozengeParser.ts</strong> - Lines 37-55:</p>
+
+<p></code>`<code>typescript</p>
+<p>private normalizeText(text: string): string {</p>
+<p>  const trimmed = text.trim();</p>
+<p>  const upper = trimmed.toUpperCase();</p>
+
+<p>  // Special cases: keep as UPPERCASE</p>
+<p>  if (upper === 'TBD' || upper === 'N/A') {</p>
+<p>    return upper;</p>
+<p>  }</p>
+
+<p>  // Everything else: Title Case</p>
+<p>  return trimmed</p>
+<p>    .toLowerCase()</p>
+<p>    .split(' ')</p>
+<p>    .map(word => word.charAt(0).toUpperCase() + word.slice(1))</p>
+<p>    .join(' ')</p>
+<p>    .split('-')</p>
+<p>    .map(word => word.charAt(0).toUpperCase() + word.slice(1))</p>
+<p>    .join('-');</p>
+<p>}</p>
+<p></code>`<code></p>
+
+<h2>🔒 Security</h2>
+
+<li>✅ OAuth tokens stored in Google Secret Manager</li>
+<li>✅ Environment variables encrypted</li>
+<li>✅ API credentials never in source code</li>
+<li>✅ </code>.env<code> and </code>.google-token.json<code> excluded from git</li>
+<li>✅ Service account with minimal permissions</li>
+<li>✅ HTTPS-only communication</li>
+
+<p><strong>Important Files (Never commit these):</strong></p>
+<li></code>.env<code> - Contains API tokens and credentials</li>
+<li></code>.env.yaml<code> - Cloud Functions environment variables</li>
+<li></code>.google-token.json<code> - OAuth refresh token</li>
+<li></code>config.json<code> - May contain sensitive page IDs</li>
+
+<p>All are listed in </code>.gitignore<code>.</p>
+
+<h2>📊 Current Statistics</h2>
+
+<p>As of last update:</p>
+<li><strong>Pages processed:</strong> ~70 Blueprint pages</li>
+<li><strong>Pages excluded:</strong> ~15 (Generic, Templates, Client Summaries)</li>
+<li><strong>Total lozenges:</strong> ~4,900</li>
+<li><strong>Execution time:</strong> ~2-3 minutes</li>
+<li><strong>API calls per run:</strong> ~150 (85 Confluence + 70 Google Sheets)</li>
+<li><strong>Cost:</strong> $0/month (within free tier)</li>
+
+<h2>🐛 Troubleshooting</h2>
+
+<h3>"Not authenticated"</h3>
+<p>Run </code>npm run auth<code> to generate OAuth token.</p>
+
+<h3>"Failed to fetch pages"</h3>
+<li>Check Confluence API token is valid</li>
+<li>Verify you have access to the </code>cs<code> space</li>
+<li>Confirm network connectivity</li>
+
+<h3>"Permission denied on secret"</h3>
+<p>Grant Secret Manager access to the service account:</p>
+<p></code>`<code>bash</p>
+<p>gcloud secrets add-iam-policy-binding google-oauth-token \</p>
+<p>  --member="serviceAccount:PROJECT_NUMBER-compute@developer.gserviceaccount.com" \</p>
+<p>  --role="roles/secretmanager.secretAccessor"</p>
+<p></code>`<code></p>
+
+<h3>"Function timeout"</h3>
+<p>Increase timeout in deployment:</p>
+<p></code>`<code>bash</p>
+<p>--timeout=900s  # Max 15 minutes for Gen 2</p>
+<p></code>`<code></p>
+
+<h3>"Quota exceeded"</h3>
+<p>The app has built-in rate limiting (1.5s between writes). If you still hit limits:</p>
+<li>Reduce the number of pages</li>
+<li>Increase delays in </code>src/googleSheets.ts<code> (line 304)</li>
+
+<h3>"Token expired"</h3>
+<p>Regenerate locally and update secret:</p>
+<p></code>`<code>bash</p>
+<p>npm run auth</p>
+<p>gcloud secrets versions add google-oauth-token --data-file=.google-token.json</p>
+<p></code>`<code></p>
+
+<h2>📖 Additional Documentation</h2>
+
+<li>[SUMMARY.md](./SUMMARY.md) - One-page quick reference</li>
+<li>[STATUS.md](./STATUS.md) - Detailed deployment status and monitoring</li>
+<li>[ARCHITECTURE.md](./ARCHITECTURE.md) - Visual architecture diagrams and data flow</li>
+<li>[QUICKSTART-GCF.md](./QUICKSTART-GCF.md) - Quick cloud deployment guide</li>
+<li>[DEPLOYMENT.md](./DEPLOYMENT.md) - Comprehensive deployment documentation</li>
+<li>[DOCS-INDEX.md](./DOCS-INDEX.md) - Complete documentation index</li>
+<li>[.env.example](./.env.example) - Environment variables template</li>
+<li>[.env.yaml.example](./.env.yaml.example) - Cloud Functions env template</li>
+<li>[config.example.json](./config.example.json) - Configuration template</li>
+
+<h2>🏗️ Project Structure</h2>
+
+<p></code>`<code></p>
+<p>blueprint-standard-adherence-master-tracker/</p>
+<p>├── src/</p>
+<p>│   ├── index.ts           # Main orchestrator (search, filter, parse, write)</p>
+<p>│   ├── confluence.ts      # Confluence API client with CQL search</p>
+<p>│   ├── lozengeParser.ts   # Lozenge extraction, normalization, counting</p>
+<p>│   ├── googleSheets.ts    # Google Sheets client with tab management</p>
+<p>│   └── authenticate.ts    # OAuth setup script for local dev</p>
+<p>├── gcf-index.js          # Cloud Function entry point</p>
+<p>├── deploy.sh             # Deployment automation script</p>
+<p>├── config.json           # Search configuration (not in git)</p>
+<p>├── .env                  # Local environment variables (not in git)</p>
+<p>├── .env.yaml             # Cloud env variables (not in git)</p>
+<p>├── .google-token.json    # OAuth token (not in git)</p>
+<p>├── package.json          # Dependencies and scripts</p>
+<p>├── tsconfig.json         # TypeScript configuration</p>
+<p>├── .gcloudignore         # Files excluded from cloud deployment</p>
+<p>└── README.md             # This file</p>
+<p></code>`<code></p>
+
+<h2>🔄 Change Schedule</h2>
+
+<p>To change when the tracker runs:</p>
+
+<p></code>`<code>bash</p>
+<p>gcloud scheduler jobs update http blueprint-tracker-daily \</p>
+<p>  --location=us-central1 \</p>
+<p>  --schedule="0 17 * * *"  # Example: 5 PM instead of 9 AM</p>
+<p></code>`<code></p>
+
+<p><strong>Schedule format (cron):</strong></p>
+<li></code>"0 9 * * *"<code> - Every day at 9 AM</li>
+<li></code>"0 9 * * 1"<code> - Every Monday at 9 AM</li>
+<li></code>"0 */6 * * *"<code> - Every 6 hours</li>
+<li></code>"0 0 * * 0"<code> - Every Sunday at midnight</li>
+</ul>
+<p><strong>Time zone:</strong></p>
+<p>Currently set to </code>America/New_York<code>. Change with </code>--time-zone<code> flag.</p>
+
+<h2>📞 Support</h2>
+
+<p>For issues or questions:</p>
+<li>Check this README and troubleshooting section</li>
+<li>Review deployment guides ([DEPLOYMENT.md](./DEPLOYMENT.md))</li>
+<li>Check logs: </code>gcloud functions logs read blueprint-tracker --gen2 --region=us-central1`</li>
+<li>Confluence API docs: https://developer.atlassian.com/cloud/confluence/rest/</li>
+<li>Google Sheets API docs: https://developers.google.com/sheets/api</li>
+
+<h2>📄 License</h2>
+
+<p>MIT</p>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>

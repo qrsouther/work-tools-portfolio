@@ -1,0 +1,19 @@
+{
+  "name": "work-tools-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio site showcasing custom-built tools and automation workflows",
+  "main": "build-portfolio.js",
+  "scripts": {
+    "build": "node build-portfolio.js",
+    "rebuild": "npm run build && git add . && git status"
+  },
+  "keywords": [
+    "portfolio",
+    "automation",
+    "confluence",
+    "jira",
+    "tools"
+  ],
+  "author": "Quinn Souther",
+  "license": "MIT"
+}
