@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint Standard Adherence Master Tracker - Work Tools Portfolio</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Blueprint Standard Adherence Master Tracker</h1>
+            <p class="subtitle">Automated Confluence tracking with Google Cloud Functions</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+        <div class="project-detail">
+            <div class="launch-buttons">
+                <a href="https://github.com/yourusername/blueprint-standard-adherence-master-tracker" class="btn btn-primary" target="_blank">View on GitHub</a>
+                <a href="https://console.cloud.google.com/functions/details/us-central1/blueprint-tracker?project=blueprint-tracker-475402" class="btn btn-secondary" target="_blank">View Cloud Function</a>
+            </div>
+
+            <div class="quick-start">
+                <h3>Quick Start</h3>
+                <p><strong>Status:</strong> ✅ Deployed and running automatically</p>
+                <p><strong>Schedule:</strong> Every day at 9:00 AM Eastern Time</p>
+                <p><strong>Platform:</strong> Google Cloud Functions (Gen 2)</p>
+                <p><strong>Processing:</strong> ~70 Blueprint pages with ~4,900 lozenges</p>
+            </div>
+
+            <h2>Overview</h2>
+            <p>Automatically scans Confluence Blueprint pages for status lozenges (status badges), counts them by label and color, and writes the results to individual Google Sheet tabs for tracking and dashboard integration.</p>
+
+            <h2>What It Does</h2>
+            <ol>
+                <li><strong>Searches Confluence</strong> for all pages with "Blueprint" in the title within the cs space</li>
+                <li><strong>Filters intelligently:</strong>
+                    <ul>
+                        <li>✅ Includes: Team Blueprint pages (e.g., "Blueprint: Utah Jazz")</li>
+                        <li>❌ Excludes: Pages with "Generic", "Template", "Templates", or "Client Summaries" in title</li>
+                    </ul>
+                </li>
+                <li><strong>Counts lozenges</strong> that appear within header elements (h2, h3, h4, etc.) only</li>
+                <li><strong>Normalizes labels</strong> for consistency:
+                    <ul>
+                        <li>Title Case for most labels: "Standard", "Semi-Standard", "Non-Standard"</li>
+                        <li>UPPERCASE for exceptions: "TBD", "N/A"</li>
+                    </ul>
+                </li>
+                <li><strong>Creates individual sheet tabs</strong> for each team in Google Sheets</li>
+                <li><strong>Updates automatically</strong> every morning</li>
+            </ol>
+
+            <h2>Key Features</h2>
+            <ul>
+                <li><strong>Dynamic page discovery</strong> - Automatically finds all Blueprint pages (no hardcoded list)</li>
+                <li><strong>Smart filtering</strong> - Excludes templates, generic pages, and meta pages</li>
+                <li><strong>Header-only counting</strong> - Only counts lozenges in headers where they should be</li>
+                <li><strong>Case normalization</strong> - Handles inconsistent capitalization while preserving data quality indicators</li>
+                <li><strong>Individual sheet tabs</strong> - Each team gets its own tab named after the team</li>
+                <li><strong>Rate limiting</strong> - Respects Google Sheets API quotas (1.5s delay between writes)</li>
+                <li><strong>OAuth 2.0 authentication</strong> - No service account needed</li>
+                <li><strong>Cloud-native</strong> - Runs serverless with automatic scaling</li>
+                <li><strong>Zero maintenance</strong> - Fully automated daily runs</li>
+            </ul>
+
+            <h2>Architecture</h2>
+            <pre><code>┌─────────────────────────────────────────────────────────────┐
+│  Cloud Scheduler (Daily at 9 AM ET)                         │
+└────────────────────┬────────────────────────────────────────┘
+                     │ HTTP POST trigger
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Google Cloud Function (blueprint-tracker)                  │
+│  ├─ Searches Confluence for Blueprint pages                 │
+│  ├─ Filters out excluded pages                              │
+│  ├─ Parses lozenges from headers only                       │
+│  ├─ Normalizes label text (Title Case / UPPERCASE)          │
+│  ├─ Deletes excluded sheet tabs                             │
+│  └─ Writes to individual Google Sheet tabs                  │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+        ┌────────────┴────────────┐
+        │                         │
+        ▼                         ▼
+┌───────────────┐         ┌──────────────┐
+│  Confluence   │         │ Google Sheet │
+│  REST API     │         │  (70 tabs)   │
+└───────────────┘         └──────────────┘</code></pre>
+
+            <h2>Output Format</h2>
+            <p>Each team gets its own sheet tab (e.g., "Utah Jazz", "Arizona Cardinals"):</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Page ID</th>
+                        <th>Page Title</th>
+                        <th>Lozenge Text</th>
+                        <th>Lozenge Color</th>
+                        <th>Count</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4187848753</td>
+                        <td>Blueprint: Utah Jazz</td>
+                        <td>Standard</td>
+                        <td>green</td>
+                        <td>57</td>
+                        <td>2025-10-17T09:00:00.000Z</td>
+                    </tr>
+                    <tr>
+                        <td>4187848753</td>
+                        <td>Blueprint: Utah Jazz</td>
+                        <td>Bespoke</td>
+                        <td>purple</td>
+                        <td>6</td>
+                        <td>2025-10-17T09:00:00.000Z</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Local Setup & Testing</h2>
+            <h3>Prerequisites</h3>
+            <ul>
+                <li>Node.js 18 or higher</li>
+                <li>Confluence Cloud account with API access</li>
+                <li>Google Cloud account</li>
+                <li>Google Sheets API enabled</li>
+                <li>OAuth 2.0 credentials (Desktop app type)</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <pre><code># Clone the repository
+git clone https://github.com/yourusername/blueprint-standard-adherence-master-tracker.git
+cd blueprint-standard-adherence-master-tracker
+
+# Install dependencies
+npm install
+
+# Configure environment variables
+cp .env.example .env
+# Edit .env with your credentials
+
+# Authenticate with Google
+npm run auth
+
+# Build and run
+npm run build
+npm start</code></pre>
+
+            <h3>Deployment</h3>
+            <pre><code># Deploy to Google Cloud Functions
+./deploy.sh
+
+# View logs
+gcloud functions logs read blueprint-tracker --gen2 --region=us-central1 --limit=50
+
+# Test manually
+curl -X POST https://us-central1-blueprint-tracker-475402.cloudfunctions.net/blueprint-tracker</code></pre>
+
+            <h2>Monitoring</h2>
+            <ul>
+                <li><strong>Cloud Console:</strong> <a href="https://console.cloud.google.com/functions/details/us-central1/blueprint-tracker?project=blueprint-tracker-475402" target="_blank">View Function</a></li>
+                <li><strong>Execution time:</strong> ~2-3 minutes for 70 pages</li>
+                <li><strong>Cost:</strong> $0/month (within free tier)</li>
+            </ul>
+
+            <h2>Technologies</h2>
+            <ul>
+                <li>Node.js / TypeScript</li>
+                <li>Google Cloud Functions (Gen 2)</li>
+                <li>Google Cloud Scheduler</li>
+                <li>Confluence REST API</li>
+                <li>Google Sheets API</li>
+                <li>OAuth 2.0</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confluence Macro Error Checker - Work Tools Portfolio</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Confluence Macro Error Checker</h1>
+            <p class="subtitle">Python CLI tool for detecting macro rendering errors</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+        <div class="project-detail">
+            <div class="launch-buttons">
+                <a href="https://github.com/yourusername/confluence-macro-checker" class="btn btn-primary" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="quick-start">
+                <h3>Quick Start</h3>
+                <pre><code>python confluence_macro_checker.py \
+  --confluence-url "https://yourcompany.atlassian.net" \
+  --username "your.email@company.com" \
+  --api-token "your-api-token" \
+  --keyword "Blueprint" \
+  --google-credentials "credentials.json"</code></pre>
+            </div>
+
+            <h2>Overview</h2>
+            <p>This Python script crawls your company's Confluence instance to find pages with a specific keyword in their title, checks for macro rendering errors, and exports the results to Google Sheets for easy tracking and collaboration.</p>
+
+            <h2>Features</h2>
+            <ul>
+                <li><strong>Searches Confluence pages</strong> by title keyword</li>
+                <li><strong>Detects macro rendering errors</strong> including:
+                    <ul>
+                        <li>Error placeholder elements</li>
+                        <li>Macro error messages</li>
+                        <li>Unknown or failed macros</li>
+                    </ul>
+                </li>
+                <li><strong>Exports results to Google Sheets</strong> with:
+                    <ul>
+                        <li>Page title</li>
+                        <li>Page URL (clickable)</li>
+                        <li>Error type</li>
+                        <li>Exact error message</li>
+                    </ul>
+                </li>
+                <li><strong>Optional JSON export</strong> for backup/processing</li>
+            </ul>
+
+            <h2>How It Works</h2>
+            <ol>
+                <li><strong>Search:</strong> Uses Confluence REST API with CQL to find all pages containing the keyword in their title</li>
+                <li><strong>Scan:</strong> For each page:
+                    <ul>
+                        <li>Fetches rendered HTML and storage format</li>
+                        <li>Parses HTML for error indicators (CSS classes, error text patterns)</li>
+                        <li>Extracts error context and messages</li>
+                    </ul>
+                </li>
+                <li><strong>Export:</strong> Creates a Google Sheet with:
+                    <ul>
+                        <li>Formatted headers</li>
+                        <li>All error details</li>
+                        <li>Clickable URLs</li>
+                        <li>Auto-resized columns</li>
+                        <li>Public view-only sharing link</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h2>Error Types Detected</h2>
+            <ul>
+                <li><strong>Macro Rendering Error:</strong> Detected via error HTML elements</li>
+                <li><strong>Macro Error Text:</strong> Detected via error keywords in page text</li>
+                <li><strong>API Error:</strong> Issues fetching page content</li>
+            </ul>
+
+            <h3>Common Error Messages</h3>
+            <ul>
+                <li>"Unknown macro: [macro-name]"</li>
+                <li>"Macro not found"</li>
+                <li>"Unable to render [macro-name]"</li>
+                <li>"Cannot display macro"</li>
+                <li>"Failed to render macro"</li>
+                <li>"Invalid macro parameters"</li>
+            </ul>
+
+            <h2>Prerequisites</h2>
+            <ol>
+                <li><strong>Python 3.7+</strong></li>
+                <li><strong>Confluence API Access</strong>
+                    <ul>
+                        <li>Confluence instance URL</li>
+                        <li>Username/email</li>
+                        <li>API token</li>
+                    </ul>
+                </li>
+                <li><strong>Google Cloud Service Account</strong>
+                    <ul>
+                        <li>Service account credentials JSON file</li>
+                        <li>Google Sheets API enabled</li>
+                        <li>Google Drive API enabled</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h2>Setup Instructions</h2>
+            <h3>1. Install Dependencies</h3>
+            <pre><code>pip install -r requirements.txt</code></pre>
+
+            <h3>2. Get Confluence API Token</h3>
+            <ol>
+                <li>Log in to your Confluence instance</li>
+                <li>Go to Account Settings → Security → API Token</li>
+                <li>Click "Create API token"</li>
+                <li>Give it a name (e.g., "Macro Checker")</li>
+                <li>Copy the token (you won't be able to see it again)</li>
+            </ol>
+
+            <h3>3. Set Up Google Cloud Service Account</h3>
+            <ol>
+                <li>Go to <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a></li>
+                <li>Create a new project or select an existing one</li>
+                <li>Enable the following APIs:
+                    <ul>
+                        <li>Google Sheets API</li>
+                        <li>Google Drive API</li>
+                    </ul>
+                </li>
+                <li>Create a service account:
+                    <ul>
+                        <li>Go to "IAM & Admin" → "Service Accounts"</li>
+                        <li>Click "Create Service Account"</li>
+                        <li>Give it a name (e.g., "confluence-macro-checker")</li>
+                        <li>Grant it the "Editor" role</li>
+                    </ul>
+                </li>
+                <li>Create a key:
+                    <ul>
+                        <li>Click on the service account you just created</li>
+                        <li>Go to "Keys" tab</li>
+                        <li>Click "Add Key" → "Create new key"</li>
+                        <li>Choose "JSON" format</li>
+                        <li>Download the file (save it securely)</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h2>Usage Examples</h2>
+
+            <h3>Basic Usage</h3>
+            <pre><code>python confluence_macro_checker.py \
+  --confluence-url "https://yourcompany.atlassian.net" \
+  --username "your.email@company.com" \
+  --api-token "your-confluence-api-token" \
+  --keyword "YourKeyword" \
+  --google-credentials "path/to/service-account-credentials.json"</code></pre>
+
+            <h3>With Custom Sheet Name</h3>
+            <pre><code>python confluence_macro_checker.py \
+  --confluence-url "https://yourcompany.atlassian.net" \
+  --username "your.email@company.com" \
+  --api-token "your-confluence-api-token" \
+  --keyword "YourKeyword" \
+  --google-credentials "path/to/service-account-credentials.json" \
+  --sheet-name "Q4 2024 Macro Errors"</code></pre>
+
+            <h3>With JSON Backup</h3>
+            <pre><code>python confluence_macro_checker.py \
+  --confluence-url "https://yourcompany.atlassian.net" \
+  --username "your.email@company.com" \
+  --api-token "your-confluence-api-token" \
+  --keyword "YourKeyword" \
+  --google-credentials "path/to/service-account-credentials.json" \
+  --save-json "errors_backup.json"</code></pre>
+
+            <h2>Parameters</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>--confluence-url</code></td>
+                        <td>Yes</td>
+                        <td>Base URL of your Confluence instance</td>
+                    </tr>
+                    <tr>
+                        <td><code>--username</code></td>
+                        <td>Yes</td>
+                        <td>Your Confluence username/email</td>
+                    </tr>
+                    <tr>
+                        <td><code>--api-token</code></td>
+                        <td>Yes</td>
+                        <td>Your Confluence API token</td>
+                    </tr>
+                    <tr>
+                        <td><code>--keyword</code></td>
+                        <td>Yes</td>
+                        <td>Keyword to search for in page titles</td>
+                    </tr>
+                    <tr>
+                        <td><code>--google-credentials</code></td>
+                        <td>Yes</td>
+                        <td>Path to Google service account JSON file</td>
+                    </tr>
+                    <tr>
+                        <td><code>--sheet-name</code></td>
+                        <td>No</td>
+                        <td>Name for the Google Sheet (default: "Confluence Macro Errors")</td>
+                    </tr>
+                    <tr>
+                        <td><code>--save-json</code></td>
+                        <td>No</td>
+                        <td>Optional path to save results as JSON</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Example Output</h2>
+            <pre><code>Searching for pages with 'ProjectX' in title...
+  Found: ProjectX - Overview
+  Found: ProjectX - Architecture
+  Found: ProjectX - Deployment Guide
+
+Total pages found: 3
+
+Scanning 3 pages for macro errors...
+
+Checking: ProjectX - Overview
+  ✓ No errors found
+Checking: ProjectX - Architecture
+  ⚠️  Found 2 error(s)
+Checking: ProjectX - Deployment Guide
+  ⚠️  Found 1 error(s)
+
+============================================================
+SUMMARY: Found 3 macro error(s)
+============================================================
+
+✓ Exported 3 error(s) to Google Sheets
+  Spreadsheet URL: https://docs.google.com/spreadsheets/d/...</code></pre>
+
+            <h2>Google Sheet Format</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Page Title</th>
+                        <th>Page URL</th>
+                        <th>Error Type</th>
+                        <th>Error Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Example Page</td>
+                        <td>https://...</td>
+                        <td>Macro Rendering Error</td>
+                        <td>Unknown macro: customMacro</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Technologies</h2>
+            <ul>
+                <li>Python 3.7+</li>
+                <li>Confluence REST API</li>
+                <li>Google Sheets API</li>
+                <li>Google Drive API</li>
+                <li>BeautifulSoup (HTML parsing)</li>
+                <li>Requests (HTTP client)</li>
+            </ul>
+
+            <h2>Security Notes</h2>
+            <ul>
+                <li><strong>Never commit</strong> your API tokens or credentials files to version control</li>
+                <li>Store credentials securely (use environment variables or secret managers in production)</li>
+                <li>The created Google Sheets are shared with "anyone with the link" (view-only)</li>
+                <li>Consider restricting sheet access after creation if needed</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>

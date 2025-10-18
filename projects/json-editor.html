@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confluence JSON Editor - Work Tools Portfolio</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Confluence JSON Editor</h1>
+            <p class="subtitle">Forge app for structured data editing in Confluence</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+        <div class="project-detail">
+            <div class="launch-buttons">
+                <a href="https://github.com/yourusername/confluence-json-editor" class="btn btn-primary" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="quick-start">
+                <h3>Quick Start - Deploy to Confluence</h3>
+                <pre><code># Install dependencies
+npm install
+
+# Deploy the app
+forge deploy
+
+# Install to your Confluence site
+forge install</code></pre>
+            </div>
+
+            <h2>Overview</h2>
+            <p>Atlassian Forge app that provides a JSON editor interface within Confluence. Allows for structured data editing with configuration options directly in Confluence macros, enabling teams to manage structured content without leaving their documentation.</p>
+
+            <h2>Features</h2>
+            <ul>
+                <li><strong>JSON Editing:</strong> Intuitive interface for editing JSON data</li>
+                <li><strong>Confluence Integration:</strong> Seamlessly embedded as a Confluence macro</li>
+                <li><strong>Custom Macro:</strong> Easy to add to any Confluence page</li>
+                <li><strong>Syntax Validation:</strong> Real-time validation of JSON syntax</li>
+                <li><strong>Configuration Options:</strong> Customizable display and editing options</li>
+                <li><strong>Version Control:</strong> Leverages Confluence's page versioning</li>
+            </ul>
+
+            <h2>Use Cases</h2>
+            <ul>
+                <li>Store and edit configuration data in Confluence</li>
+                <li>Maintain structured data alongside documentation</li>
+                <li>Create data-driven content in Confluence pages</li>
+                <li>Manage API configurations or settings</li>
+                <li>Collaborate on JSON-based content</li>
+            </ul>
+
+            <h2>Requirements</h2>
+            <ul>
+                <li>Atlassian Forge CLI</li>
+                <li>Node.js (v14 or higher)</li>
+                <li>Confluence Cloud instance</li>
+                <li>Admin access to install Forge apps</li>
+            </ul>
+
+            <h2>Installation</h2>
+
+            <h3>Step 1: Set Up Forge</h3>
+            <p>See <a href="https://developer.atlassian.com/platform/forge/set-up-forge/" target="_blank">Set up Forge</a> for instructions to get set up.</p>
+
+            <h3>Step 2: Install and Deploy</h3>
+            <pre><code># Clone the repository
+git clone https://github.com/yourusername/confluence-json-editor.git
+cd confluence-json-editor
+
+# Install dependencies
+npm install
+
+# Deploy to Forge
+forge deploy
+
+# Install to your Confluence site
+forge install</code></pre>
+
+            <h2>Usage</h2>
+
+            <h3>Adding the JSON Editor to a Page</h3>
+            <ol>
+                <li>Edit any Confluence page</li>
+                <li>Type <code>/</code> to open the macro menu</li>
+                <li>Search for "JSON Editor"</li>
+                <li>Select the macro</li>
+                <li>Configure with your initial JSON data (optional)</li>
+                <li>Publish the page</li>
+            </ol>
+
+            <h3>Editing JSON Data</h3>
+            <ol>
+                <li>Click on the JSON Editor macro in view mode</li>
+                <li>Edit the JSON in the editor interface</li>
+                <li>The editor will validate syntax as you type</li>
+                <li>Save changes to update the macro content</li>
+            </ol>
+
+            <h3>Configuration</h3>
+            <p>When adding the macro, you can configure:</p>
+            <ul>
+                <li><strong>Initial Data:</strong> Starting JSON content</li>
+                <li><strong>Read-Only Mode:</strong> Display JSON without editing</li>
+                <li><strong>Display Options:</strong> Collapsed/expanded, theme, font size</li>
+            </ul>
+
+            <h2>Development</h2>
+
+            <h3>Project Structure</h3>
+            <pre><code>confluence-json-editor/
+├── manifest.yml              # Forge app configuration
+├── src/
+│   ├── frontend/             # Frontend editor UI
+│   │   └── index.jsx         # Main component
+│   └── resolvers/            # Backend resolvers
+│       └── index.js          # Data handlers
+└── package.json</code></pre>
+
+            <h3>Local Development</h3>
+            <pre><code># Run with live reload
+forge tunnel
+
+# View logs
+forge logs</code></pre>
+
+            <h3>Making Changes</h3>
+            <ol>
+                <li>Modify the frontend by editing <code>src/frontend/index.jsx</code></li>
+                <li>Modify the backend by editing <code>src/resolvers/index.js</code></li>
+                <li>Deploy changes: <code>forge deploy</code></li>
+            </ol>
+
+            <h2>Customization Ideas</h2>
+
+            <h3>Add YAML Support</h3>
+            <p>Extend the editor to support YAML format alongside JSON.</p>
+
+            <h3>Schema Validation</h3>
+            <p>Add JSON Schema validation to ensure data conforms to specific structures.</p>
+
+            <h3>Import/Export</h3>
+            <p>Add buttons to import JSON from files or export to download.</p>
+
+            <h3>Templates</h3>
+            <p>Create pre-defined JSON templates for common use cases.</p>
+
+            <h3>Diff View</h3>
+            <p>Show changes between different versions using Confluence's version history API.</p>
+
+            <h2>Security Notes</h2>
+            <ul>
+                <li>JSON data is stored within Confluence pages</li>
+                <li>Respects Confluence page permissions</li>
+                <li>Only users with edit access can modify JSON data</li>
+                <li>Leverages Forge's security model</li>
+            </ul>
+
+            <h2>Troubleshooting</h2>
+
+            <h3>Syntax Errors</h3>
+            <p>The editor will highlight syntax errors in real-time. Ensure your JSON is properly formatted before saving.</p>
+
+            <h3>Cannot Save Changes</h3>
+            <p>Verify you have edit permissions on the Confluence page.</p>
+
+            <h3>Macro Not Appearing</h3>
+            <p>Ensure the app is properly installed using <code>forge install</code> and check that your Confluence instance supports Forge apps.</p>
+
+            <h2>Technologies</h2>
+            <ul>
+                <li>Atlassian Forge</li>
+                <li>React</li>
+                <li>JavaScript</li>
+                <li>JSON validation libraries</li>
+                <li>Forge Custom UI</li>
+            </ul>
+
+            <h2>Resources</h2>
+            <ul>
+                <li><a href="https://developer.atlassian.com/platform/forge/" target="_blank">Atlassian Forge Documentation</a></li>
+                <li><a href="https://developer.atlassian.com/platform/forge/get-help/" target="_blank">Get Help with Forge</a></li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>

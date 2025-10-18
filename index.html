@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Tools Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Work Tools & Automation</h1>
+            <p class="subtitle">Custom-built solutions for Confluence, Jira, and workflow automation</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="intro">
+            <p>This portfolio showcases various tools, Chrome extensions, and automation workflows built to streamline work processes at SeatGeek. Each tool is designed to solve specific challenges with Confluence, Jira, and data tracking.</p>
+        </section>
+
+        <section class="projects-grid">
+            <!-- Blueprint Standard Adherence Master Tracker -->
+            <article class="project-card">
+                <div class="project-header">
+                    <h2>Blueprint Standard Adherence Master Tracker</h2>
+                    <span class="badge badge-automation">Automation</span>
+                    <span class="badge badge-cloud">Cloud Function</span>
+                </div>
+                <p class="project-description">
+                    Automatically scans Confluence Blueprint pages for status lozenges, counts them by label and color, and writes results to Google Sheets for tracking and dashboard integration. Runs daily via Google Cloud Functions.
+                </p>
+                <div class="project-stats">
+                    <span>~70 pages processed</span>
+                    <span>~4,900 lozenges tracked</span>
+                    <span>Deployed & Running</span>
+                </div>
+                <div class="project-links">
+                    <a href="projects/blueprint-tracker.html" class="btn btn-primary">View Details</a>
+                    <a href="https://github.com/yourusername/blueprint-standard-adherence-master-tracker" class="btn btn-secondary" target="_blank">View on GitHub</a>
+                </div>
+            </article>
+
+            <!-- Confluence Macro Error Checker -->
+            <article class="project-card">
+                <div class="project-header">
+                    <h2>Confluence Macro Error Checker</h2>
+                    <span class="badge badge-python">Python</span>
+                    <span class="badge badge-tool">CLI Tool</span>
+                </div>
+                <p class="project-description">
+                    Python script that crawls Confluence to find pages with macro rendering errors and exports results to Google Sheets. Detects unknown macros, failed renders, and error messages automatically.
+                </p>
+                <div class="project-stats">
+                    <span>Automated scanning</span>
+                    <span>Google Sheets export</span>
+                    <span>Error detection</span>
+                </div>
+                <div class="project-links">
+                    <a href="projects/macro-checker.html" class="btn btn-primary">View Details</a>
+                    <a href="https://github.com/yourusername/confluence-macro-checker" class="btn btn-secondary" target="_blank">View on GitHub</a>
+                </div>
+            </article>
+
+            <!-- Jira Sheets Dashboard -->
+            <article class="project-card">
+                <div class="project-header">
+                    <h2>Jira Google Sheets Dashboard</h2>
+                    <span class="badge badge-forge">Forge App</span>
+                    <span class="badge badge-react">React</span>
+                </div>
+                <p class="project-description">
+                    Custom Atlassian Forge app that creates a Jira dashboard gadget displaying data from Google Sheets. Features multiple sheet support, interactive visualizations (bar, line, pie charts), and real-time refresh.
+                </p>
+                <div class="project-stats">
+                    <span>Multiple chart types</span>
+                    <span>Real-time data</span>
+                    <span>Jira integration</span>
+                </div>
+                <div class="project-links">
+                    <a href="projects/jira-sheets-dashboard.html" class="btn btn-primary">View Details</a>
+                    <a href="https://github.com/yourusername/jira-sheets-dashboard" class="btn btn-secondary" target="_blank">View on GitHub</a>
+                </div>
+            </article>
+
+            <!-- Blueprint Standards Chart -->
+            <article class="project-card">
+                <div class="project-header">
+                    <h2>Blueprint Standards Chart</h2>
+                    <span class="badge badge-forge">Forge App</span>
+                    <span class="badge badge-react">React</span>
+                </div>
+                <p class="project-description">
+                    Custom UI React component for Confluence that displays Blueprint standard adherence data with configurable chart visualizations. Integrates directly into Confluence pages as a macro.
+                </p>
+                <div class="project-stats">
+                    <span>Confluence macro</span>
+                    <span>Custom UI</span>
+                    <span>Configurable</span>
+                </div>
+                <div class="project-links">
+                    <a href="projects/blueprint-chart.html" class="btn btn-primary">View Details</a>
+                    <a href="https://github.com/yourusername/blueprint-standards-chart-custom-ui-react" class="btn btn-secondary" target="_blank">View on GitHub</a>
+                </div>
+            </article>
+
+            <!-- Confluence JSON Editor -->
+            <article class="project-card">
+                <div class="project-header">
+                    <h2>Confluence JSON Editor</h2>
+                    <span class="badge badge-forge">Forge App</span>
+                    <span class="badge badge-tool">Editor</span>
+                </div>
+                <p class="project-description">
+                    Atlassian Forge app that provides a JSON editor interface within Confluence. Allows for structured data editing with configuration options directly in Confluence macros.
+                </p>
+                <div class="project-stats">
+                    <span>JSON editing</span>
+                    <span>Confluence integration</span>
+                    <span>Custom macro</span>
+                </div>
+                <div class="project-links">
+                    <a href="projects/json-editor.html" class="btn btn-primary">View Details</a>
+                    <a href="https://github.com/yourusername/confluence-json-editor" class="btn btn-secondary" target="_blank">View on GitHub</a>
+                </div>
+            </article>
+
+            <!-- Lozenge Donut Chart v2 -->
+            <article class="project-card">
+                <div class="project-header">
+                    <h2>Lozenge Donut Chart v2</h2>
+                    <span class="badge badge-forge">Forge App</span>
+                    <span class="badge badge-visualization">Visualization</span>
+                </div>
+                <p class="project-description">
+                    Enhanced version of a Confluence visualization component that creates donut charts from lozenge data. Provides visual representation of status indicators and categories.
+                </p>
+                <div class="project-stats">
+                    <span>Donut charts</span>
+                    <span>Lozenge tracking</span>
+                    <span>Visual analytics</span>
+                </div>
+                <div class="project-links">
+                    <a href="projects/lozenge-donut-chart.html" class="btn btn-primary">View Details</a>
+                    <a href="https://github.com/yourusername/lozenge-donut-chart-v2-claude-code" class="btn btn-secondary" target="_blank">View on GitHub</a>
+                </div>
+            </article>
+        </section>
+
+        <section class="tech-stack">
+            <h2>Technologies Used</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <h3>Backend</h3>
+                    <ul>
+                        <li>Node.js</li>
+                        <li>Python</li>
+                        <li>Google Cloud Functions</li>
+                    </ul>
+                </div>
+                <div class="tech-item">
+                    <h3>Frontend</h3>
+                    <ul>
+                        <li>React</li>
+                        <li>JavaScript</li>
+                        <li>HTML/CSS</li>
+                    </ul>
+                </div>
+                <div class="tech-item">
+                    <h3>Platforms</h3>
+                    <ul>
+                        <li>Atlassian Forge</li>
+                        <li>Confluence API</li>
+                        <li>Jira API</li>
+                    </ul>
+                </div>
+                <div class="tech-item">
+                    <h3>Integrations</h3>
+                    <ul>
+                        <li>Google Sheets API</li>
+                        <li>Google Cloud Platform</li>
+                        <li>OAuth 2.0</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>

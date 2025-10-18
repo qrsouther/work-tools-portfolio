@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lozenge Donut Chart v2 - Work Tools Portfolio</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Lozenge Donut Chart v2</h1>
+            <p class="subtitle">Confluence visualization for lozenge data</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+        <div class="project-detail">
+            <div class="launch-buttons">
+                <a href="https://github.com/yourusername/lozenge-donut-chart-v2-claude-code" class="btn btn-primary" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="quick-start">
+                <h3>Quick Start - Deploy to Confluence</h3>
+                <pre><code># Deploy the app
+forge deploy
+
+# Install to your Confluence site
+forge install</code></pre>
+            </div>
+
+            <h2>Overview</h2>
+            <p>Enhanced version of a Confluence visualization component that creates donut charts from lozenge data. Provides visual representation of status indicators and categories, making it easy to see at a glance the distribution of different statuses across your Blueprint pages.</p>
+
+            <h2>Features</h2>
+            <ul>
+                <li><strong>Donut Charts:</strong> Beautiful, interactive donut chart visualizations</li>
+                <li><strong>Lozenge Tracking:</strong> Automatically processes lozenge (status badge) data</li>
+                <li><strong>Visual Analytics:</strong> Clear visual breakdown of status distributions</li>
+                <li><strong>Color-Coded:</strong> Uses lozenge colors for consistent representation</li>
+                <li><strong>Interactive:</strong> Hover over segments for detailed information</li>
+                <li><strong>Responsive:</strong> Adapts to different screen sizes</li>
+            </ul>
+
+            <h2>Use Cases</h2>
+            <ul>
+                <li>Visualize Blueprint standard distributions</li>
+                <li>Show compliance status at a glance</li>
+                <li>Track progress toward standards adoption</li>
+                <li>Compare different teams or time periods</li>
+                <li>Create executive dashboards</li>
+            </ul>
+
+            <h2>What's New in v2</h2>
+            <ul>
+                <li>Improved performance and rendering</li>
+                <li>Better color scheme handling</li>
+                <li>Enhanced interactivity</li>
+                <li>Mobile-responsive design</li>
+                <li>Integration with Blueprint Tracker data</li>
+            </ul>
+
+            <h2>Requirements</h2>
+            <ul>
+                <li>Atlassian Forge CLI</li>
+                <li>Node.js (v14 or higher)</li>
+                <li>Confluence Cloud instance</li>
+                <li>Admin access to install Forge apps</li>
+            </ul>
+
+            <h2>Installation</h2>
+
+            <h3>Step 1: Set Up Forge</h3>
+            <p>See <a href="https://developer.atlassian.com/platform/forge/set-up-forge/" target="_blank">Set up Forge</a> for instructions.</p>
+
+            <h3>Step 2: Deploy</h3>
+            <pre><code># Clone the repository
+git clone https://github.com/yourusername/lozenge-donut-chart-v2-claude-code.git
+cd lozenge-donut-chart-v2-claude-code
+
+# Deploy to Forge
+forge deploy
+
+# Install to your Confluence site
+forge install</code></pre>
+
+            <h2>Usage</h2>
+
+            <h3>Adding to a Confluence Page</h3>
+            <ol>
+                <li>Edit any Confluence page</li>
+                <li>Type <code>/</code> to open the macro menu</li>
+                <li>Search for "Lozenge Donut Chart"</li>
+                <li>Select the macro</li>
+                <li>Configure your data source</li>
+                <li>Publish the page</li>
+            </ol>
+
+            <h3>Configuration</h3>
+            <p>When configuring the macro, you can specify:</p>
+            <ul>
+                <li><strong>Data Source:</strong> Connect to Google Sheets or use page lozenges</li>
+                <li><strong>Filter Options:</strong> Show specific lozenge types or colors</li>
+                <li><strong>Display Settings:</strong> Chart size, legend position, labels</li>
+                <li><strong>Color Scheme:</strong> Use default lozenge colors or custom palette</li>
+            </ul>
+
+            <h2>Integration with Other Tools</h2>
+
+            <h3>Blueprint Tracker Integration</h3>
+            <p>This chart component works seamlessly with the <a href="blueprint-tracker.html">Blueprint Standard Adherence Master Tracker</a>:</p>
+            <ol>
+                <li>Configure the donut chart to read from the tracker's Google Sheet</li>
+                <li>Select the team tab you want to visualize</li>
+                <li>The chart will automatically update when the tracker runs</li>
+            </ol>
+
+            <h3>Blueprint Standards Chart</h3>
+            <p>Can be used alongside the <a href="blueprint-chart.html">Blueprint Standards Chart</a> to provide multiple visualization perspectives on the same data.</p>
+
+            <h2>Development</h2>
+
+            <h3>Project Structure</h3>
+            <pre><code>lozenge-donut-chart-v2-claude-code/
+├── manifest.yml              # Forge app manifest
+├── src/
+│   ├── frontend/             # React frontend
+│   │   └── index.jsx         # Main chart component
+│   └── resolvers/            # Backend resolvers
+│       └── index.js
+└── package.json</code></pre>
+
+            <h3>Local Development</h3>
+            <pre><code># Run with live reload
+forge tunnel
+
+# View logs
+forge logs</code></pre>
+
+            <h3>Making Changes</h3>
+            <ol>
+                <li>Modify the frontend by editing <code>src/frontend/index.jsx</code></li>
+                <li>Modify backend resolvers in <code>src/resolvers/index.js</code></li>
+                <li>Deploy changes: <code>forge deploy</code></li>
+            </ol>
+
+            <h2>Customization</h2>
+
+            <h3>Custom Color Schemes</h3>
+            <p>Edit the color palette to match your organization's branding or to highlight specific statuses.</p>
+
+            <h3>Additional Chart Types</h3>
+            <p>Extend the component to support pie charts, bar charts, or other visualizations.</p>
+
+            <h3>Animation Effects</h3>
+            <p>Add animated transitions when data updates or when hovering over segments.</p>
+
+            <h3>Export Options</h3>
+            <p>Add functionality to export charts as images for use in presentations or reports.</p>
+
+            <h2>Example Visualizations</h2>
+
+            <h3>Team Compliance Overview</h3>
+            <p>Show the breakdown of Standard vs. Semi-Standard vs. Bespoke implementations for a specific team.</p>
+
+            <h3>Cross-Team Comparison</h3>
+            <p>Create multiple charts on one page to compare different teams' compliance levels.</p>
+
+            <h3>Progress Tracking</h3>
+            <p>Use multiple charts with historical data to show progress over time.</p>
+
+            <h2>Technologies</h2>
+            <ul>
+                <li>Atlassian Forge</li>
+                <li>React</li>
+                <li>JavaScript</li>
+                <li>Chart.js or Recharts</li>
+                <li>Forge Custom UI</li>
+            </ul>
+
+            <h2>Resources</h2>
+            <ul>
+                <li><a href="https://developer.atlassian.com/platform/forge/" target="_blank">Atlassian Forge Documentation</a></li>
+                <li><a href="https://developer.atlassian.com/platform/forge/custom-ui/" target="_blank">Forge Custom UI Guide</a></li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>

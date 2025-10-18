@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint Standards Chart - Work Tools Portfolio</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Blueprint Standards Chart</h1>
+            <p class="subtitle">Custom React UI component for Confluence</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+        <div class="project-detail">
+            <div class="launch-buttons">
+                <a href="https://github.com/yourusername/blueprint-standards-chart-custom-ui-react" class="btn btn-primary" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="quick-start">
+                <h3>Quick Start - Deploy to Confluence</h3>
+                <pre><code># Install dependencies
+npm install
+
+# Build the app
+npm run build
+
+# Deploy to Confluence
+forge deploy
+
+# Install to your site
+forge install</code></pre>
+            </div>
+
+            <h2>Overview</h2>
+            <p>Custom UI React component for Confluence that displays Blueprint standard adherence data with configurable chart visualizations. Integrates directly into Confluence pages as a macro, providing teams with visual insights into their Blueprint compliance.</p>
+
+            <h2>Features</h2>
+            <ul>
+                <li><strong>Confluence Macro:</strong> Embeds directly into Confluence pages</li>
+                <li><strong>Custom UI:</strong> Built with React for interactive visualizations</li>
+                <li><strong>Configurable:</strong> Easy-to-use configuration panel for customization</li>
+                <li><strong>Real-time Data:</strong> Pulls latest data from Google Sheets</li>
+                <li><strong>Multiple Chart Types:</strong> Bar charts, line graphs, and more</li>
+                <li><strong>Responsive Design:</strong> Works on desktop and mobile</li>
+            </ul>
+
+            <h2>Use Cases</h2>
+            <ul>
+                <li>Display team Blueprint adherence metrics</li>
+                <li>Track progress over time</li>
+                <li>Compare standards across teams</li>
+                <li>Visualize compliance data in team spaces</li>
+            </ul>
+
+            <h2>Requirements</h2>
+            <ul>
+                <li>Atlassian Forge CLI</li>
+                <li>Node.js (v14 or higher)</li>
+                <li>Confluence Cloud instance</li>
+                <li>Admin access to install Forge apps</li>
+            </ul>
+
+            <h2>Installation</h2>
+
+            <h3>Step 1: Clone and Install</h3>
+            <pre><code>git clone https://github.com/yourusername/blueprint-standards-chart-custom-ui-react.git
+cd blueprint-standards-chart-custom-ui-react
+npm install</code></pre>
+
+            <h3>Step 2: Build the Frontend</h3>
+            <pre><code>npm run build</code></pre>
+
+            <h3>Step 3: Deploy</h3>
+            <pre><code># Register the app (first time only)
+forge register
+
+# Deploy to Forge
+forge deploy
+
+# Install to your Confluence site
+forge install</code></pre>
+
+            <h2>Usage</h2>
+
+            <h3>Adding to a Confluence Page</h3>
+            <ol>
+                <li>Edit any Confluence page</li>
+                <li>Type <code>/</code> to open the macro menu</li>
+                <li>Search for "Blueprint Standards Chart"</li>
+                <li>Select the macro</li>
+                <li>Configure your data source and chart settings</li>
+                <li>Publish the page</li>
+            </ol>
+
+            <h3>Configuration Options</h3>
+            <ul>
+                <li><strong>Data Source:</strong> Connect to your Google Sheets data</li>
+                <li><strong>Chart Type:</strong> Choose from bar, line, or area charts</li>
+                <li><strong>Display Options:</strong> Customize colors, labels, and legends</li>
+                <li><strong>Filters:</strong> Show data for specific teams or time periods</li>
+            </ul>
+
+            <h2>Development</h2>
+
+            <h3>Project Structure</h3>
+            <pre><code>blueprint-standards-chart-custom-ui-react/
+├── manifest.yml              # Forge app manifest
+├── src/
+│   ├── frontend/             # React frontend
+│   │   ├── index.jsx         # Main component
+│   │   ├── components/       # Chart components
+│   │   └── config/           # Configuration UI
+│   └── resolvers/            # Backend resolvers
+│       └── index.js
+└── package.json</code></pre>
+
+            <h3>Local Development</h3>
+            <pre><code># Run in development mode with live reload
+forge tunnel
+
+# View logs
+forge logs</code></pre>
+
+            <h3>Making Changes</h3>
+            <ol>
+                <li>Modify your app frontend by editing files in <code>src/frontend/</code></li>
+                <li>Modify your app backend by editing <code>src/resolvers/index.js</code></li>
+                <li>Build your changes: <code>npm run build</code></li>
+                <li>Deploy updates: <code>forge deploy</code></li>
+            </ol>
+
+            <h2>Customization</h2>
+
+            <h3>Custom Chart Types</h3>
+            <p>Add new chart types by editing <code>src/frontend/components/</code> and importing additional chart libraries.</p>
+
+            <h3>Styling</h3>
+            <p>Customize the appearance by modifying CSS in the frontend components to match your organization's branding.</p>
+
+            <h3>Data Sources</h3>
+            <p>Extend the app to pull data from additional sources beyond Google Sheets (Jira, Confluence API, etc.).</p>
+
+            <h2>Integration with Blueprint Tracker</h2>
+            <p>This chart component works seamlessly with the <a href="blueprint-tracker.html">Blueprint Standard Adherence Master Tracker</a>. Configure it to read from the same Google Sheet that the tracker updates daily for automatic, up-to-date visualizations.</p>
+
+            <h2>Technologies</h2>
+            <ul>
+                <li>Atlassian Forge</li>
+                <li>React</li>
+                <li>JavaScript</li>
+                <li>Forge Custom UI</li>
+                <li>Google Sheets API</li>
+            </ul>
+
+            <h2>Resources</h2>
+            <ul>
+                <li><a href="https://developer.atlassian.com/platform/forge/" target="_blank">Atlassian Forge Documentation</a></li>
+                <li><a href="https://developer.atlassian.com/platform/forge/custom-ui/" target="_blank">Forge Custom UI Guide</a></li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>
