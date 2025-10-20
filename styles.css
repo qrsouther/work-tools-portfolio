@@ -139,6 +139,12 @@ h1 {
     border-color: var(--accent);
 }
 
+.execution-type.dependency {
+    color: #9c27b0;
+    border-color: #9c27b0;
+    background-color: rgba(156, 39, 176, 0.1);
+}
+
 /* Actions */
 .tool-actions {
     margin-left: 1rem;
