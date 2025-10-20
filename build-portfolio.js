@@ -20,6 +20,7 @@ const CONFIG = {
   outputDir: __dirname,
   excludeDirs: [
     'work-tools-portfolio',
+    'Obsolete',
     'node_modules',
     '.git',
     '.DS_Store',
