@@ -88,6 +88,33 @@ h1 {
     transform: translateX(4px);
 }
 
+.tool-item-dependent {
+    margin-left: 2rem;
+    position: relative;
+}
+
+.tool-item-dependent::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #9c27b0, transparent);
+    opacity: 0.3;
+}
+
+.tool-item-dependent::after {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 50%;
+    width: 1rem;
+    height: 2px;
+    background-color: #9c27b0;
+    opacity: 0.3;
+}
+
 .tool-info {
     flex: 1;
 }
@@ -223,5 +250,18 @@ footer a:hover {
 
     .tool-item:hover {
         transform: translateX(0);
+    }
+
+    .tool-item-dependent {
+        margin-left: 1rem;
+    }
+
+    .tool-item-dependent::before {
+        left: -0.75rem;
+    }
+
+    .tool-item-dependent::after {
+        left: -0.75rem;
+        width: 0.5rem;
     }
 }
