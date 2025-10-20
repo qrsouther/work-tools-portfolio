@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forge Hello World - Work Tools Portfolio</title>
+    <title>Lozenge Donut Chart v2 - Work Tools Portfolio</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Forge Hello World</h1>
-            <p class="subtitle">This project contains a Forge app written in Javascript that displays `Hello World!` in a Confluence macro.</p>
+            <h1>Lozenge Donut Chart v2</h1>
+            <p class="subtitle">An Atlassian Forge app that creates interactive donut chart visualizations from Confluence status lozenges (status badges). This Confluence macro scans the current page for status lozenges, counts them by label and color, and displays the results in a professional donut chart visualization.</p>
         </div>
     </header>
 
@@ -22,42 +22,184 @@
                 <a href="https://github.com/qrsouther/lozenge-donut-chart-v2-claude-code" class="btn btn-primary" target="_blank">View on GitHub</a>
             </div>
 
-            <h2>Forge Hello World</h2>
+            <h2>Lozenge Donut Chart v2</h2>
 
-<p>This project contains a Forge app written in Javascript that displays <code>Hello World!</code> in a Confluence macro. </p>
+<p>An Atlassian Forge app that creates interactive donut chart visualizations from Confluence status lozenges (status badges). This Confluence macro scans the current page for status lozenges, counts them by label and color, and displays the results in a professional donut chart visualization.</p>
 
-<p>See [developer.atlassian.com/platform/forge/](https://developer.atlassian.com/platform/forge) for documentation and tutorials explaining Forge.</p>
+<h2>Overview</h2>
+
+<p>This macro is designed to help track blueprint standard adherence by visualizing the distribution of status lozenges across a Confluence page. It automatically:</p>
+
+<ul><li>Scans the current Confluence page for all status lozenges (status macros)</li>
+<li>Counts lozenges by their label and color (e.g., "Standard (Green)", "Semi-Standard (Orange)", "Bespoke (Blue)")</li>
+<li>Displays the data in an interactive donut chart with proper color assignments</li>
+<li>Shows total count and meaningful subtitle text</li>
+
+<h2>Features</h2>
+
+<li><strong>Automatic Detection</strong>: No manual configuration needed - just add the macro to any page</li>
+<li><strong>Smart Color Mapping</strong>: Intelligently assigns chart colors based on lozenge types (Standard=Green, Semi-Standard=Orange, Bespoke=Blue)</li>
+<li><strong>Title Case Formatting</strong>: Automatically converts lozenge labels to Title Case for consistent display</li>
+<li><strong>Real-time Updates</strong>: Fetches current page content on each load to ensure accurate counts</li>
+<li><strong>User-Friendly Display</strong>: Shows meaningful error messages and loading states</li>
+
+<h2>Use Case</h2>
+
+<p>This macro is particularly useful for:</p>
+<li><strong>Blueprint Documentation</strong>: Track compliance levels across documentation pages</li>
+<li><strong>Standard Adherence Tracking</strong>: Visualize how well solutions follow organizational standards</li>
+<li><strong>Quality Metrics</strong>: Quick visual summary of documentation quality indicators</li>
+<li><strong>Progress Tracking</strong>: Monitor standardization efforts across multiple pages</li>
+
+<h2>Technical Details</h2>
+
+<h3>Built With</h3>
+<li><strong>Atlassian Forge</strong> - Custom UI with React components</li>
+<li><strong>@forge/react</strong> - Forge React UI Kit (DonutChart component)</li>
+<li><strong>@forge/api</strong> - Confluence REST API integration</li>
+<li><strong>Node.js 22.x</strong> - Runtime environment</li>
+
+<h3>How It Works</h3>
+
+<li><strong>Backend Resolver</strong> (<code>src/resolvers/index.js</code>):</li>
+<p>   - Retrieves the current page ID from the Forge context</p>
+<p>   - Fetches page content using Confluence API v2</p>
+<p>   - Parses the storage format XML to find all status macros</p>
+<p>   - Extracts title and color parameters from each lozenge</p>
+<p>   - Returns aggregated counts to the frontend</p>
+
+<li><strong>Frontend Component</strong> (<code>src/frontend/index.jsx</code>):</li>
+<p>   - Invokes the backend resolver to get lozenge data</p>
+<p>   - Transforms data for the DonutChart component</p>
+<p>   - Applies custom color ordering for standard visualization</p>
+<p>   - Renders the chart with proper title and subtitle</p>
+
+<h3>Lozenge Detection</h3>
+
+<p>The app uses regex pattern matching to find Confluence status macros in the page's storage format:</p>
+
+<p>``<code>xml</p>
+<p><ac:structured-macro ac:name="status"></p>
+<p>  <ac:parameter ac:name="title">Standard</ac:parameter></p>
+<p>  <ac:parameter ac:name="colour">Green</ac:parameter></p>
+<p></ac:structured-macro></p>
+<p></code>`<code></p>
+
+<p>Supported colors: Grey, Red, Yellow, Green, Blue</p>
 
 <h2>Requirements</h2>
 
 <p>See [Set up Forge](https://developer.atlassian.com/platform/forge/set-up-forge/) for instructions to get set up.</p>
 
-<h2>Quick start</h2>
+<li>Forge CLI installed and configured</li>
+<li>Node.js 18.x or later</li>
+<li>Access to a Confluence Cloud site for installation</li>
 
-<ul><li>Modify your app frontend by editing the <code>src/frontend/index.jsx</code> file.</li>
+<h2>Installation & Deployment</h2>
 
-<li>Modify your app backend by editing the <code>src/resolvers/index.js</code> file to define resolver functions. See [Forge resolvers](https://developer.atlassian.com/platform/forge/runtime-reference/custom-ui-resolver/) for documentation on resolver functions.</li>
+<h3>Quick Start</h3>
 
-<li>Build and deploy your app by running:</li>
-<p>``<code></p>
-<p>forge deploy</p>
-<p></code>`<code></p>
+<li><strong>Build and deploy your app:</strong></li>
+<p>   </code>`<code>bash</p>
+<p>   forge deploy</p>
+<p>   </code>`<code></p>
 
-<li>Install your app in an Atlassian site by running:</li>
-<p></code>`<code></p>
-<p>forge install</p>
-<p></code>`<code></p>
+<li><strong>Install the app on your Confluence site:</strong></li>
+<p>   </code>`<code>bash</p>
+<p>   forge install</p>
+<p>   </code>`<code></p>
 
-<li>Develop your app by running </code>forge tunnel<code> to proxy invocations locally:</li>
-<p></code>`<code></p>
-<p>forge tunnel</p>
-<p></code>`<code></p>
+<li><strong>Add the macro to any Confluence page:</strong></li>
+<p>   - Edit a page</p>
+<p>   - Type </code>/<code> and search for "Lozenge Donut Chart"</p>
+<p>   - Insert the macro</p>
+<p>   - The chart will automatically display based on page content</p>
+
+<h3>Development</h3>
+
+<li><strong>Local development</strong> with hot-reloading:</li>
+<p>  </code>`<code>bash</p>
+<p>  forge tunnel</p>
+<p>  </code>`<code></p>
+
+<li><strong>Modify the frontend</strong> by editing </code>src/frontend/index.jsx<code></li>
+<li><strong>Modify the backend</strong> by editing </code>src/resolvers/index.js<code></li>
 
 <h3>Notes</h3>
-<li>Use the </code>forge deploy<code> command when you want to persist code changes.</li>
-<li>Use the </code>forge install` command when you want to install the app on a new site.</li>
-<li>Once the app is installed on a site, the site picks up the new app changes you deploy without needing to rerun the install command.</li>
+<li>Use </code>forge deploy<code> when you want to persist code changes</li>
+<li>Use </code>forge install<code> when you want to install the app on a new site</li>
+<li>Once installed, the site picks up new deployments automatically (no reinstall needed)</li>
+
+<h2>Permissions</h2>
+
+<p>The app requires the following Confluence permissions:</p>
+<li></code>read:page:confluence<code> - To fetch page content and count lozenges</li>
+
+<h2>Architecture</h2>
+
+<p></code>`<code></p>
+<p>lozenge-donut-chart-v2-claude-code/</p>
+<p>├── src/</p>
+<p>│   ├── frontend/</p>
+<p>│   │   └── index.jsx          # React UI component with DonutChart</p>
+<p>│   ├── resolvers/</p>
+<p>│   │   └── index.js            # Backend resolver for API calls</p>
+<p>│   └── index.js                # Main entry point</p>
+<p>├── static/                     # Static HTML examples/demos</p>
+<p>├── manifest.yml                # Forge app configuration</p>
+<p>└── package.json                # Dependencies</p>
+<p></code>`<code></p>
+
+<h2>Configuration</h2>
+
+<p>The macro works out-of-the-box with no configuration needed. However, you can customize:</p>
+
+<li><strong>Chart Title</strong>: Currently set to "How compliant is this Blueprint with SeatGeek's standards?"</li>
+<li><strong>Color Order</strong>: Defined in </code>colorPriorityOrder<code> array in </code>index.jsx<code></li>
+<li><strong>Chart Height</strong>: Currently 400px (adjustable via </code>height` prop)</li>
+
+<h2>Example Output</h2>
+
+<p>When inserted on a page with lozenges, the macro displays:</p>
+
+<li><strong>Donut Chart</strong> showing percentage breakdown</li>
+<li><strong>Legend</strong> with color-coded labels and counts</li>
+<li><strong>Title</strong> describing what the chart represents</li>
+<li><strong>Subtitle</strong> showing total number of items counted</li>
+
+<p>Example data visualization:</p>
+<li>Standard (Green): 45</li>
+<li>Semi-Standard (Orange): 30</li>
+<li>Bespoke (Blue): 25</li>
+
+<h2>Troubleshooting</h2>
+
+<li><strong>"No labeled solutions found"</strong>: The page has no status lozenges or they're not in the expected format</li>
+<li><strong>"Could not retrieve page ID"</strong>: Macro context is missing - try re-inserting the macro</li>
+<li><strong>"Failed to fetch page"</strong>: API request failed - check app permissions and Confluence site access</li>
+
+<h2>Version History</h2>
+
+<p><strong>v2 (Claude Code Edition)</strong></p>
+<li>Complete rewrite using Forge Custom UI</li>
+<li>Added React-based frontend with DonutChart component</li>
+<li>Improved lozenge parsing with regex</li>
+<li>Smart color assignment</li>
+<li>Title case formatting</li>
+
+<h2>Documentation</h2>
+
+<li>[Forge Documentation](https://developer.atlassian.com/platform/forge/)</li>
+<li>[Custom UI Resolver Reference](https://developer.atlassian.com/platform/forge/runtime-reference/custom-ui-resolver/)</li>
+<li>[Forge React Components](https://developer.atlassian.com/platform/forge/ui-components/)</li>
 </ul>
+<h2>License</h2>
+
+<p>Part of the work-tools-portfolio showcase.</p>
+
+<p>---</p>
+
+<p>Built with [Claude Code](https://claude.com/claude-code)</p>
 
         </div>
     </main>
