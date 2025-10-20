@@ -1,0 +1,20 @@
+{
+  "name": "confluence-macro-with-custom-configuration-custom-ui",
+  "version": "1.1.16",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:macro && npm run build:custom-config",
+    "build:macro": "cd static/hello-world && npm run build",
+    "build:custom-config": "cd static/config && npm run build",
+    "lint": "eslint --ignore-path .gitignore . --ext .js,.jsx"
+  },
+  "devDependencies": {
+    "vite": "^5.4.19"
+  },
+  "dependencies": {
+    "@forge/api": "^6.1.4",
+    "@forge/resolver": "^1.7.0"
+  }
+}

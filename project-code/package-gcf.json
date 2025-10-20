@@ -1,0 +1,23 @@
+{
+  "name": "blueprint-tracker-gcf",
+  "version": "1.0.0",
+  "description": "Google Cloud Function for Blueprint Standard Adherence Master Tracker",
+  "main": "gcf-index.js",
+  "engines": {
+    "node": "18"
+  },
+  "scripts": {
+    "gcp-build": "npm install && npm run build",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "googleapis": "^128.0.0",
+    "google-auth-library": "^9.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  }
+}

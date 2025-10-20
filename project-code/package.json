@@ -1,0 +1,31 @@
+{
+  "name": "blueprint-standard-adherence-master-tracker",
+  "version": "1.0.0",
+  "description": "Scans Confluence pages for status lozenges and tracks counts in Google Sheets",
+  "main": "gcf-index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "auth": "ts-node src/authenticate.ts",
+    "gcp-build": "npm install && tsc"
+  },
+  "keywords": [
+    "confluence",
+    "google-sheets",
+    "status-tracking",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "googleapis": "^128.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

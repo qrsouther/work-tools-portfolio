@@ -1,0 +1,236 @@
+Blueprint Standard Adherence Master Tracker
+Complete Documentation File List
+Last Updated: October 17, 2025
+
+=== CORE DOCUMENTATION ===
+
+README.md (15,843 bytes)
+  - Main project documentation
+  - Complete feature list
+  - Setup instructions
+  - Local development guide
+  - Cloud deployment summary
+  - Troubleshooting guide
+  - Configuration reference
+  - Read time: ~15 minutes
+
+SUMMARY.md (2,833 bytes)
+  - One-page quick reference
+  - Current status
+  - Key configuration
+  - Quick commands
+  - Performance metrics
+  - Read time: ~2 minutes
+
+STATUS.md (10,213 bytes)
+  - Detailed deployment status
+  - Infrastructure details
+  - Configuration breakdown
+  - Current statistics
+  - Health checks
+  - Update procedures
+  - Monitoring guide
+  - Known issues
+  - Read time: ~10 minutes
+
+ARCHITECTURE.md (17,787 bytes)
+  - System architecture diagrams
+  - Data flow visualization
+  - Execution timeline
+  - Security architecture
+  - Component breakdown
+  - Network flow
+  - Performance characteristics
+  - Update flow
+  - Read time: ~10 minutes
+
+CHANGELOG.md (7,600+ bytes)
+  - Version history
+  - Release notes
+  - Feature list
+  - Deployment details
+  - Dependencies
+  - Testing validation
+  - Read time: ~8 minutes
+
+=== DEPLOYMENT GUIDES ===
+
+QUICKSTART-GCF.md (4,368 bytes)
+  - Fast deployment guide
+  - 10-minute setup
+  - Step-by-step commands
+  - For: New deployments
+  - Read time: ~5 minutes
+
+DEPLOYMENT.md (8,376 bytes)
+  - Comprehensive deployment guide
+  - All deployment options
+  - Security setup
+  - Troubleshooting
+  - Cost estimates
+  - For: Complete setup
+  - Read time: ~12 minutes
+
+=== NAVIGATION & INDEX ===
+
+DOCS-INDEX.md (6,311 bytes)
+  - Complete documentation index
+  - Documentation by use case
+  - Quick reference
+  - Document relationships
+  - Learning paths
+  - Support escalation
+  - Read time: ~7 minutes
+
+=== CONFIGURATION TEMPLATES ===
+
+.env.example
+  - Environment variables template
+  - For local development
+  - All required variables
+  - Comments and examples
+
+.env.yaml.example
+  - Cloud Functions environment template
+  - For cloud deployment
+  - YAML format
+  - All required variables
+
+config.example.json
+  - Search configuration template
+  - Confluence space settings
+  - Page search parameters
+  - Optional test page IDs
+
+=== SOURCE CODE DOCUMENTATION ===
+
+src/index.ts
+  - Main application orchestrator
+  - Inline comments
+  - Function documentation
+  - Execution flow
+
+src/confluence.ts
+  - Confluence API client
+  - CQL search implementation
+  - Page fetching logic
+  - Inline documentation
+
+src/lozengeParser.ts
+  - Lozenge extraction logic
+  - Normalization rules
+  - Counting and grouping
+  - Detailed comments
+
+src/googleSheets.ts
+  - Google Sheets client
+  - OAuth token handling
+  - Tab management
+  - Rate limiting logic
+  - Inline documentation
+
+src/authenticate.ts
+  - OAuth setup script
+  - Token generation
+  - For local development
+
+gcf-index.js
+  - Cloud Function entry point
+  - HTTP handler
+  - Error handling
+
+=== DEPLOYMENT SCRIPTS ===
+
+deploy.sh
+  - Automated deployment script
+  - All deployment steps
+  - Secret Manager upload
+  - Cloud Function deployment
+  - Verification
+
+=== ADDITIONAL FILES ===
+
+QUICKSTART.md (2,133 bytes)
+  - Legacy quick start guide
+  - General setup overview
+
+package.json
+  - Project metadata
+  - Dependencies list
+  - Scripts reference
+  - Build configuration
+
+tsconfig.json
+  - TypeScript configuration
+  - Compilation settings
+  - Module resolution
+
+.gcloudignore
+  - Cloud deployment exclusions
+  - Files not uploaded
+  - Security protections
+
+.gitignore
+  - Version control exclusions
+  - Protects sensitive files
+  - Prevents credential commits
+
+=== TOTAL DOCUMENTATION ===
+
+Markdown Files: 10
+Configuration Templates: 3
+Source Code Files: 5
+Scripts: 1
+Config Files: 3
+
+Total Documentation Size: ~75KB
+Total Read Time: ~90 minutes (all docs)
+Quick Start Path: ~20 minutes (SUMMARY → README → QUICKSTART)
+
+=== DOCUMENTATION QUALITY ===
+
+✅ Complete - All aspects documented
+✅ Current - Reflects deployed state
+✅ Accurate - Matches actual implementation
+✅ Comprehensive - Covers all use cases
+✅ Well-organized - Easy to navigate
+✅ Up-to-date - As of October 17, 2025
+
+=== RECOMMENDED READING ORDER ===
+
+For New Users:
+1. SUMMARY.md (2 min) - Get overview
+2. README.md - Current Status section (2 min)
+3. README.md - What It Does section (3 min)
+4. Google Sheet (1 min) - See actual output
+
+For Developers:
+1. README.md (15 min) - Complete read
+2. ARCHITECTURE.md (10 min) - Understand design
+3. STATUS.md (10 min) - Know current state
+4. Source code review (30+ min)
+
+For Operators:
+1. STATUS.md (10 min) - Current deployment
+2. README.md - Monitoring section (3 min)
+3. README.md - Troubleshooting (5 min)
+4. Bookmark key commands
+
+For Administrators:
+1. DEPLOYMENT.md (12 min) - Full setup guide
+2. STATUS.md - Security (5 min)
+3. README.md - Security section (3 min)
+4. ARCHITECTURE.md - Security (3 min)
+
+=== MAINTENANCE ===
+
+These documents should be updated when:
+- Features are added or changed
+- Configuration changes
+- Deployment procedures change
+- New issues are discovered
+- Performance characteristics change
+- Cloud infrastructure changes
+
+Last full documentation review: October 17, 2025
+Next recommended review: December 17, 2025

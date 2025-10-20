@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 100%;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+    }
+    
+    #header {
+      background: #ff5b49;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    #header h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    
+    #controls {
+      display: flex;
+      gap: 10px;
+    }
+    
+    button {
+      background: white;
+      color: #181818;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    
+    button:hover {
+      background: #f0f0f0;
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    #save-btn {
+      background: #181818;
+      color: white;
+    }
+    
+    #save-btn:hover {
+      background: #006644;
+    }
+    
+    #search-panel {
+      background: white;
+      border-bottom: 1px solid #ddd;
+      padding: 15px 20px;
+      display: none;
+    }
+    
+    #search-panel.active {
+      display: block;
+    }
+    
+    .search-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .search-row:last-child {
+      margin-bottom: 0;
+    }
+    
+    .search-row input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    .search-row label {
+      font-size: 14px;
+      color: #333;
+      min-width: 70px;
+    }
+    
+    .search-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .search-buttons button {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+    
+    #match-count {
+      font-size: 13px;
+      color: #666;
+      padding: 0 10px;
+    }
+    
+    #content {
+      height: calc(100% - 60px);
+      overflow: auto;
+      padding: 20px;
+    }
+    
+    #content.with-search {
+      height: calc(100% - 150px);
+    }
+    
+    #editor {
+      width: 100%;
+      height: 100%;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 13px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      background: white;
+      resize: none;
+      box-sizing: border-box;
+      line-height: 1.5;
+    }
+    
+    #status {
+      padding: 10px 20px;
+      background: #E3FCEF;
+      color: #006644;
+      border-left: 4px solid #00875A;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      display: none;
+    }
+    
+    #status.error {
+      background: #FFEBE6;
+      color: #BF2600;
+      border-left-color: #DE350B;
+    }
+    
+    #loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+    
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #0052CC;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Hidden measurement div */
+    #measure {
+      position: absolute;
+      visibility: hidden;
+      height: auto;
+      width: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <h2>Confluence JSON Editor</h2>
+    <div id="controls">
+      <button id="find-btn">Find</button>
+      <button id="format-btn">Format JSON</button>
+      <button id="save-btn" disabled>Save Changes</button>
+    </div>
+  </div>
+  
+  <div id="search-panel">
+    <div class="search-row">
+      <label>Find:</label>
+      <input type="text" id="find-input" placeholder="Search text...">
+      <div class="search-buttons">
+        <button id="find-next-btn">Find Next</button>
+        <button id="find-prev-btn">Find Previous</button>
+        <span id="match-count"></span>
+      </div>
+    </div>
+    <div class="search-row">
+      <label>Replace:</label>
+      <input type="text" id="replace-input" placeholder="Replace with...">
+      <div class="search-buttons">
+        <button id="replace-btn">Replace</button>
+        <button id="replace-all-btn">Replace All</button>
+        <button id="close-search-btn">Close</button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="content">
+    <div id="loading">
+      <div class="spinner"></div>
+      <p>Loading Confluence page data...</p>
+    </div>
+    <div id="status"></div>
+    <textarea id="editor" style="display: none;"></textarea>
+  </div>
+  
+  <div id="measure"></div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

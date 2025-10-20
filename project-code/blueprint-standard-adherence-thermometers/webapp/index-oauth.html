@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint Standard Adherence Thermometers (OAuth)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            padding: 20px;
+            background: #f4f5f7;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #172B4D;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .controls input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .controls button {
+            padding: 8px 20px;
+            background: #0052CC;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .controls button:hover { background: #0747A6; }
+        .controls button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .auth-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .auth-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .status-indicator.connected { background: #00875A; }
+        .status-indicator.disconnected { background: #FF5630; }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .error {
+            background: #FFEBE6;
+            border: 2px solid #FF5630;
+            color: #BF2600;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            background: #DEEBFF;
+            border: 2px solid #0052CC;
+            color: #0747A6;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #DFE1E6;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            font-weight: 500;
+            color: #42526E;
+        }
+
+        .tab.active {
+            background: #0052CC;
+            color: white;
+            border-color: #0052CC;
+        }
+
+        .tab:hover:not(.active) { background: #F4F5F7; }
+
+        .sheet-content { display: none; }
+        .sheet-content.active { display: block; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #DFE1E6;
+        }
+
+        th {
+            background: #F4F5F7;
+            font-weight: 600;
+            color: #172B4D;
+        }
+
+        td { color: #42526E; }
+        tr:hover td { background: #F4F5F7; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="auth-section">
+            <div class="auth-status">
+                <span class="status-indicator" id="statusIndicator"></span>
+                <span id="authStatus">Not authenticated</span>
+            </div>
+            <button onclick="handleAuthClick()" id="authButton">Sign in with Google</button>
+            <button onclick="handleSignoutClick()" id="signoutButton" style="display: none;">Sign Out</button>
+        </div>
+
+        <div class="header">
+            <h1 id="title">Blueprint Standard Adherence Thermometers</h1>
+            <div class="controls">
+                <input type="text" id="spreadsheetId" placeholder="Google Spreadsheet ID" />
+                <button onclick="loadData()" id="loadButton" disabled>Load Data</button>
+                <button onclick="refreshData()" id="refreshButton" disabled>Refresh</button>
+            </div>
+        </div>
+
+        <div id="info" class="info" style="display: none;">
+            <strong>Setup Instructions:</strong>
+            <ol style="margin-left: 20px; margin-top: 10px;">
+                <li>Click "Sign in with Google" above</li>
+                <li>Grant access to view your Google Sheets</li>
+                <li>Enter your Spreadsheet ID</li>
+                <li>Click "Load Data"</li>
+            </ol>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <p>Loading Google Sheets data...</p>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div id="tabs" class="tabs"></div>
+        <div id="content"></div>
+    </div>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        let tokenClient;
+        let accessToken = null;
+        let currentSpreadsheetId = null;
+
+        // Your OAuth Client ID
+        const CLIENT_ID = '701841318363-v0cg14t9b38roqgpdkvfbeavpknm8adl.apps.googleusercontent.com';
+        const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+
+        function initializeGoogleAuth() {
+            try {
+                tokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: CLIENT_ID,
+                    scope: SCOPES,
+                    callback: (response) => {
+                        if (response.error !== undefined) {
+                            showError('Authentication failed: ' + response.error);
+                            return;
+                        }
+                        accessToken = response.access_token;
+                        updateAuthUI(true);
+
+                        // Auto-load if spreadsheet ID exists
+                        const savedId = localStorage.getItem('spreadsheetId');
+                        if (savedId) {
+                            document.getElementById('spreadsheetId').value = savedId;
+                            loadData();
+                        }
+                    },
+                });
+            } catch (error) {
+                showError('Failed to initialize Google authentication: ' + error.message);
+            }
+        }
+
+        window.onload = function() {
+            // Wait for Google library to load
+            if (typeof google !== 'undefined') {
+                initializeGoogleAuth();
+            } else {
+                // Retry after a short delay
+                setTimeout(() => {
+                    if (typeof google !== 'undefined') {
+                        initializeGoogleAuth();
+                    } else {
+                        showError('Failed to load Google authentication library. Please refresh the page.');
+                    }
+                }, 1000);
+            }
+
+            // Load saved spreadsheet ID
+            const savedId = localStorage.getItem('spreadsheetId');
+            if (savedId) {
+                document.getElementById('spreadsheetId').value = savedId;
+            }
+
+            document.getElementById('info').style.display = 'block';
+        };
+
+        function handleAuthClick() {
+            if (!tokenClient) {
+                showError('Authentication not initialized yet. Please wait a moment and try again.');
+                return;
+            }
+            try {
+                tokenClient.requestAccessToken();
+            } catch (error) {
+                showError('Failed to request access token: ' + error.message);
+            }
+        }
+
+        function handleSignoutClick() {
+            accessToken = null;
+            google.accounts.oauth2.revoke(accessToken, () => {
+                updateAuthUI(false);
+            });
+        }
+
+        function updateAuthUI(isSignedIn) {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const authStatus = document.getElementById('authStatus');
+            const authButton = document.getElementById('authButton');
+            const signoutButton = document.getElementById('signoutButton');
+            const loadButton = document.getElementById('loadButton');
+            const refreshButton = document.getElementById('refreshButton');
+
+            if (isSignedIn) {
+                statusIndicator.className = 'status-indicator connected';
+                authStatus.textContent = 'Connected to Google';
+                authButton.style.display = 'none';
+                signoutButton.style.display = 'inline-block';
+                loadButton.disabled = false;
+                refreshButton.disabled = false;
+                document.getElementById('info').style.display = 'none';
+            } else {
+                statusIndicator.className = 'status-indicator disconnected';
+                authStatus.textContent = 'Not authenticated';
+                authButton.style.display = 'inline-block';
+                signoutButton.style.display = 'none';
+                loadButton.disabled = true;
+                refreshButton.disabled = true;
+                document.getElementById('info').style.display = 'block';
+            }
+        }
+
+        async function loadData() {
+            const spreadsheetId = document.getElementById('spreadsheetId').value.trim();
+
+            if (!spreadsheetId) {
+                showError('Please enter a Spreadsheet ID');
+                return;
+            }
+
+            if (!accessToken) {
+                showError('Please sign in with Google first');
+                return;
+            }
+
+            currentSpreadsheetId = spreadsheetId;
+            localStorage.setItem('spreadsheetId', spreadsheetId);
+
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('content').innerHTML = '';
+            document.getElementById('tabs').innerHTML = '';
+
+            try {
+                // Fetch spreadsheet metadata
+                const metadataUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}`;
+                const metadataResponse = await fetch(metadataUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                if (!metadataResponse.ok) {
+                    const error = await metadataResponse.json();
+                    throw new Error(error.error?.message || 'Failed to fetch spreadsheet');
+                }
+
+                const metadata = await metadataResponse.json();
+                const sheets = metadata.sheets || [];
+
+                // Update title
+                document.getElementById('title').textContent = metadata.properties.title;
+
+                // Fetch data from all sheets
+                const allSheetData = await Promise.all(
+                    sheets.map(async (sheet) => {
+                        const sheetName = sheet.properties.title;
+                        const range = `${sheetName}!A1:Z1000`;
+
+                        const dataUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}`;
+                        const dataResponse = await fetch(dataUrl, {
+                            headers: {
+                                'Authorization': `Bearer ${accessToken}`
+                            }
+                        });
+
+                        if (dataResponse.ok) {
+                            const data = await dataResponse.json();
+                            return {
+                                sheetName,
+                                data: data.values || [],
+                                rowCount: (data.values || []).length,
+                            };
+                        }
+
+                        return {
+                            sheetName,
+                            data: [],
+                            rowCount: 0,
+                        };
+                    })
+                );
+
+                displayData(allSheetData);
+                document.getElementById('loading').style.display = 'none';
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                showError(error.message);
+            }
+        }
+
+        function refreshData() {
+            if (currentSpreadsheetId) {
+                loadData();
+            }
+        }
+
+        function displayData(sheets) {
+            const tabsContainer = document.getElementById('tabs');
+            const contentContainer = document.getElementById('content');
+
+            tabsContainer.innerHTML = '';
+            contentContainer.innerHTML = '';
+
+            sheets.forEach((sheet, index) => {
+                // Create tab
+                const tab = document.createElement('div');
+                tab.className = 'tab' + (index === 0 ? ' active' : '');
+                tab.textContent = `${sheet.sheetName} (${sheet.rowCount} rows)`;
+                tab.onclick = () => switchTab(index);
+                tabsContainer.appendChild(tab);
+
+                // Create content
+                const sheetContent = document.createElement('div');
+                sheetContent.className = 'sheet-content' + (index === 0 ? ' active' : '');
+                sheetContent.id = `sheet-${index}`;
+
+                if (sheet.data.length > 0) {
+                    const table = document.createElement('table');
+
+                    // Headers
+                    const thead = document.createElement('thead');
+                    const headerRow = document.createElement('tr');
+                    sheet.data[0].forEach(header => {
+                        const th = document.createElement('th');
+                        th.textContent = header || '';
+                        headerRow.appendChild(th);
+                    });
+                    thead.appendChild(headerRow);
+                    table.appendChild(thead);
+
+                    // Data rows (limit to first 50)
+                    const tbody = document.createElement('tbody');
+                    sheet.data.slice(1, 51).forEach(row => {
+                        const tr = document.createElement('tr');
+                        sheet.data[0].forEach((_, colIndex) => {
+                            const td = document.createElement('td');
+                            td.textContent = row[colIndex] || '';
+                            tr.appendChild(td);
+                        });
+                        tbody.appendChild(tr);
+                    });
+                    table.appendChild(tbody);
+
+                    sheetContent.appendChild(table);
+
+                    if (sheet.rowCount > 51) {
+                        const note = document.createElement('p');
+                        note.style.marginTop = '15px';
+                        note.style.color = '#6B778C';
+                        note.style.fontStyle = 'italic';
+                        note.textContent = `Showing first 50 rows of ${sheet.rowCount - 1} total rows`;
+                        sheetContent.appendChild(note);
+                    }
+                } else {
+                    sheetContent.innerHTML = '<p style="color: #6B778C;">No data available in this sheet.</p>';
+                }
+
+                contentContainer.appendChild(sheetContent);
+            });
+        }
+
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.sheet-content');
+
+            tabs.forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+
+            contents.forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

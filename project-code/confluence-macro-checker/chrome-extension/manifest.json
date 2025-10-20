@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Confluence Macro Error Checker",
+  "version": "1.0.0",
+  "description": "Scans Confluence Blueprint pages for macro rendering errors",
+  "permissions": [
+    "tabs",
+    "storage",
+    "scripting",
+    "notifications",
+    "downloads"
+  ],
+  "host_permissions": [
+    "https://*.atlassian.net/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.atlassian.net/wiki/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

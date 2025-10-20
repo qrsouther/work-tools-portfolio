@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Confluence JSON Editor",
+  "version": "1.0",
+  "description": "Edit Confluence page content via REST API",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "https://seatgeek.atlassian.net/*"
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "background": {
+  "service_worker": "background.js"
+  },
+  "action": {
+    "default_title":"Open Confluence Editor",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint Standard Adherence Thermometers - Work Tools Portfolio</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Blueprint Standard Adherence Thermometers</h1>
+            <p class="subtitle">A collection of web-based tools for visualizing Google Sheets data, including a thermometer-style progress dashboard and standard data viewers. Includes both a standalone web application and an Atlassian Forge app for Jira integration.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+        <div class="project-detail">
+            <div class="launch-buttons">
+                <a href="https://github.com/qrsouther/blueprint-standard-adherence-thermometers" class="btn btn-primary" target="_blank">View on GitHub</a>
+            </div>
+
+            <h2>Blueprint Standard Adherence Thermometers</h2>
+
+<p>A collection of web-based tools for visualizing Google Sheets data, including a thermometer-style progress dashboard and standard data viewers. Includes both a standalone web application and an Atlassian Forge app for Jira integration.</p>
+
+<h2>Features</h2>
+
+<h3>Thermometer Dashboard (<code>webapp/index-thermometer.html</code>)</h3>
+<ul><li><strong>Horizontal Thermometer Visualizations</strong>: Display percentage-based progress bars with colored segments</li>
+<li><strong>Standards Adherence Tracking</strong>: Perfect for tracking compliance categories (Standard, Semi-Standard, Bespoke, Non-Standard, TBD, N/A)</li>
+<li><strong>Interactive Features</strong>:</li>
+<p>  - Hover tooltips showing exact counts and percentages</p>
+<p>  - Clickable team names linking to Confluence pages</p>
+<p>  - Search/filter by team name</p>
+<p>  - Sort by Standard percentage or alphabetically</p>
+<li><strong>Google OAuth Integration</strong>: Secure authentication to access private sheets</li>
+<li><strong>Multi-sheet Support</strong>: Each sheet tab becomes its own thermometer visualization</li>
+<li><strong>Color-coded Segments</strong>: Customizable colors per category with automatic text contrast</li>
+
+<h3>Standard Data Viewers</h3>
+<li><strong>API Key Version</strong> (<code>webapp/index.html</code>): Simple Google Sheets viewer using API keys</li>
+<li><strong>OAuth Version</strong> (<code>webapp/index-oauth.html</code>): Secure OAuth-based Google Sheets viewer</li>
+<li><strong>Features</strong>:</li>
+<p>  - Multi-tab navigation between sheets</p>
+<p>  - Tabular data display</p>
+<p>  - Real-time refresh</p>
+<p>  - Local storage for credentials</p>
+
+<h3>Jira Dashboard Gadget (Forge App)</h3>
+<li><strong>Jira Integration</strong>: Add Google Sheets data directly to Jira dashboards</li>
+<li><strong>Interactive Visualizations</strong>: Create bar charts, line charts, and pie charts</li>
+<li><strong>Tab Navigation</strong>: Switch between different sheets</li>
+<li><strong>Forge Platform</strong>: Built on Atlassian's Forge platform for secure Jira Cloud integration</li>
+
+<h2>Quick Start</h2>
+
+<h3>Using the Thermometer Dashboard (Recommended)</h3>
+
+<li><strong>Open</strong> <code>webapp/index-thermometer.html</code> in a web browser</li>
+<li><strong>Click</strong> "Sign in with Google" and authorize access</li>
+<li><strong>Data loads automatically</strong> from the configured spreadsheet</li>
+<li><strong>Hover</strong> over segments to see detailed tooltips</li>
+<li><strong>Search</strong> or sort teams as needed</li>
+
+<p>The thermometer dashboard is pre-configured to work with a specific Google Sheets format. No additional setup required!</p>
+
+<h3>Using the Standard Data Viewers</h3>
+
+<h4>API Key Method (<code>webapp/index.html</code>)</h4>
+<li>Get a Google API Key with Sheets API enabled</li>
+<li>Make your sheet public ("Anyone with the link can view")</li>
+<li>Open <code>webapp/index.html</code> in a browser</li>
+<li>Enter your Spreadsheet ID and API Key</li>
+<li>Click "Load Data"</li>
+
+<h4>OAuth Method (<code>webapp/index-oauth.html</code>)</h4>
+<li>Open <code>webapp/index-oauth.html</code> in a browser</li>
+<li>Click "Sign in with Google"</li>
+<li>Enter your Spreadsheet ID</li>
+<li>Click "Load Data"</li>
+
+<h2>Setup Instructions</h2>
+
+<h3>For Thermometer Dashboard</h3>
+
+<p>The thermometer dashboard expects Google Sheets with the following column structure:</p>
+<li><strong>Lozenge Text</strong>: Category name (e.g., "Standard", "Semi-Standard", "Bespoke", "Non-Standard", "TBD", "N/A")</li>
+<li><strong>Lozenge Color</strong>: Hex color code or color name</li>
+<li><strong>Count</strong>: Number of items in that category</li>
+<li><strong>Page ID</strong> (optional): Confluence page ID for creating clickable links</li>
+
+<p>Each sheet tab in your workbook will become a separate thermometer visualization.</p>
+
+<h3>For Jira Forge App (Optional)</h3>
+
+<p>If you want to deploy the Jira dashboard gadget:</p>
+
+<h4>Prerequisites</h4>
+<li><strong>Atlassian Forge CLI</strong> (version 12.7.0 or higher)</li>
+<li><strong>Node.js</strong> (v14 or higher)</li>
+<li><strong>Jira Cloud instance</strong> with admin access</li>
+<li><strong>Google Cloud Platform account</strong> for API access</li>
+
+<h4>Installation Steps</h4>
+
+<li><strong>Install dependencies</strong>:</li>
+<p>   ``<code>bash</p>
+<p>   npm install</p>
+<p>   npm run install-frontend</p>
+<p>   </code>`<code></p>
+
+<li><strong>Build the frontend</strong>:</li>
+<p>   </code>`<code>bash</p>
+<p>   npm run build</p>
+<p>   </code>`<code></p>
+
+<li><strong>Register the app</strong> (first time only):</li>
+<p>   </code>`<code>bash</p>
+<p>   forge register</p>
+<p>   </code>`<code></p>
+
+<li><strong>Deploy the app</strong>:</li>
+<p>   </code>`<code>bash</p>
+<p>   forge deploy</p>
+<p>   forge install</p>
+<p>   </code>`<code></p>
+
+<li><strong>Add to Jira Dashboard</strong>:</li>
+<p>   - Go to your Jira instance</p>
+<p>   - Navigate to any dashboard</p>
+<p>   - Click "Add gadget"</p>
+<p>   - Search for "Google Sheets Dashboard"</p>
+<p>   - Configure with your Spreadsheet ID and API Key</p>
+
+<h3>Google Cloud Setup (For API Key Method)</h3>
+
+<li>Go to [Google Cloud Console](https://console.cloud.google.com)</li>
+<li>Enable the <strong>Google Sheets API</strong></li>
+<li>Create credentials:</li>
+<p>   - <strong>For API Key method</strong>: Create an API Key and restrict it to Sheets API</p>
+<p>   - <strong>For OAuth method</strong>: Create OAuth 2.0 Client ID for web application</p>
+<li>For OAuth, configure authorized JavaScript origins and redirect URIs</li>
+
+<h3>Google Sheets Setup (For API Key Method Only)</h3>
+
+<li>Open your Google Sheets workbook</li>
+<li>Click "Share" and set to "Anyone with the link can view"</li>
+<li>Copy the Spreadsheet ID from the URL:</li>
+<p>   </code>`<code></p>
+<p>   https://docs.google.com/spreadsheets/d/SPREADSHEET_ID_HERE/edit</p>
+<p>   </code>`<code></p>
+
+<h2>Usage</h2>
+
+<h3>Thermometer Dashboard</h3>
+
+<li><strong>View Progress</strong>: Each team/sheet displays as a horizontal thermometer bar with colored segments</li>
+<li><strong>Hover for Details</strong>: Mouse over any segment to see exact counts and percentages</li>
+<li><strong>Click Team Names</strong>: If Page IDs are configured, team names link to Confluence pages</li>
+<li><strong>Search</strong>: Use the search box to filter teams by name</li>
+<li><strong>Sort</strong>: Choose between sorting by Standard percentage (high to low) or alphabetically</li>
+<li><strong>Refresh</strong>: Click "Refresh" to fetch the latest data from Google Sheets</li>
+
+<h3>Standard Data Viewers</h3>
+
+<li><strong>Tabs</strong>: Each sheet from your workbook appears as a separate tab</li>
+<li><strong>Tables</strong>: View raw data in formatted tables (first 50 rows displayed)</li>
+<li><strong>Refresh</strong>: Click "Refresh" to fetch the latest data</li>
+<li><strong>Navigation</strong>: Click tabs to switch between different sheets</li>
+
+<h3>Jira Gadget (if deployed)</h3>
+
+<li><strong>Visualizations</strong>: Use dropdowns to select chart type and data columns</li>
+<li><strong>Chart Types</strong>: Bar, Line, or Pie charts</li>
+<li><strong>Raw Data</strong>: View complete data in table format</li>
+<li><strong>Configure</strong>: Change connected spreadsheet or API key</li>
+
+<h2>Project Structure</h2>
+
+<p></code>`<code></p>
+<p>blueprint-standard-adherence-thermometers/</p>
+<p>├── webapp/                      # Standalone web applications</p>
+<p>│   ├── index-thermometer.html   # Thermometer dashboard (main feature)</p>
+<p>│   ├── index.html               # API key-based viewer</p>
+<p>│   └── index-oauth.html         # OAuth-based viewer</p>
+<p>├── manifest.yml                 # Forge app configuration</p>
+<p>├── src/                         # Forge app backend</p>
+<p>│   ├── index.js                 # Backend resolver (API handlers)</p>
+<p>│   └── config.js                # Configuration handler</p>
+<p>├── static/</p>
+<p>│   ├── dashboard/               # Frontend React app for Forge</p>
+<p>│   └── iframe-app/              # Forge iframe resources</p>
+<p>├── icon.png                     # App icon</p>
+<p>└── package.json                 # Dependencies</p>
+<p></code>`<code></p>
+
+<h2>Development</h2>
+
+<h3>Working with Webapp Files</h3>
+
+<p>The webapp files are standalone HTML files that can be:</p>
+<li><strong>Opened directly</strong> in a browser for local testing</li>
+<li><strong>Deployed</strong> to any static hosting service (GitHub Pages, Netlify, etc.)</li>
+<li><strong>Customized</strong> by editing the HTML/CSS/JavaScript directly</li>
+
+<h3>Working with Forge App</h3>
+
+<p></code>`<code>bash</p>
+<h2>Watch for changes and auto-deploy</h2>
+<p>forge tunnel</p>
+
+<h2>View logs</h2>
+<p>forge logs</p>
+
+<h2>Deploy changes</h2>
+<p>forge deploy</p>
+<p></code>`<code></p>
+
+<h3>Making Changes</h3>
+
+<h4>Webapp Changes</h4>
+<li>Edit the HTML file directly</li>
+<li>Refresh your browser to see changes</li>
+<li>No build step required</li>
+
+<h4>Forge App Changes</h4>
+<li>Edit the code in </code>src/<code> or </code>static/dashboard/<code></li>
+<li>Rebuild frontend if needed: </code>npm run build<code></li>
+<li>Deploy changes: </code>forge deploy<code></li>
+
+<h2>Customization Ideas</h2>
+
+<h3>Thermometer Dashboard Customization</h3>
+
+<h4>Change Color Scheme</h4>
+<p>Edit the colors in the </code>colors<code> object assignment in </code>webapp/index-thermometer.html<code> (around line 688-698):</p>
+<p></code>`<code>javascript</p>
+<p>if (text === 'TBD') {</p>
+<p>    colors[text] = '#808080';  // Change this color</p>
+<p>} else if (text === 'N/A') {</p>
+<p>    colors[text] = '#C0C0C0';  // Change this color</p>
+<p>}</p>
+<p></code>`<code></p>
+
+<h4>Modify Categories</h4>
+<p>Update the </code>segmentOrder<code> array (line 736) to change the order or add new categories:</p>
+<p></code>`<code>javascript</p>
+<p>const segmentOrder = ['Standard', 'Semi-Standard', 'Bespoke', 'Non-Standard', 'TBD', 'N/A'];</p>
+<p></code>`<code></p>
+
+<h4>Customize Links</h4>
+<p>Change the Confluence URL pattern (line 716):</p>
+<p></code>`<code>javascript</p>
+<p>link.href = </code>https://your-domain.atlassian.net/wiki/spaces/cs/pages/${pageId}<code>;</p>
+<p></code>`<code></p>
+
+<h4>Adjust Thermometer Size</h4>
+<p>Modify the height in the </code>.thermometer<code> CSS class (line 280):</p>
+<p></code>`<code>css</p>
+<p>height: 80px;  /* Change this value */</p>
+<p></code>`<code></p>
+
+<h3>Forge App Customization</h3>
+
+<h4>Add More Chart Types</h4>
+<p>Edit </code>static/dashboard/src/DataVisualizations.js<code> to add more recharts visualizations:</p>
+<li>Area charts</li>
+<li>Scatter plots</li>
+<li>Radar charts</li>
+<li>Composed charts</li>
+
+<h4>Custom Styling</h4>
+<p>Modify </code>static/dashboard/src/App.css<code> to match your brand colors</p>
+
+<h4>Data Filtering</h4>
+<p>Add filtering logic to allow users to filter data before visualization</p>
+
+<h4>Scheduled Refresh</h4>
+<p>Use Forge scheduled triggers to automatically refresh data</p>
+
+<h2>Security Notes</h2>
+
+<h3>OAuth Authentication (Thermometer Dashboard)</h3>
+<li><strong>Secure</strong>: Uses Google OAuth 2.0 for authentication</li>
+<li><strong>Tokens</strong>: Access tokens are stored in browser memory only (not persisted)</li>
+<li><strong>Permissions</strong>: Only requests read-only access to spreadsheets</li>
+<li><strong>Private Sheets</strong>: Can access private sheets you have permission to view</li>
+
+<h3>API Key Authentication (Standard Viewers)</h3>
+<li><strong>Public Sheets Only</strong>: Requires sheets to be set to "Anyone with the link can view"</li>
+<li><strong>API Key Security</strong>: Restrict your Google API key to only the Sheets API</li>
+<li><strong>Local Storage</strong>: API keys are stored in browser localStorage</li>
+<li><strong>Best Practice</strong>: Use OAuth method for private or sensitive data</li>
+
+<h3>Forge App</h3>
+<li><strong>Secure Storage</strong>: API keys stored in Forge's encrypted storage API</li>
+<li><strong>Data Privacy</strong>: Only use with data you're comfortable storing in Atlassian's systems</li>
+<li><strong>Sheet Permissions</strong>: Ensure sheets are set to "view only" to prevent unauthorized edits</li>
+
+<h2>Troubleshooting</h2>
+
+<h3>Thermometer Dashboard Issues</h3>
+
+<p><strong>Authentication Failed</strong></p>
+<li>Clear browser cache and cookies</li>
+<li>Try signing out and signing in again</li>
+<li>Check that Google OAuth library loaded (refresh page)</li>
+
+<p><strong>Thermometers Not Displaying</strong></p>
+<li>Verify your sheet has required columns: "Lozenge Text", "Lozenge Color", "Count"</li>
+<li>Check that Count column contains numeric values</li>
+<li>Ensure at least one data row exists below headers</li>
+
+<p><strong>Wrong Colors Showing</strong></p>
+<li>Check "Lozenge Color" column has valid color values (hex codes or names)</li>
+<li>TBD and N/A have hardcoded colors (#808080 and #C0C0C0)</li>
+
+<h3>Standard Viewer Issues</h3>
+
+<p><strong>"Failed to fetch spreadsheet" Error</strong></p>
+<li>Verify Google Sheet is set to "Anyone with the link can view" (for API key method)</li>
+<li>Check that API key is valid and enabled for Sheets API</li>
+<li>Confirm Spreadsheet ID is correct</li>
+<li>For OAuth method, ensure you're signed in</li>
+
+<p><strong>Data Not Loading</strong></p>
+<li>Check browser console for error messages</li>
+<li>Verify spreadsheet ID format (no spaces or extra characters)</li>
+<li>Test sheet URL directly in browser to confirm it's accessible</li>
+
+<h3>Forge App Issues</h3>
+
+<p><strong>"Missing spreadsheet configuration" Error</strong></p>
+<li>Configure gadget with both Spreadsheet ID and API Key</li>
+
+<p><strong>Build Errors</strong></p>
+<li>Delete </code>node_modules<code> in both root and </code>static/dashboard<code> directories</li>
+<li>Run </code>npm install<code> and </code>npm run install-frontend` again</li>
+<li>Ensure Node.js version is v14 or higher</li>
+
+<h2>Use Cases</h2>
+
+<h3>Thermometer Dashboard</h3>
+<li><strong>Standards Compliance Tracking</strong>: Visualize how teams adhere to different standards</li>
+<li><strong>Progress Monitoring</strong>: Track project completion across multiple categories</li>
+<li><strong>Team Comparison</strong>: Compare performance or compliance across different teams</li>
+<li><strong>Executive Reporting</strong>: Quick visual overview of organizational metrics</li>
+
+<h3>Standard Data Viewers</h3>
+<li><strong>Quick Data Review</strong>: View Google Sheets data without opening Google Sheets</li>
+<li><strong>Embedded Dashboards</strong>: Embed sheet data in internal tools or websites</li>
+<li><strong>Multi-sheet Browsing</strong>: Navigate through multiple sheets in one interface</li>
+
+<h3>Jira Integration</h3>
+<li><strong>Centralized Dashboards</strong>: Bring external data into Jira</li>
+<li><strong>Sprint Metrics</strong>: Display spreadsheet-based metrics alongside Jira data</li>
+<li><strong>Team KPIs</strong>: Show team performance data from sheets in Jira dashboards</li>
+
+<h2>License</h2>
+
+<p>ISC</p>
+
+<h2>Resources</h2>
+
+<li><strong>Forge Platform</strong>: [Atlassian Forge Documentation](https://developer.atlassian.com/platform/forge/)</li>
+<li><strong>Google Sheets API</strong>: [Google Sheets API Documentation](https://developers.google.com/sheets/api)</li>
+<li><strong>Google OAuth 2.0</strong>: [OAuth 2.0 for Client-side Web Applications](https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow)</li>
+</ul>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>

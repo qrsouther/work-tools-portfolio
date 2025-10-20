@@ -1,0 +1,17 @@
+modules:
+  jira:dashboardGadget:
+    - key: blueprint-thermometer-gadget
+      title: Blueprint Standard Adherence Thermometers
+      description: Thermometer visualizations for tracking blueprint standard adherence
+      thumbnail: icon.png
+      resource: iframe-page
+resources:
+  - key: iframe-page
+    path: static/iframe-app
+permissions:
+  scopes:
+    - 'storage:app'
+app:
+  runtime:
+    name: nodejs20.x
+  id: ari:cloud:ecosystem::app/b2c43caa-02eb-486d-9dab-f22db476c0d3

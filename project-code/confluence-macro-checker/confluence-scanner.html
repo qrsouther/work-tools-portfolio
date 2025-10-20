@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confluence Blueprint Macro Scanner</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      background: #f4f5f7;
+      color: #172b4d;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 32px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      color: #172b4d;
+    }
+
+    .subtitle {
+      color: #6b778c;
+      margin-bottom: 32px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid #dfe1e6;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 2px solid #dfe1e6;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #0052cc;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-primary {
+      background: #0052cc;
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #0747a6;
+    }
+
+    .btn-stop {
+      background: #de350b;
+      color: white;
+    }
+
+    .btn-stop:hover:not(:disabled) {
+      background: #bf2600;
+    }
+
+    .btn-export {
+      background: #00875a;
+      color: white;
+    }
+
+    .btn-export:hover:not(:disabled) {
+      background: #006644;
+    }
+
+    button:disabled {
+      background: #a5adba;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .status-box {
+      background: #deebff;
+      border-left: 4px solid #0052cc;
+      padding: 16px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+    }
+
+    .status-box.error {
+      background: #ffebe6;
+      border-left-color: #de350b;
+    }
+
+    .status-box.success {
+      background: #e3fcef;
+      border-left-color: #00875a;
+    }
+
+    .status-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #0052cc;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #dfe1e6;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #0052cc;
+      transition: width 0.3s ease;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: #f4f5f7;
+      padding: 16px;
+      border-radius: 4px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: #172b4d;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #6b778c;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    .current-page {
+      background: #fff6e5;
+      border: 2px solid #ffab00;
+      padding: 16px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+
+    .current-page strong {
+      color: #ff8b00;
+    }
+
+    .results-section {
+      margin-top: 32px;
+    }
+
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .results-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      padding: 6px 12px;
+      background: #f4f5f7;
+      border: 1px solid #dfe1e6;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      background: #0052cc;
+      color: white;
+      border-color: #0052cc;
+    }
+
+    .results-list {
+      max-height: 600px;
+      overflow-y: auto;
+      border: 1px solid #dfe1e6;
+      border-radius: 4px;
+    }
+
+    .result-item {
+      padding: 16px;
+      border-bottom: 1px solid #dfe1e6;
+      transition: background 0.2s;
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-item:hover {
+      background: #f4f5f7;
+    }
+
+    .result-item.checking {
+      background: #deebff;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .result-item.success {
+      background: #e3fcef;
+    }
+
+    .result-item.error {
+      background: #ffebe6;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .result-title {
+      font-weight: 600;
+      color: #172b4d;
+      flex: 1;
+    }
+
+    .result-title a {
+      color: #0052cc;
+      text-decoration: none;
+    }
+
+    .result-title a:hover {
+      text-decoration: underline;
+    }
+
+    .result-status {
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .result-status.checking {
+      background: #0052cc;
+      color: white;
+    }
+
+    .result-status.success {
+      background: #00875a;
+      color: white;
+    }
+
+    .result-status.error {
+      background: #de350b;
+      color: white;
+    }
+
+    .error-list {
+      margin-top: 12px;
+      padding: 12px;
+      background: white;
+      border-radius: 4px;
+      border-left: 3px solid #de350b;
+    }
+
+    .error-item {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #dfe1e6;
+    }
+
+    .error-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .error-type {
+      font-weight: 600;
+      color: #de350b;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .error-message {
+      font-size: 13px;
+      color: #172b4d;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: #6b778c;
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Confluence Blueprint Macro Scanner</h1>
+    <p class="subtitle">Scans Blueprint pages in the CS space for MultiExcerpt Include macro errors</p>
+
+    <div class="controls">
+      <input
+        type="text"
+        id="confluenceUrl"
+        placeholder="https://yourcompany.atlassian.net"
+        value="https://seatgeek.atlassian.net"
+      />
+      <button id="startBtn" class="btn-primary">Start Scan</button>
+      <button id="stopBtn" class="btn-stop hidden">Stop Scan</button>
+      <button id="exportBtn" class="btn-export hidden">Export JSON</button>
+    </div>
+
+    <div id="statusBox" class="status-box hidden">
+      <div class="status-title">
+        <span id="statusIcon"></span>
+        <span id="statusText"></span>
+      </div>
+      <div id="progressBar" class="progress-bar hidden">
+        <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+      </div>
+      <div id="statusDetails"></div>
+    </div>
+
+    <div id="currentPage" class="current-page hidden"></div>
+
+    <div id="statsSection" class="stats hidden">
+      <div class="stat-card">
+        <div class="stat-value" id="totalPages">0</div>
+        <div class="stat-label">Total Pages</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="checkedPages">0</div>
+        <div class="stat-label">Pages Checked</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="errorPages">0</div>
+        <div class="stat-label">Pages with Errors</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="totalErrors">0</div>
+        <div class="stat-label">Total Errors Found</div>
+      </div>
+    </div>
+
+    <div id="resultsSection" class="results-section hidden">
+      <div class="results-header">
+        <h2 class="results-title">Results</h2>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="errors">Errors Only</button>
+          <button class="filter-btn" data-filter="clean">Clean Pages</button>
+        </div>
+      </div>
+      <div class="results-list" id="resultsList">
+        <div class="empty-state">
+          <div class="empty-state-icon">📋</div>
+          <p>No results yet. Start a scan to see pages checked.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let scanState = {
+      isScanning: false,
+      shouldStop: false,
+      pages: [],
+      results: [],
+      currentFilter: 'all'
+    };
+
+    // UI Elements
+    const confluenceUrlInput = document.getElementById('confluenceUrl');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const statusBox = document.getElementById('statusBox');
+    const statusIcon = document.getElementById('statusIcon');
+    const statusText = document.getElementById('statusText');
+    const statusDetails = document.getElementById('statusDetails');
+    const progressBar = document.getElementById('progressBar');
+    const progressFill = document.getElementById('progressFill');
+    const currentPageDiv = document.getElementById('currentPage');
+    const statsSection = document.getElementById('statsSection');
+    const totalPagesEl = document.getElementById('totalPages');
+    const checkedPagesEl = document.getElementById('checkedPages');
+    const errorPagesEl = document.getElementById('errorPages');
+    const totalErrorsEl = document.getElementById('totalErrors');
+    const resultsSection = document.getElementById('resultsSection');
+    const resultsList = document.getElementById('resultsList');
+
+    // Event Listeners
+    startBtn.addEventListener('click', startScan);
+    stopBtn.addEventListener('click', stopScan);
+    exportBtn.addEventListener('click', exportResults);
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        scanState.currentFilter = e.target.dataset.filter;
+        renderResults();
+      });
+    });
+
+    async function startScan() {
+      const confluenceUrl = confluenceUrlInput.value.trim();
+
+      if (!confluenceUrl) {
+        alert('Please enter your Confluence URL');
+        return;
+      }
+
+      // Reset state
+      scanState = {
+        isScanning: true,
+        shouldStop: false,
+        pages: [],
+        results: [],
+        currentFilter: 'all'
+      };
+
+      // Update UI
+      startBtn.disabled = true;
+      stopBtn.classList.remove('hidden');
+      exportBtn.classList.add('hidden');
+      statusBox.classList.remove('hidden', 'success', 'error');
+      statsSection.classList.remove('hidden');
+      resultsSection.classList.remove('hidden');
+      resultsList.innerHTML = '';
+
+      try {
+        // Fetch pages
+        updateStatus('Fetching Blueprint pages from CS space...', 'loading');
+        const pages = await fetchBlueprintPages(confluenceUrl);
+
+        if (pages.length === 0) {
+          throw new Error('No Blueprint pages found in CS space');
+        }
+
+        scanState.pages = pages;
+        totalPagesEl.textContent = pages.length;
+
+        updateStatus(`Found ${pages.length} Blueprint pages. Starting scan...`, 'loading');
+        progressBar.classList.remove('hidden');
+
+        // Scan each page
+        for (let i = 0; i < pages.length; i++) {
+          if (scanState.shouldStop) {
+            updateStatus('Scan stopped by user', 'error');
+            break;
+          }
+
+          const page = pages[i];
+          const progress = ((i / pages.length) * 100).toFixed(0);
+          progressFill.style.width = progress + '%';
+
+          updateStatus(`Scanning page ${i + 1} of ${pages.length}...`, 'loading');
+          currentPageDiv.classList.remove('hidden');
+          currentPageDiv.innerHTML = `<strong>Currently checking:</strong> ${escapeHtml(page.title)}`;
+
+          // Add placeholder result
+          addResult(page, 'checking', null);
+
+          // Check the page
+          const result = await checkPage(page, confluenceUrl);
+          scanState.results.push(result);
+
+          // Update result
+          updateResult(page, result);
+          updateStats();
+        }
+
+        // Complete
+        if (!scanState.shouldStop) {
+          progressFill.style.width = '100%';
+          const errorCount = scanState.results.filter(r => r.errors.length > 0).length;
+          updateStatus(`Scan complete! Found errors on ${errorCount} of ${pages.length} pages.`, 'success');
+          currentPageDiv.classList.add('hidden');
+        }
+
+        exportBtn.classList.remove('hidden');
+
+      } catch (error) {
+        updateStatus(`Error: ${error.message}`, 'error');
+        console.error('Scan error:', error);
+      } finally {
+        scanState.isScanning = false;
+        startBtn.disabled = false;
+        stopBtn.classList.add('hidden');
+      }
+    }
+
+    function stopScan() {
+      scanState.shouldStop = true;
+      stopBtn.disabled = true;
+    }
+
+    async function fetchBlueprintPages(confluenceUrl) {
+      const pages = [];
+      const pageIdsSeen = new Set();
+      let start = 0;
+      const limit = 50;
+
+      while (true) {
+        const url = `${confluenceUrl}/wiki/rest/api/content/search?cql=title%20~%20%22Blueprint%22%20AND%20type=page%20AND%20space=CS&start=${start}&limit=${limit}&expand=space`;
+
+        statusDetails.textContent = `Fetching pages... Found ${pages.length} so far`;
+
+        const response = await fetch(url, { credentials: 'include' });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch pages: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const results = data.results || [];
+
+        if (results.length === 0) break;
+
+        let newPagesFound = 0;
+        for (const page of results) {
+          if (pageIdsSeen.has(page.id)) continue;
+
+          pageIdsSeen.add(page.id);
+          pages.push({
+            id: page.id,
+            title: page.title,
+            url: `${confluenceUrl}/wiki${page._links.webui}`,
+            space: page.space.name
+          });
+          newPagesFound++;
+        }
+
+        const size = data.size || results.length;
+        if (newPagesFound === 0 || size < limit) break;
+
+        start += limit;
+        await sleep(500);
+      }
+
+      return pages;
+    }
+
+    async function checkPage(page, confluenceUrl) {
+      // Open page in new tab
+      const tab = window.open(page.url, '_blank');
+
+      if (!tab) {
+        return {
+          page: page,
+          errors: [{
+            type: 'Browser Error',
+            message: 'Failed to open page. Popup blocker may be enabled.'
+          }],
+          checked: false
+        };
+      }
+
+      // Wait 30 seconds for macros to render
+      await sleep(30000);
+
+      try {
+        // Try to access the tab's document
+        const errors = await detectErrors(tab);
+        tab.close();
+
+        return {
+          page: page,
+          errors: errors,
+          checked: true
+        };
+      } catch (error) {
+        tab.close();
+        return {
+          page: page,
+          errors: [{
+            type: 'Access Error',
+            message: 'Could not access page content due to browser security restrictions. This is a known limitation of running from a local HTML file.'
+          }],
+          checked: false
+        };
+      }
+    }
+
+    function detectErrors(tabWindow) {
+      // Note: Due to browser security (CORS/same-origin policy), we cannot
+      // directly access another tab's DOM from a local HTML file.
+      // This would work if running from the same origin as Confluence.
+
+      return new Promise((resolve) => {
+        try {
+          const doc = tabWindow.document;
+          const errors = [];
+
+          // Keywords to search for (MultiExcerpt Include macro errors)
+          const errorKeywords = [
+            'page lookup error',
+            'macro lookup error',
+            'not found',
+            'MultiExcerpt Include'
+          ];
+
+          // Error selectors
+          const errorSelectors = [
+            'div.error',
+            'div.confluence-macro-error',
+            'div.macro-error',
+            'div.aui-message-error',
+            'span.error'
+          ];
+
+          // Check for error elements
+          for (const selector of errorSelectors) {
+            const elements = doc.querySelectorAll(selector);
+            for (const element of elements) {
+              const errorText = element.textContent.trim();
+              if (errorText && !errors.some(e => e.message === errorText)) {
+                // Check if it contains our keywords
+                const lowerText = errorText.toLowerCase();
+                if (errorKeywords.some(kw => lowerText.includes(kw.toLowerCase()))) {
+                  errors.push({
+                    type: 'Macro Rendering Error',
+                    message: errorText.substring(0, 500)
+                  });
+                }
+              }
+            }
+          }
+
+          // Check body text for keywords
+          const bodyText = doc.body.textContent || '';
+          for (const keyword of errorKeywords) {
+            if (bodyText.toLowerCase().includes(keyword.toLowerCase())) {
+              const regex = new RegExp(`.{0,150}${escapeRegExp(keyword)}.{0,150}`, 'gi');
+              const matches = bodyText.match(regex);
+              if (matches) {
+                for (const match of matches) {
+                  const trimmed = match.trim();
+                  if (!errors.some(e => e.message === trimmed)) {
+                    errors.push({
+                      type: 'Macro Error Text',
+                      message: trimmed
+                    });
+                  }
+                }
+              }
+            }
+          }
+
+          resolve(errors);
+        } catch (e) {
+          // Cross-origin access denied
+          resolve([{
+            type: 'Access Error',
+            message: 'Cannot access page content due to browser security restrictions. Please use the Chrome Extension instead of this HTML file.'
+          }]);
+        }
+      });
+    }
+
+    function updateStatus(text, type) {
+      statusText.textContent = text;
+      statusBox.classList.remove('success', 'error');
+
+      if (type === 'loading') {
+        statusIcon.innerHTML = '<span class="spinner"></span>';
+      } else if (type === 'success') {
+        statusIcon.textContent = '✓';
+        statusBox.classList.add('success');
+      } else if (type === 'error') {
+        statusIcon.textContent = '⚠';
+        statusBox.classList.add('error');
+      }
+    }
+
+    function updateStats() {
+      checkedPagesEl.textContent = scanState.results.length;
+      const pagesWithErrors = scanState.results.filter(r => r.errors.length > 0).length;
+      errorPagesEl.textContent = pagesWithErrors;
+      const totalErrors = scanState.results.reduce((sum, r) => sum + r.errors.length, 0);
+      totalErrorsEl.textContent = totalErrors;
+    }
+
+    function addResult(page, status, result) {
+      const resultId = 'result-' + page.id;
+      let resultEl = document.getElementById(resultId);
+
+      if (!resultEl) {
+        resultEl = document.createElement('div');
+        resultEl.id = resultId;
+        resultEl.className = 'result-item';
+        resultsList.appendChild(resultEl);
+      }
+
+      resultEl.className = 'result-item ' + status;
+
+      let html = `
+        <div class="result-header">
+          <div class="result-title">
+            <a href="${page.url}" target="_blank">${escapeHtml(page.title)}</a>
+          </div>
+          <div class="result-status ${status}">
+            ${status === 'checking' ? 'Checking...' : status === 'success' ? 'Clean' : 'Errors'}
+          </div>
+        </div>
+      `;
+
+      if (result && result.errors && result.errors.length > 0) {
+        html += '<div class="error-list">';
+        for (const error of result.errors) {
+          html += `
+            <div class="error-item">
+              <div class="error-type">${escapeHtml(error.type)}</div>
+              <div class="error-message">${escapeHtml(error.message)}</div>
+            </div>
+          `;
+        }
+        html += '</div>';
+      }
+
+      resultEl.innerHTML = html;
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function updateResult(page, result) {
+      const status = result.errors.length > 0 ? 'error' : 'success';
+      addResult(page, status, result);
+      renderResults();
+    }
+
+    function renderResults() {
+      const filter = scanState.currentFilter;
+      const results = resultsList.querySelectorAll('.result-item');
+
+      results.forEach(resultEl => {
+        const hasErrors = resultEl.classList.contains('error');
+        const isClean = resultEl.classList.contains('success');
+
+        if (filter === 'all') {
+          resultEl.style.display = '';
+        } else if (filter === 'errors') {
+          resultEl.style.display = hasErrors ? '' : 'none';
+        } else if (filter === 'clean') {
+          resultEl.style.display = isClean ? '' : 'none';
+        }
+      });
+    }
+
+    function exportResults() {
+      const results = scanState.results.filter(r => r.errors.length > 0);
+      const json = JSON.stringify(results, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'confluence_macro_errors.json';
+      a.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+  </script>
+</body>
+</html>

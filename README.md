@@ -9,46 +9,54 @@ Visit the portfolio at: `https://qrsouther.github.io/work-tools-portfolio/`
 ## Projects Featured
 
 ### 1. Blueprint Standard Adherence Master Tracker
-Automated Google Cloud Function that scans Confluence Blueprint pages for status lozenges and tracks them in Google Sheets. Runs daily at 9 AM ET.
+Fully automated cloud-based application deployed to Google Cloud Functions. Scans ~70 Confluence Blueprint pages for status lozenges (~4,900 total), counts them by label and color, and exports results to individual Google Sheets tabs. Runs daily at 9 AM ET with zero maintenance required.
 
-- **Type:** Cloud Function, Automation
-- **Tech:** Node.js, TypeScript, Google Cloud Functions, Confluence API, Google Sheets API
-- **Status:** ✅ Deployed and running
+- **Type:** Cloud Function, Automation (Production)
+- **Tech:** Node.js, TypeScript, Google Cloud Functions, Confluence API, Google Sheets API, OAuth 2.0
+- **Status:** ✅ Deployed and Running
+- **Updated:** October 20, 2025
 
-### 2. Confluence Macro Error Checker
-Python CLI tool that crawls Confluence to detect macro rendering errors and exports results to Google Sheets.
+### 2. Blueprint Standard Adherence Thermometers
+Atlassian Forge app that displays thermometer visualizations for tracking blueprint standard adherence on Jira dashboards. Pulls data from Google Sheets and displays custom data visualizations with real-time compliance metrics.
 
-- **Type:** CLI Tool, Python Script
-- **Tech:** Python, Confluence API, Google Sheets API
-- **Status:** Active
+- **Type:** Forge App, Jira Dashboard Gadget
+- **Tech:** Atlassian Forge, React 19.2, Google Sheets API, Custom Visualizations
+- **Status:** Built - Ready for deployment
+- **Updated:** October 17, 2025
 
-### 3. Jira Google Sheets Dashboard
-Atlassian Forge app that creates a Jira dashboard gadget displaying data from Google Sheets with interactive visualizations.
-
-- **Type:** Forge App
-- **Tech:** Atlassian Forge, React, Google Sheets API, Recharts
-- **Status:** Active
-
-### 4. Blueprint Standards Chart
-Custom React UI component for Confluence that displays Blueprint standard adherence data with configurable charts.
+### 3. Blueprint Standards Chart (Custom UI React)
+Atlassian Forge confluence macro application with custom UI configuration. Features dual Vite-based static builds (hello-world macro and custom config UI). Demonstrates custom Confluence macro with configuration capabilities.
 
 - **Type:** Forge App, Confluence Macro
-- **Tech:** Atlassian Forge, React, Custom UI
-- **Status:** Active
+- **Tech:** Atlassian Forge, React, Vite, Custom UI
+- **Status:** Built - Production-ready
+- **Updated:** October 16, 2025
 
-### 5. Confluence JSON Editor
-Forge app providing a JSON editor interface within Confluence for structured data editing.
+### 4. Confluence JSON Editor
+Chrome extension for editing Confluence page content via REST API. Uses manifest v3 with service worker background. Provides side panel UI for JSON content editing directly against Confluence pages.
 
-- **Type:** Forge App, Confluence Macro
-- **Tech:** Atlassian Forge, React, JSON validation
-- **Status:** Active
+- **Type:** Chrome Extension
+- **Tech:** Chrome Manifest v3, Service Worker, Confluence REST API
+- **Status:** Built - Ready for use
+- **Updated:** October 14, 2025
 
-### 6. Lozenge Donut Chart v2
-Enhanced Confluence visualization component that creates donut charts from lozenge data.
+### 5. Confluence Macro Error Checker
+Comprehensive macro error detection system with dual implementations:
+- **Python CLI Tool**: Searches Confluence pages by keyword, detects macro rendering errors, exports results to Google Sheets
+- **Chrome Extension**: Scans Blueprint pages in background tabs (~45-50 min runtime) using active Confluence session, with strict error filtering and automatic JSON export
 
-- **Type:** Forge App, Visualization
-- **Tech:** Atlassian Forge, React, Chart.js
-- **Status:** Active
+- **Type:** Dual Tools (CLI + Chrome Extension)
+- **Tech:** Python, Chrome Extension, Google Sheets API, Confluence API
+- **Status:** Actively Developed (Chrome extension recently updated Oct 17)
+- **Updated:** October 17, 2025
+
+### 6. Lozenge Donut Chart v2 (Claude Code)
+Atlassian Forge UI Kit component for creating donut chart visualizations with lozenge status indicators. Part of the Claude Code project series with detailed development guidelines.
+
+- **Type:** Forge App, Visualization Component
+- **Tech:** Atlassian Forge UI Kit, React 18.2, @forge/api, @forge/bridge
+- **Status:** Built - Ready for deployment
+- **Updated:** October 16, 2025
 
 ## Local Development
 
@@ -136,16 +144,26 @@ Modify `styles.css` to customize colors, fonts, and layout. The CSS uses CSS cus
 
 ```
 work-tools-portfolio/
-├── index.html              # Main landing page
-├── styles.css              # Global styles
-├── README.md               # This file
-├── projects/               # Individual project pages
-│   ├── blueprint-tracker.html
-│   ├── macro-checker.html
-│   ├── jira-sheets-dashboard.html
-│   ├── blueprint-chart.html
-│   ├── json-editor.html
-│   └── lozenge-donut-chart.html
+├── index.html                      # Main landing page
+├── styles.css                      # Global styles
+├── build-portfolio.js              # Automated build system
+├── build-docs.html                 # Build documentation
+├── package.json                    # Build dependencies
+├── README.md                       # This file
+├── projects/                       # Individual project pages
+│   ├── blueprint-standard-adherence-master-tracker.html
+│   ├── blueprint-standard-adherence-thermometers.html
+│   ├── blueprint-standards-chart-custom-ui-react.html
+│   ├── confluence-json-editor.html
+│   ├── confluence-macro-checker.html
+│   └── lozenge-donut-chart-v2-claude-code.html
+├── project-code/                   # Full source code for all projects
+│   ├── blueprint-standard-adherence-master-tracker/
+│   ├── blueprint-standard-adherence-thermometers/
+│   ├── blueprint-standards-chart-custom-ui-react/
+│   ├── confluence-json-editor/
+│   ├── confluence-macro-checker/
+│   └── lozenge-donut-chart-v2-claude-code/
 └── .gitignore
 ```
 

@@ -1,0 +1,30 @@
+{
+  "name": "blueprint-standard-adherence-thermometers",
+  "version": "1.0.0",
+  "description": "Custom Jira dashboard that displays data from Google Sheets",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "cd static/dashboard && npm run build",
+    "install-frontend": "cd static/dashboard && npm install"
+  },
+  "keywords": [
+    "forge",
+    "jira",
+    "dashboard",
+    "google-sheets"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@forge/api": "^3.0.0",
+    "@forge/react": "^11.5.0",
+    "@forge/resolver": "^1.5.0",
+    "@forge/ui": "^1.11.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.27.1",
+    "@forge/cli": "^6.0.0"
+  }
+}

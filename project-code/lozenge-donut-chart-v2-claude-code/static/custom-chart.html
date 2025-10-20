@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lozenge Chart</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #F4F5F7;
+        }
+
+        #container {
+            max-width: 600px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+
+        h2 {
+            margin: 0 0 10px 0;
+            color: #172B4D;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        #loading {
+            color: #6B778C;
+            font-size: 14px;
+        }
+
+        #error {
+            color: #FF5630;
+            padding: 10px;
+            background: #FFEBE6;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        #chart-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        #legend {
+            flex: 1;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #172B4D;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .legend-label {
+            flex: 1;
+        }
+
+        .legend-count {
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .legend-percent {
+            color: #6B778C;
+            margin-left: 4px;
+        }
+
+        #total {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #DFE1E6;
+            font-size: 14px;
+            color: #6B778C;
+        }
+
+        #total strong {
+            color: #172B4D;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h2>Standard adherence</h2>
+        <div id="loading">Loading data on this client's Blueprint chapters...</div>
+        <div id="error" style="display: none;"></div>
+        <div id="chart-container" style="display: none;">
+            <svg id="pie-chart" width="200" height="200"></svg>
+            <div id="legend"></div>
+        </div>
+        <div id="total" style="display: none;"></div>
+    </div>
+
+    <script type="module">
+        // Custom color mapping - YOU CAN EDIT THESE!
+        const LABEL_COLOR_MAP = {
+            'standard': '#36B37E',        // Green
+            'semi-standard': '#FFAB00',   // Yellow/Orange
+            'non-standard': '#FF5630',    // Red
+            'bespoke': '#6554C0'          // Purple
+        };
+
+        function toTitleCase(str) {
+            return str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+        }
+
+        function createPieChart(data, totalCount) {
+            const svg = document.getElementById('pie-chart');
+            const width = 200;
+            const height = 200;
+            const radius = 90;
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            // Clear existing content
+            svg.innerHTML = '';
+
+            if (totalCount === 0) {
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', centerX);
+                text.setAttribute('y', centerY);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('fill', '#6B778C');
+                text.setAttribute('font-size', '14');
+                text.textContent = 'No lozenges found';
+                svg.appendChild(text);
+                return;
+            }
+
+            // Process and sort data
+            const chartData = Object.entries(data).map(([label, count]) => {
+                // Remove color from label
+                const cleanLabel = label.replace(/\s*\([^)]*\)\s*$/, '').trim();
+                const labelKey = cleanLabel.toLowerCase();
+                const color = LABEL_COLOR_MAP[labelKey] || '#8993A4'; // Default gray
+
+                return {
+                    label: toTitleCase(cleanLabel),
+                    count,
+                    color,
+                    percentage: count / totalCount
+                };
+            }).sort((a, b) => b.count - a.count);
+
+            // Draw pie slices
+            let currentAngle = -Math.PI / 2; // Start at top
+
+            chartData.forEach(item => {
+                const angle = item.percentage * 2 * Math.PI;
+                const endAngle = currentAngle + angle;
+
+                // Calculate arc path
+                const startX = centerX + radius * Math.cos(currentAngle);
+                const startY = centerY + radius * Math.sin(currentAngle);
+                const endX = centerX + radius * Math.cos(endAngle);
+                const endY = centerY + radius * Math.sin(endAngle);
+
+                const largeArcFlag = angle > Math.PI ? 1 : 0;
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                const pathData = [
+                    `M ${centerX} ${centerY}`,
+                    `L ${startX} ${startY}`,
+                    `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${endX} ${endY}`,
+                    'Z'
+                ].join(' ');
+
+                path.setAttribute('d', pathData);
+                path.setAttribute('fill', item.color);
+                path.setAttribute('stroke', 'white');
+                path.setAttribute('stroke-width', '2');
+
+                svg.appendChild(path);
+
+                currentAngle = endAngle;
+            });
+
+            return chartData;
+        }
+
+        function createLegend(chartData, totalCount) {
+            const legend = document.getElementById('legend');
+            legend.innerHTML = '';
+
+            if (totalCount === 0) {
+                legend.innerHTML = '<div style="color: #6B778C;">No lozenges found on this page.</div>';
+                return;
+            }
+
+            chartData.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'legend-item';
+
+                const colorBox = document.createElement('div');
+                colorBox.className = 'legend-color';
+                colorBox.style.backgroundColor = item.color;
+
+                const labelSpan = document.createElement('span');
+                labelSpan.className = 'legend-label';
+                labelSpan.textContent = item.label;
+
+                const countSpan = document.createElement('span');
+                countSpan.className = 'legend-count';
+                countSpan.textContent = item.count;
+
+                const percentSpan = document.createElement('span');
+                percentSpan.className = 'legend-percent';
+                percentSpan.textContent = `(${(item.percentage * 100).toFixed(1)}%)`;
+
+                itemDiv.appendChild(colorBox);
+                itemDiv.appendChild(labelSpan);
+                itemDiv.appendChild(countSpan);
+                itemDiv.appendChild(percentSpan);
+
+                legend.appendChild(itemDiv);
+            });
+        }
+
+        // Initialize - Load data via resolver
+        async function loadData() {
+            try {
+                // Import Forge bridge
+                const bridge = await import('https://cdn.jsdelivr.net/npm/@forge/bridge@5.6.0/out/browser/index.js');
+
+                const response = await bridge.invoke('getLozengeData');
+                console.log('Received lozenge data:', response);
+
+                const loading = document.getElementById('loading');
+                const error = document.getElementById('error');
+                const chartContainer = document.getElementById('chart-container');
+                const total = document.getElementById('total');
+
+                loading.style.display = 'none';
+
+                if (response.error) {
+                    error.textContent = `Error: ${response.error}`;
+                    error.style.display = 'block';
+                    return;
+                }
+
+                const lozenges = response.lozenges || {};
+                const totalCount = response.totalCount || 0;
+
+                const chartData = createPieChart(lozenges, totalCount);
+                createLegend(chartData, totalCount);
+
+                chartContainer.style.display = 'flex';
+                total.style.display = 'block';
+                total.innerHTML = `<strong>Total lozenges:</strong> ${totalCount}`;
+            } catch (err) {
+                console.error('Error loading lozenge data:', err);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').textContent = `Error: ${err.message}`;
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        // Wait for page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadData);
+        } else {
+            loadData();
+        }
+    </script>
+</body>
+</html>

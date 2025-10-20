@@ -1,0 +1,36 @@
+# This file specifies files that are *not* uploaded to Google Cloud
+# using gcloud. It follows the same syntax as .gitignore
+
+.git
+.gitignore
+node_modules/
+.env
+.env.local
+.google-token.json
+
+# TypeScript config and source (needed for Cloud Build)
+# src/
+# tsconfig.json
+
+# Documentation and examples
+README.md
+*.md
+config.example.json
+# Note: config.json IS included (needed by app)
+
+# Local testing
+test/
+tests/
+*.test.js
+*.test.ts
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

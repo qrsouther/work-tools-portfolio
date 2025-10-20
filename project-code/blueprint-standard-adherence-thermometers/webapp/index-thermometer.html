@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint Standard Adherence Thermometers</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            padding: 20px;
+            background: #f4f5f7;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .sidebar {
+            width: 280px;
+            position: sticky;
+            top: 20px;
+            flex-shrink: 0;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #172B4D;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .filter-section {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .filter-section input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .filter-section input:focus {
+            outline: none;
+            border-color: #0052CC;
+        }
+
+        .sort-controls {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sort-controls label {
+            font-size: 14px;
+            color: #172B4D;
+            font-weight: 600;
+        }
+
+        .sort-controls select {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .sort-controls select:focus {
+            outline: none;
+            border-color: #0052CC;
+        }
+
+        .controls input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .controls button {
+            padding: 8px 20px;
+            background: #0052CC;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .controls button:hover { background: #0747A6; }
+        .controls button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .auth-section {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .auth-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .auth-section button {
+            padding: 8px 16px;
+            background: #0052CC;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            width: 100%;
+        }
+
+        .auth-section button:hover {
+            background: #0747A6;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .status-indicator.connected { background: #00875A; }
+        .status-indicator.disconnected { background: #FF5630; }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .error {
+            background: #FFEBE6;
+            border: 2px solid #FF5630;
+            color: #BF2600;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            background: #DEEBFF;
+            border: 2px solid #0052CC;
+            color: #0747A6;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .legend-section {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .legend-section h3 {
+            font-size: 14px;
+            color: #172B4D;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .legend-item-global {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-item-global .color-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+
+        .legend-item-global .label {
+            font-size: 13px;
+            color: #42526E;
+            font-weight: 500;
+        }
+
+        .thermometer-container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .thermometer-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .thermometer-label {
+            width: 200px;
+            max-width: 200px;
+            font-weight: 600;
+            color: #172B4D;
+            font-size: 16px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.3;
+        }
+
+        .thermometer-label a {
+            color: #0052CC;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .thermometer-label a:hover {
+            color: #0747A6;
+            text-decoration: underline;
+        }
+
+        .thermometer {
+            flex: 1;
+            height: 80px;
+            background: #F4F5F7;
+            border-radius: 40px;
+            overflow: visible;
+            display: flex;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .thermometer-inner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            overflow: hidden;
+            border-radius: 40px;
+        }
+
+        .thermometer-segment {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            border-right: 2px solid white;
+        }
+
+        .thermometer-segment:last-child {
+            border-right: none;
+        }
+
+        .thermometer-segment:hover {
+            cursor: help;
+        }
+
+
+        .thermometer-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #DFE1E6;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .legend-text {
+            font-size: 14px;
+            color: #42526E;
+        }
+
+        .legend-count {
+            font-weight: 600;
+            color: #172B4D;
+        }
+
+        .sheet-title {
+            font-size: 18px;
+            color: #172B4D;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="info" id="infoPanel" style="display: none;">
+                💡 <strong>Tip:</strong> Hover over a thermometer segment to see exactly how many chapters fall into that category.
+            </div>
+
+            <div class="legend-section" id="legendSection" style="display: none;">
+                <h3>Legend</h3>
+                <div class="legend-items">
+                    <div class="legend-item-global">
+                        <div class="color-box" style="background-color: green;"></div>
+                        <div class="label">Standard</div>
+                    </div>
+                    <div class="legend-item-global">
+                        <div class="color-box" style="background-color: #f9c84e;"></div>
+                        <div class="label">Semi-Standard</div>
+                    </div>
+                    <div class="legend-item-global">
+                        <div class="color-box" style="background-color: purple;"></div>
+                        <div class="label">Bespoke</div>
+                    </div>
+                    <div class="legend-item-global">
+                        <div class="color-box" style="background-color: red;"></div>
+                        <div class="label">Non-Standard</div>
+                    </div>
+                    <div class="legend-item-global">
+                        <div class="color-box" style="background-color: #808080;"></div>
+                        <div class="label">TBD</div>
+                    </div>
+                    <div class="legend-item-global">
+                        <div class="color-box" style="background-color: #C0C0C0;"></div>
+                        <div class="label">N/A</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-section">
+                <div class="auth-status">
+                    <span class="status-indicator" id="statusIndicator"></span>
+                    <span id="authStatus">Not authenticated</span>
+                </div>
+                <button onclick="handleAuthClick()" id="authButton">Sign in with Google</button>
+                <button onclick="handleSignoutClick()" id="signoutButton" style="display: none;">Sign Out</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+
+            <div class="header">
+                <h1 id="title">Blueprint Standard Adherence Thermometers</h1>
+                <div class="controls">
+                    <button onclick="loadData()" id="refreshButton" disabled>Refresh</button>
+                </div>
+            </div>
+
+            <div id="info" class="info" style="display: none;">
+                <strong>Setup Instructions:</strong>
+                <ol style="margin-left: 20px; margin-top: 10px;">
+                    <li>Click "Sign in with Google" above</li>
+                    <li>Grant access to view your Google Sheets</li>
+                    <li>Data will load automatically</li>
+                </ol>
+            </div>
+
+            <div id="loading" class="loading" style="display: none;">
+                <p>Loading Google Sheets data...</p>
+                <p id="loadingProgress" style="margin-top: 10px; font-size: 14px; color: #0052CC;"></p>
+            </div>
+
+            <div id="error" class="error" style="display: none;"></div>
+
+            <div class="sort-controls" id="sortControls" style="display: none;">
+                <label for="sortSelect">Sort by:</label>
+                <select id="sortSelect" onchange="changeSortOrder()">
+                    <option value="standard">Standard % (High to Low)</option>
+                    <option value="alphabetical">Team Name (A-Z)</option>
+                </select>
+            </div>
+
+            <div class="filter-section" id="filterSection" style="display: none;">
+                <input type="text" id="filterInput" placeholder="Search teams..." oninput="filterThermometers()" />
+            </div>
+
+            <div id="content"></div>
+        </div>
+    </div>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        let tokenClient;
+        let accessToken = null;
+        let currentSpreadsheetId = '10D0tNsNAC4cwSvFrd9eSVd0TEgqvkVXW1wVVqdvd1mI';
+        let allSheetsData = []; // Store all sheets data for re-sorting
+
+        const CLIENT_ID = '701841318363-v0cg14t9b38roqgpdkvfbeavpknm8adl.apps.googleusercontent.com';
+        const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+
+        function initializeGoogleAuth() {
+            try {
+                tokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: CLIENT_ID,
+                    scope: SCOPES,
+                    callback: (response) => {
+                        if (response.error !== undefined) {
+                            showError('Authentication failed: ' + response.error);
+                            return;
+                        }
+                        accessToken = response.access_token;
+                        updateAuthUI(true);
+                        loadData();
+                    },
+                });
+            } catch (error) {
+                showError('Failed to initialize Google authentication: ' + error.message);
+            }
+        }
+
+        window.onload = function() {
+            if (typeof google !== 'undefined') {
+                initializeGoogleAuth();
+            } else {
+                setTimeout(() => {
+                    if (typeof google !== 'undefined') {
+                        initializeGoogleAuth();
+                    } else {
+                        showError('Failed to load Google authentication library. Please refresh the page.');
+                    }
+                }, 1000);
+            }
+
+            document.getElementById('info').style.display = 'block';
+        };
+
+        function handleAuthClick() {
+            if (!tokenClient) {
+                showError('Authentication not initialized yet. Please wait a moment and try again.');
+                return;
+            }
+            try {
+                tokenClient.requestAccessToken();
+            } catch (error) {
+                showError('Failed to request access token: ' + error.message);
+            }
+        }
+
+        function handleSignoutClick() {
+            accessToken = null;
+            google.accounts.oauth2.revoke(accessToken, () => {
+                updateAuthUI(false);
+            });
+        }
+
+        function updateAuthUI(isSignedIn) {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const authStatus = document.getElementById('authStatus');
+            const authButton = document.getElementById('authButton');
+            const signoutButton = document.getElementById('signoutButton');
+            const refreshButton = document.getElementById('refreshButton');
+
+            if (isSignedIn) {
+                statusIndicator.className = 'status-indicator connected';
+                authStatus.textContent = 'Connected to Google';
+                authButton.style.display = 'none';
+                signoutButton.style.display = 'inline-block';
+                refreshButton.disabled = false;
+                document.getElementById('info').style.display = 'none';
+            } else {
+                statusIndicator.className = 'status-indicator disconnected';
+                authStatus.textContent = 'Not authenticated';
+                authButton.style.display = 'inline-block';
+                signoutButton.style.display = 'none';
+                refreshButton.disabled = true;
+                document.getElementById('info').style.display = 'block';
+            }
+        }
+
+        async function loadData() {
+            if (!accessToken) {
+                showError('Please sign in with Google first');
+                return;
+            }
+
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('content').innerHTML = '';
+
+            try {
+                const metadataUrl = `https://sheets.googleapis.com/v4/spreadsheets/${currentSpreadsheetId}`;
+                const metadataResponse = await fetch(metadataUrl, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+
+                if (!metadataResponse.ok) {
+                    const error = await metadataResponse.json();
+                    throw new Error(error.error?.message || 'Failed to fetch spreadsheet');
+                }
+
+                const metadata = await metadataResponse.json();
+                const sheets = metadata.sheets || [];
+
+                document.getElementById('title').textContent = metadata.properties.title;
+
+                // Fetch sheets sequentially with delay to avoid rate limits
+                const allSheetData = [];
+                const progressEl = document.getElementById('loadingProgress');
+
+                for (let i = 0; i < sheets.length; i++) {
+                    const sheet = sheets[i];
+                    const sheetName = sheet.properties.title;
+                    const range = `${sheetName}!A1:G20`;
+
+                    // Update progress indicator
+                    progressEl.textContent = `Loading sheet ${i + 1} of ${sheets.length}: ${sheetName}`;
+
+                    const dataUrl = `https://sheets.googleapis.com/v4/spreadsheets/${currentSpreadsheetId}/values/${encodeURIComponent(range)}`;
+                    const dataResponse = await fetch(dataUrl, {
+                        headers: { 'Authorization': `Bearer ${accessToken}` }
+                    });
+
+                    if (dataResponse.ok) {
+                        const data = await dataResponse.json();
+                        allSheetData.push({
+                            sheetName,
+                            data: data.values || [],
+                        });
+                    } else {
+                        allSheetData.push({ sheetName, data: [] });
+                    }
+
+                    // Wait 500ms between requests to avoid rate limits
+                    if (i < sheets.length - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }
+                }
+
+                allSheetsData = allSheetData; // Store for re-sorting
+                displayThermometers(allSheetsData);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('infoPanel').style.display = 'block';
+                document.getElementById('legendSection').style.display = 'block';
+                document.getElementById('sortControls').style.display = 'flex';
+                document.getElementById('filterSection').style.display = 'block';
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                showError(error.message);
+            }
+        }
+
+
+        function displayThermometers(sheets, sortBy = 'standard') {
+            const contentContainer = document.getElementById('content');
+            contentContainer.innerHTML = '';
+
+            // Calculate Standard percentage for each sheet for sorting
+            const sheetsWithStandardPercentage = sheets.map(sheet => {
+                if (sheet.data.length === 0) return { ...sheet, standardPercentage: -1 };
+
+                const headers = sheet.data[0];
+                const lozengeTextIndex = headers.findIndex(h => h && h.toLowerCase().includes('lozenge text'));
+                const countIndex = headers.findIndex(h => h && h.toLowerCase().includes('count'));
+
+                if (lozengeTextIndex === -1 || countIndex === -1) {
+                    return { ...sheet, standardPercentage: -1 };
+                }
+
+                let standardCount = 0;
+                let totalCount = 0;
+
+                sheet.data.slice(1).forEach(row => {
+                    const text = row[lozengeTextIndex];
+                    const count = parseInt(row[countIndex]) || 0;
+
+                    if (text && count > 0) {
+                        totalCount += count;
+                        if (text === 'Standard') {
+                            standardCount = count;
+                        }
+                    }
+                });
+
+                const standardPercentage = totalCount > 0 ? (standardCount / totalCount * 100) : -1;
+                return { ...sheet, standardPercentage };
+            });
+
+            // Sort sheets based on selected sort order
+            let sortedSheets;
+            if (sortBy === 'alphabetical') {
+                sortedSheets = sheetsWithStandardPercentage.sort((a, b) =>
+                    a.sheetName.localeCompare(b.sheetName)
+                );
+            } else {
+                // Default: sort by Standard percentage (highest to lowest)
+                sortedSheets = sheetsWithStandardPercentage.sort((a, b) =>
+                    b.standardPercentage - a.standardPercentage
+                );
+            }
+
+            sortedSheets.forEach(sheet => {
+                if (sheet.data.length === 0) return;
+
+                const headers = sheet.data[0];
+                const lozengeTextIndex = headers.findIndex(h => h && h.toLowerCase().includes('lozenge text'));
+                const lozengeColorIndex = headers.findIndex(h => h && h.toLowerCase().includes('lozenge color'));
+                const countIndex = headers.findIndex(h => h && h.toLowerCase().includes('count'));
+                const pageIdIndex = headers.findIndex(h => h && h.toLowerCase().includes('page id'));
+
+                if (lozengeTextIndex === -1 || lozengeColorIndex === -1 || countIndex === -1) {
+                    return; // Skip sheets without required columns
+                }
+
+                // Read counts from COUNT column and get Page ID from first data row
+                const counts = {};
+                const colors = {};
+                let pageId = null;
+
+                sheet.data.slice(1).forEach((row, index) => {
+                    const text = row[lozengeTextIndex];
+                    const color = row[lozengeColorIndex];
+                    const count = parseInt(row[countIndex]) || 0;
+
+                    // Get Page ID from first row
+                    if (index === 0 && pageIdIndex !== -1) {
+                        pageId = row[pageIdIndex];
+                    }
+
+                    if (text && count > 0) {
+                        counts[text] = count;
+                        if (!colors[text]) {
+                            // Force specific colors for certain categories
+                            if (text === 'TBD') {
+                                colors[text] = '#808080';
+                            } else if (text === 'N/A') {
+                                colors[text] = '#C0C0C0';
+                            } else if (text === 'Semi-Standard') {
+                                colors[text] = '#f9c84e';
+                            } else if (color) {
+                                colors[text] = color;
+                            }
+                        }
+                    }
+                });
+
+                // Create thermometer container
+                const container = document.createElement('div');
+                container.className = 'thermometer-container';
+
+                // Create thermometer row
+                const thermometerRow = document.createElement('div');
+                thermometerRow.className = 'thermometer-row';
+
+                const label = document.createElement('div');
+                label.className = 'thermometer-label';
+
+                // Create clickable link if Page ID exists
+                if (pageId) {
+                    const link = document.createElement('a');
+                    link.href = `https://seatgeek.atlassian.net/wiki/spaces/cs/pages/${pageId}`;
+                    link.target = '_blank';
+                    link.textContent = sheet.sheetName;
+                    label.appendChild(link);
+                } else {
+                    label.textContent = sheet.sheetName;
+                }
+
+                thermometerRow.appendChild(label);
+
+                // Create thermometer
+                const thermometer = document.createElement('div');
+                thermometer.className = 'thermometer';
+
+                const thermometerInner = document.createElement('div');
+                thermometerInner.className = 'thermometer-inner';
+
+                const total = Object.values(counts).reduce((sum, count) => sum + count, 0);
+
+                // Define the desired order for segments (N/A should be rightmost)
+                const segmentOrder = ['Standard', 'Semi-Standard', 'Bespoke', 'Non-Standard', 'TBD', 'N/A'];
+
+                // Sort entries by the defined order
+                const sortedEntries = Object.entries(counts).sort((a, b) => {
+                    const indexA = segmentOrder.indexOf(a[0]);
+                    const indexB = segmentOrder.indexOf(b[0]);
+
+                    // If both are in the order list, sort by their position
+                    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                    // If only A is in the list, it comes first
+                    if (indexA !== -1) return -1;
+                    // If only B is in the list, it comes first
+                    if (indexB !== -1) return 1;
+                    // If neither is in the list, maintain original order (alphabetical)
+                    return a[0].localeCompare(b[0]);
+                });
+
+                sortedEntries.forEach(([text, count]) => {
+                    const segment = document.createElement('div');
+                    segment.className = 'thermometer-segment';
+                    const percentage = (count / total * 100).toFixed(1);
+                    segment.style.width = percentage + '%';
+
+                    const bgColor = colors[text] || '#DFE1E6';
+                    segment.style.backgroundColor = bgColor;
+
+                    // Calculate luminance to determine if text should be white or black
+                    const getContrastColor = (color) => {
+                        let r, g, b;
+
+                        // Handle hex colors
+                        if (color.startsWith('#')) {
+                            const hex = color.replace('#', '');
+                            r = parseInt(hex.substr(0, 2), 16);
+                            g = parseInt(hex.substr(2, 2), 16);
+                            b = parseInt(hex.substr(4, 2), 16);
+                        }
+                        // Handle rgb/rgba colors
+                        else if (color.startsWith('rgb')) {
+                            const matches = color.match(/\d+/g);
+                            r = parseInt(matches[0]);
+                            g = parseInt(matches[1]);
+                            b = parseInt(matches[2]);
+                        }
+                        // Handle named colors - convert common ones
+                        else {
+                            const namedColors = {
+                                'yellow': [255, 255, 0],
+                                'white': [255, 255, 255],
+                                'gray': [128, 128, 128],
+                                'grey': [128, 128, 128],
+                                'red': [255, 0, 0],
+                                'green': [0, 128, 0],
+                                'blue': [0, 0, 255],
+                                'purple': [128, 0, 128],
+                                'orange': [255, 165, 0],
+                                'black': [0, 0, 0],
+                                '#808080': [128, 128, 128]
+                            };
+                            const rgb = namedColors[color.toLowerCase()] || [128, 128, 128];
+                            r = rgb[0];
+                            g = rgb[1];
+                            b = rgb[2];
+                        }
+
+                        // Calculate relative luminance (WCAG formula)
+                        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+                        // Return black for light backgrounds, white for dark backgrounds
+                        return luminance > 0.5 ? '#000000' : '#FFFFFF';
+                    };
+
+                    segment.style.color = getContrastColor(bgColor);
+                    // Only show percentage text if segment is 3% or larger
+                    segment.textContent = percentage >= 3 ? Math.round(percentage) + '%' : '';
+
+                    // Custom tooltip for N/A
+                    if (text === 'N/A') {
+                        segment.title = `${count} of ${total} chapters have no solution selected, or are irrelevant to the client's operations ('N/A'), or ${percentage}%`;
+                    } else {
+                        segment.title = `${count} of ${total} chapters use a ${text} solution, or ${percentage}%`;
+                    }
+
+                    thermometerInner.appendChild(segment);
+                });
+
+                thermometer.appendChild(thermometerInner);
+                thermometerRow.appendChild(thermometer);
+                container.appendChild(thermometerRow);
+
+                contentContainer.appendChild(container);
+            });
+        }
+
+        function changeSortOrder() {
+            const sortBy = document.getElementById('sortSelect').value;
+            displayThermometers(allSheetsData, sortBy);
+        }
+
+        function filterThermometers() {
+            const filterText = document.getElementById('filterInput').value.toLowerCase();
+            const containers = document.querySelectorAll('.thermometer-container');
+
+            containers.forEach(container => {
+                const label = container.querySelector('.thermometer-label');
+                const teamName = label.textContent.toLowerCase();
+
+                if (teamName.includes(filterText)) {
+                    container.style.display = 'block';
+                } else {
+                    container.style.display = 'none';
+                }
+            });
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

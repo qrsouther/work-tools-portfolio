@@ -46,3 +46,13 @@ yarn-error.log*
 .env
 .env.local
 .env.*.local
+
+# Project code directories
+project-code/*/node_modules/
+project-code/*/.git/
+project-code/*/.DS_Store
+project-code/*/chrome_profile/
+project-code/*/*.json
+!project-code/*/package.json
+!project-code/*/manifest.json
+!project-code/*/tsconfig.json
