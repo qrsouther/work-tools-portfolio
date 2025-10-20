@@ -69,7 +69,17 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1.25rem;
     transition: all 0.2s ease;
+}
+
+.tool-thumbnail {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
 }
 
 .tool-item:hover {
@@ -187,6 +197,12 @@ footer a:hover {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+    }
+
+    .tool-thumbnail {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
     }
 
     .tool-actions {
