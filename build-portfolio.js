@@ -156,7 +156,9 @@ function parseReadme(readme, dirName) {
   // Detect project type and execution badges
   const content = readme.toLowerCase();
   const executionTypes = [];
-  const isDependent = content.includes('uses master tracker') || content.includes('data dependency');
+
+  // Hardcode dependency relationship: Thermometers depends on Master Tracker
+  const isDependent = dirName === 'blueprint-standard-adherence-thermometers';
 
   // Detect execution type
   if (content.includes('cloud function') || content.includes('google cloud')) {
