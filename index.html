@@ -3,193 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work Tools Portfolio</title>
+    <title>Work Tools Launcher</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Work Tools & Automation</h1>
-            <p class="subtitle">Custom-built solutions for Confluence, Jira, and workflow automation</p>
-        </div>
-    </header>
+    <div class="container">
+        <header>
+            <h1>Work Tools</h1>
+            <p class="subtitle">Quick access to automation, extensions, and utilities</p>
+        </header>
 
-    <main class="container">
-        <section class="intro">
-            <p>This portfolio showcases various tools, Chrome extensions, and automation workflows built to streamline work processes at SeatGeek. Each tool is designed to solve specific challenges with Confluence, Jira, and data tracking.</p>
-            <p style="margin-top: 1rem;"><a href="build-docs.html" style="color: #2563eb; font-weight: 600;">📖 View Build Documentation</a> - Learn how to rebuild this portfolio automatically</p>
-        </section>
-
-        <section class="projects-grid">
+        <main class="tools-list">
             <!-- Blueprint Standard Adherence Master Tracker -->
-            <article class="project-card">
-                <div class="project-header">
+            <div class="tool-item">
+                <img src="thumbnails/master-tracker.png" alt="Blueprint Standard Adherence Master Tracker" class="tool-thumbnail">
+                <div class="tool-info">
                     <h2>Blueprint Standard Adherence Master Tracker</h2>
-                    <span class="badge badge-forge">Forge App</span>
-                    <span class="badge badge-cloud">Cloud Function</span>
-                    <span class="badge badge-automation">Automation</span>
-                    <span class="badge badge-tool">CLI Tool</span>
+                    <p class="description">Automatically scans Confluence Blueprint pages for status lozenges (status badges), counts them by label and color, and writes the results to individual Google Sheet tabs for tracking and dashboard integration.</p>
+                    <span class="execution-type deployed">☁️ Google Cloud Function (Automated)</span>
                 </div>
-                <p class="project-description">
-                    Automatically scans Confluence Blueprint pages for status lozenges (status badges), counts them by label and color, and writes the results to individual Google Sheet tabs for tracking and dashboard integration.
-                </p>
-                <div class="project-stats">
-                    <span>~70 pages processed</span>
-                </div>
-                <div class="project-links">
-                    <a href="projects/blueprint-standard-adherence-master-tracker.html" class="btn btn-primary">View Details</a>
-                    <a href="https://github.com/qrsouther/blueprint-standard-adherence-master-tracker" class="btn btn-secondary" target="_blank">View on GitHub</a>
-                </div>
-            </article>
-
-            <!-- Blueprint Standard Adherence Thermometers -->
-            <article class="project-card">
-                <div class="project-header">
-                    <h2>Blueprint Standard Adherence Thermometers</h2>
-                    <span class="badge badge-forge">Forge App</span>
-                    <span class="badge badge-react">React</span>
-                    <span class="badge badge-cloud">Cloud Function</span>
-                    <span class="badge badge-automation">Automation</span>
-                    <span class="badge badge-tool">CLI Tool</span>
-                    <span class="badge badge-visualization">Visualization</span>
-                </div>
-                <p class="project-description">
-                    A collection of web-based tools for visualizing Google Sheets data, including a thermometer-style progress dashboard and standard data viewers. Includes both a standalone web application and an Atlassian Forge app for Jira integration.
-                </p>
-                <div class="project-stats">
-                    <span>Active</span>
-                </div>
-                <div class="project-links">
-                    <a href="projects/blueprint-standard-adherence-thermometers.html" class="btn btn-primary">View Details</a>
-                    <a href="https://github.com/qrsouther/blueprint-standard-adherence-thermometers" class="btn btn-secondary" target="_blank">View on GitHub</a>
-                </div>
-            </article>
-
-            <!-- Blueprint Standards Chart -->
-            <article class="project-card">
-                <div class="project-header">
-                    <h2>Blueprint Standards Chart</h2>
-                    <span class="badge badge-forge">Forge App</span>
-                    <span class="badge badge-react">React</span>
-                    <span class="badge badge-tool">CLI Tool</span>
-                    <span class="badge badge-visualization">Visualization</span>
-                </div>
-                <p class="project-description">
-                    A Confluence Forge app that automatically analyzes status lozenges in page headers and displays an interactive pie chart showing the breakdown of standards adherence across Blueprint chapters.
-                </p>
-                <div class="project-stats">
-                    <span>Active</span>
-                </div>
-                <div class="project-links">
-                    <a href="projects/blueprint-standards-chart-custom-ui-react.html" class="btn btn-primary">View Details</a>
-                    <a href="https://github.com/qrsouther/blueprint-standards-chart-custom-ui-react" class="btn btn-secondary" target="_blank">View on GitHub</a>
-                </div>
-            </article>
-
-            <!-- Confluence JSON Editor -->
-            <article class="project-card">
-                <div class="project-header">
-                    <h2>Confluence JSON Editor</h2>
-                    <span class="badge badge-forge">Forge App</span>
-                    <span class="badge badge-tool">Chrome Extension</span>
-                    <span class="badge badge-tool">CLI Tool</span>
-                </div>
-                <p class="project-description">
-                    A Chrome extension that provides direct JSON editing capabilities for Confluence pages via the REST API, enabling advanced page modifications and bulk find/replace operations.
-                </p>
-                <div class="project-stats">
-                    <span>Active</span>
-                </div>
-                <div class="project-links">
-                    <a href="projects/confluence-json-editor.html" class="btn btn-primary">View Details</a>
-                    <a href="https://github.com/qrsouther/confluence-json-editor" class="btn btn-secondary" target="_blank">View on GitHub</a>
-                </div>
-            </article>
-
-            <!-- Confluence Macro Error Checker -->
-            <article class="project-card">
-                <div class="project-header">
-                    <h2>Confluence Macro Error Checker</h2>
-                    <span class="badge badge-forge">Forge App</span>
-                    <span class="badge badge-python">Python</span>
-                    <span class="badge badge-cloud">Cloud Function</span>
-                    <span class="badge badge-tool">CLI Tool</span>
-                </div>
-                <p class="project-description">
-                    This script crawls your company's Confluence instance to find pages with a specific keyword in their title, checks for macro rendering errors, and exports the results to Google Sheets.
-                </p>
-                <div class="project-stats">
-                    <span>~3 pages processed</span>
-                </div>
-                <div class="project-links">
-                    <a href="projects/confluence-macro-checker.html" class="btn btn-primary">View Details</a>
-                    <a href="https://github.com/qrsouther/confluence-macro-checker" class="btn btn-secondary" target="_blank">View on GitHub</a>
-                </div>
-            </article>
-
-            <!-- SmartExcerpt - Confluence Forge App -->
-            <article class="project-card">
-                <div class="project-header">
-                    <h2>SmartExcerpt - Confluence Forge App</h2>
-                    <span class="badge badge-forge">Forge App</span>
-                    <span class="badge badge-tool">CLI Tool</span>
-                </div>
-                <p class="project-description">
-                    A high-performance Forge app for Confluence that enables reusable content blocks with variable substitution and automatic updates.
-                </p>
-                <div class="project-stats">
-                    <span>Active</span>
-                </div>
-                <div class="project-links">
-                    <a href="projects/smart-excerpt.html" class="btn btn-primary">View Details</a>
-                    <a href="https://github.com/qrsouther/smart-excerpt" class="btn btn-secondary" target="_blank">View on GitHub</a>
-                </div>
-            </article>
-        </section>
-
-        <section class="tech-stack">
-            <h2>Technologies Used</h2>
-            <div class="tech-grid">
-                <div class="tech-item">
-                    <h3>Backend</h3>
-                    <ul>
-                        <li>Node.js</li>
-                        <li>Python</li>
-                        <li>Google Cloud Functions</li>
-                    </ul>
-                </div>
-                <div class="tech-item">
-                    <h3>Frontend</h3>
-                    <ul>
-                        <li>React</li>
-                        <li>JavaScript</li>
-                        <li>HTML/CSS</li>
-                    </ul>
-                </div>
-                <div class="tech-item">
-                    <h3>Platforms</h3>
-                    <ul>
-                        <li>Atlassian Forge</li>
-                        <li>Confluence API</li>
-                        <li>Jira API</li>
-                    </ul>
-                </div>
-                <div class="tech-item">
-                    <h3>Integrations</h3>
-                    <ul>
-                        <li>Google Sheets API</li>
-                        <li>Google Cloud Platform</li>
-                        <li>OAuth 2.0</li>
-                    </ul>
+                <div class="tool-actions">
+                    <a href="https://github.com/qrsouther/blueprint-standard-adherence-master-tracker" class="btn" target="_blank">GitHub</a>
                 </div>
             </div>
-        </section>
-    </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
-        </div>
-    </footer>
+            <!-- Blueprint Standard Adherence Thermometers -->
+            <div class="tool-item">
+                <img src="thumbnails/thermometers.png" alt="Blueprint Standard Adherence Thermometers" class="tool-thumbnail">
+                <div class="tool-info">
+                    <h2>Blueprint Standard Adherence Thermometers</h2>
+                    <p class="description">A collection of web-based tools for visualizing Google Sheets data, including a thermometer-style progress dashboard and standard data viewers. Includes both a standalone web application and an Atlassian Forge app for Jira integration.</p>
+                    <span class="execution-type deployed">☁️ Google Cloud Function (Automated)</span>
+                    <span class="execution-type forge">🔧 Forge App (Install to Jira)</span>
+                    <span class="execution-type forge">🔧 Forge App (Install to Confluence)</span>
+                </div>
+                <div class="tool-actions">
+                    <a href="https://github.com/qrsouther/blueprint-standard-adherence-thermometers" class="btn" target="_blank">GitHub</a>
+                </div>
+            </div>
+
+            <!-- Blueprint Standards Chart -->
+            <div class="tool-item">
+                <img src="thumbnails/blueprint-chart.png" alt="Blueprint Standards Chart" class="tool-thumbnail">
+                <div class="tool-info">
+                    <h2>Blueprint Standards Chart</h2>
+                    <p class="description">A Confluence Forge app that automatically analyzes status lozenges in page headers and displays an interactive pie chart showing the breakdown of standards adherence across Blueprint chapters.</p>
+                    <span class="execution-type forge">🔧 Forge App (Install to Jira)</span>
+                    <span class="execution-type forge">🔧 Forge App (Install to Confluence)</span>
+                </div>
+                <div class="tool-actions">
+                    <a href="https://github.com/qrsouther/blueprint-standards-chart-custom-ui-react" class="btn" target="_blank">GitHub</a>
+                </div>
+            </div>
+
+            <!-- Confluence JSON Editor -->
+            <div class="tool-item">
+                <img src="thumbnails/json-editor.png" alt="Confluence JSON Editor" class="tool-thumbnail">
+                <div class="tool-info">
+                    <h2>Confluence JSON Editor</h2>
+                    <p class="description">A Chrome extension that provides direct JSON editing capabilities for Confluence pages via the REST API, enabling advanced page modifications and bulk find/replace operations.</p>
+                    <span class="execution-type extension">🧩 Chrome Extension (Manual Install)</span>
+                </div>
+                <div class="tool-actions">
+                    <a href="https://github.com/qrsouther/confluence-json-editor" class="btn" target="_blank">GitHub</a>
+                </div>
+            </div>
+
+            <!-- Confluence Macro Error Checker -->
+            <div class="tool-item">
+                <img src="thumbnails/macro-checker.png" alt="Confluence Macro Error Checker" class="tool-thumbnail">
+                <div class="tool-info">
+                    <h2>Confluence Macro Error Checker</h2>
+                    <p class="description">This script crawls your company's Confluence instance to find pages with a specific keyword in their title, checks for macro rendering errors, and exports the results to Google Sheets.</p>
+                    <span class="execution-type deployed">☁️ Google Cloud Function (Automated)</span>
+                    <span class="execution-type script">🐍 Python Script (Manual Run)</span>
+                </div>
+                <div class="tool-actions">
+                    <a href="https://github.com/qrsouther/confluence-macro-checker" class="btn" target="_blank">GitHub</a>
+                </div>
+            </div>
+
+            <!-- SmartExcerpt - Confluence Forge App -->
+            <div class="tool-item">
+                <img src="thumbnails/smart-excerpt.png" alt="SmartExcerpt - Confluence Forge App" class="tool-thumbnail">
+                <div class="tool-info">
+                    <h2>SmartExcerpt - Confluence Forge App</h2>
+                    <p class="description">A high-performance Forge app for Confluence that enables reusable content blocks with variable substitution and automatic updates.</p>
+                    <span class="execution-type forge">🔧 Forge App (Install to Jira)</span>
+                    <span class="execution-type forge">🔧 Forge App (Install to Confluence)</span>
+                </div>
+                <div class="tool-actions">
+                    <a href="https://github.com/qrsouther/smart-excerpt" class="btn" target="_blank">GitHub</a>
+                </div>
+            </div>
+
+        </main>
+
+        <footer>
+            <p>Built with <a href="https://claude.com/claude-code" target="_blank">Claude Code</a></p>
+        </footer>
+    </div>
 </body>
 </html>

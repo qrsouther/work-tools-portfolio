@@ -121,34 +121,39 @@ function parseReadme(readme, dirName) {
     }
   }
 
-  // Detect project type and technologies
+  // Detect project type and execution badges
   const content = readme.toLowerCase();
-  const badges = [];
-  const stats = [];
+  const executionTypes = [];
+  const isDependent = content.includes('uses master tracker') || content.includes('data dependency');
 
-  // Detect technologies and add badges
-  if (content.includes('forge') || content.includes('atlassian')) badges.push({ type: 'forge', text: 'Forge App' });
-  if (content.includes('react')) badges.push({ type: 'react', text: 'React' });
-  if (content.includes('python')) badges.push({ type: 'python', text: 'Python' });
-  if (content.includes('cloud function') || content.includes('google cloud')) badges.push({ type: 'cloud', text: 'Cloud Function' });
-  if (content.includes('automation') || content.includes('scheduled')) badges.push({ type: 'automation', text: 'Automation' });
-  if (content.includes('chrome extension')) badges.push({ type: 'tool', text: 'Chrome Extension' });
-  if (content.includes('cli') || content.includes('command line')) badges.push({ type: 'tool', text: 'CLI Tool' });
-  if (content.includes('visualization') || content.includes('chart')) badges.push({ type: 'visualization', text: 'Visualization' });
+  // Detect execution type
+  if (content.includes('cloud function') || content.includes('google cloud')) {
+    executionTypes.push({ type: 'deployed', icon: '☁️', text: 'Google Cloud Function (Automated)' });
+  }
+  if (content.includes('forge app') || (content.includes('forge') && content.includes('jira'))) {
+    executionTypes.push({ type: 'forge', icon: '🔧', text: 'Forge App (Install to Jira)' });
+  }
+  if (content.includes('forge app') || (content.includes('forge') && content.includes('confluence'))) {
+    executionTypes.push({ type: 'forge', icon: '🔧', text: 'Forge App (Install to Confluence)' });
+  }
+  if (content.includes('chrome extension')) {
+    executionTypes.push({ type: 'extension', icon: '🧩', text: 'Chrome Extension (Manual Install)' });
+  }
+  if (content.includes('python') && (content.includes('cli') || content.includes('script'))) {
+    executionTypes.push({ type: 'script', icon: '🐍', text: 'Python Script (Manual Run)' });
+  }
 
-  // Extract key stats if present
-  const statusMatch = readme.match(/Status.*?deployed/i);
-  if (statusMatch) stats.push('Deployed & Running');
-
-  const pagesMatch = readme.match(/~?(\d+)\s+pages/i);
-  if (pagesMatch) stats.push(`~${pagesMatch[1]} pages processed`);
+  // Add dependency badge if applicable
+  if (isDependent) {
+    executionTypes.push({ type: 'dependency', icon: '⬆️', text: 'Uses Master Tracker Data' });
+  }
 
   return {
     title,
     description: description || 'No description available',
     dirName,
-    badges: badges.length > 0 ? badges : [{ type: 'tool', text: 'Tool' }],
-    stats: stats.length > 0 ? stats : ['Active'],
+    executionTypes: executionTypes.length > 0 ? executionTypes : [{ type: 'script', icon: '🔨', text: 'Tool' }],
+    isDependent,
     readme
   };
 }
@@ -164,36 +169,38 @@ function formatTitle(dirName) {
 }
 
 /**
- * Generate project card HTML for index page
+ * Generate tool item HTML for launcher page
  */
-function generateProjectCard(project) {
-  const badgesHtml = project.badges
-    .map(badge => `<span class="badge badge-${badge.type}">${badge.text}</span>`)
+function generateToolItem(project) {
+  const executionTypesHtml = project.executionTypes
+    .map(badge => `<span class="execution-type ${badge.type}">${badge.icon} ${badge.text}</span>`)
     .join('\n                    ');
 
-  const statsHtml = project.stats
-    .map(stat => `<span>${stat}</span>`)
-    .join('\n                    ');
+  // Map project directory names to thumbnail filenames
+  const thumbnailMap = {
+    'blueprint-standard-adherence-master-tracker': 'master-tracker.png',
+    'blueprint-standard-adherence-thermometers': 'thermometers.png',
+    'blueprint-standards-chart-custom-ui-react': 'blueprint-chart.png',
+    'confluence-json-editor': 'json-editor.png',
+    'confluence-macro-checker': 'macro-checker.png',
+    'smart-excerpt': 'smart-excerpt.png'
+  };
 
-  const slug = project.dirName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const thumbnail = thumbnailMap[project.dirName] || 'placeholder.png';
+  const dependentClass = project.isDependent ? ' tool-item-dependent' : '';
 
   return `            <!-- ${project.title} -->
-            <article class="project-card">
-                <div class="project-header">
+            <div class="tool-item${dependentClass}">
+                <img src="thumbnails/${thumbnail}" alt="${project.title}" class="tool-thumbnail">
+                <div class="tool-info">
                     <h2>${project.title}</h2>
-                    ${badgesHtml}
+                    <p class="description">${project.description}</p>
+                    ${executionTypesHtml}
                 </div>
-                <p class="project-description">
-                    ${project.description}
-                </p>
-                <div class="project-stats">
-                    ${statsHtml}
+                <div class="tool-actions">
+                    <a href="https://github.com/${CONFIG.githubUsername}/${project.dirName}" class="btn" target="_blank">GitHub</a>
                 </div>
-                <div class="project-links">
-                    <a href="projects/${slug}.html" class="btn btn-primary">View Details</a>
-                    <a href="https://github.com/${CONFIG.githubUsername}/${project.dirName}" class="btn btn-secondary" target="_blank">View on GitHub</a>
-                </div>
-            </article>`;
+            </div>`;
 }
 
 /**
@@ -256,81 +263,35 @@ function generateProjectPage(project) {
 }
 
 /**
- * Generate main index.html page
+ * Generate main index.html page (launcher style)
  */
 function generateIndexPage(projects) {
-  const projectCardsHtml = projects.map(generateProjectCard).join('\n\n');
+  const toolItemsHtml = projects.map(generateToolItem).join('\n\n');
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work Tools Portfolio</title>
+    <title>Work Tools Launcher</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Work Tools & Automation</h1>
-            <p class="subtitle">Custom-built solutions for Confluence, Jira, and workflow automation</p>
-        </div>
-    </header>
+    <div class="container">
+        <header>
+            <h1>Work Tools</h1>
+            <p class="subtitle">Quick access to automation, extensions, and utilities</p>
+        </header>
 
-    <main class="container">
-        <section class="intro">
-            <p>This portfolio showcases various tools, Chrome extensions, and automation workflows built to streamline work processes at SeatGeek. Each tool is designed to solve specific challenges with Confluence, Jira, and data tracking.</p>
-            <p style="margin-top: 1rem;"><a href="build-docs.html" style="color: #2563eb; font-weight: 600;">📖 View Build Documentation</a> - Learn how to rebuild this portfolio automatically</p>
-        </section>
+        <main class="tools-list">
+${toolItemsHtml}
 
-        <section class="projects-grid">
-${projectCardsHtml}
-        </section>
+        </main>
 
-        <section class="tech-stack">
-            <h2>Technologies Used</h2>
-            <div class="tech-grid">
-                <div class="tech-item">
-                    <h3>Backend</h3>
-                    <ul>
-                        <li>Node.js</li>
-                        <li>Python</li>
-                        <li>Google Cloud Functions</li>
-                    </ul>
-                </div>
-                <div class="tech-item">
-                    <h3>Frontend</h3>
-                    <ul>
-                        <li>React</li>
-                        <li>JavaScript</li>
-                        <li>HTML/CSS</li>
-                    </ul>
-                </div>
-                <div class="tech-item">
-                    <h3>Platforms</h3>
-                    <ul>
-                        <li>Atlassian Forge</li>
-                        <li>Confluence API</li>
-                        <li>Jira API</li>
-                    </ul>
-                </div>
-                <div class="tech-item">
-                    <h3>Integrations</h3>
-                    <ul>
-                        <li>Google Sheets API</li>
-                        <li>Google Cloud Platform</li>
-                        <li>OAuth 2.0</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
-        </div>
-    </footer>
+        <footer>
+            <p>Built with <a href="https://claude.com/claude-code" target="_blank">Claude Code</a></p>
+        </footer>
+    </div>
 </body>
 </html>`;
 }
