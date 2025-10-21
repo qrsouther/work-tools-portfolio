@@ -58,6 +58,35 @@ function logInfo(message) {
 }
 
 /**
+ * Get the latest commit date for a project directory
+ */
+function getLatestCommitDate(projectPath) {
+  try {
+    // Get the latest commit date in ISO format, then convert to Pacific time
+    const gitCommand = `cd "${projectPath}" && git log -1 --format=%cI 2>/dev/null`;
+    const isoDate = execSync(gitCommand, { encoding: 'utf-8' }).trim();
+
+    if (!isoDate) return null;
+
+    // Parse the ISO date and format it for Pacific time
+    const date = new Date(isoDate);
+    const pacificDateString = date.toLocaleString('en-US', {
+      timeZone: 'America/Los_Angeles',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    return pacificDateString;
+  } catch (error) {
+    return null;
+  }
+}
+
+/**
  * Scan directories for projects with README files
  */
 function scanProjects() {
@@ -87,6 +116,9 @@ function scanProjects() {
       const projectInfo = parseReadme(readme, item.name);
 
       if (projectInfo) {
+        // Add latest commit date
+        projectInfo.lastCommitDate = getLatestCommitDate(projectPath);
+
         projects.push(projectInfo);
         logSuccess(`Found: ${item.name}`);
       }
@@ -189,6 +221,11 @@ function generateToolItem(project) {
   const thumbnail = thumbnailMap[project.dirName] || 'placeholder.png';
   const dependentClass = project.isDependent ? ' tool-item-dependent' : '';
 
+  // Add last commit date if available
+  const lastCommitHtml = project.lastCommitDate
+    ? `<p class="last-commit">Last updated: ${project.lastCommitDate}</p>`
+    : '';
+
   return `            <!-- ${project.title} -->
             <div class="tool-item${dependentClass}">
                 <img src="thumbnails/${thumbnail}" alt="${project.title}" class="tool-thumbnail">
@@ -196,6 +233,7 @@ function generateToolItem(project) {
                     <h2>${project.title}</h2>
                     <p class="description">${project.description}</p>
                     ${executionTypesHtml}
+                    ${lastCommitHtml}
                 </div>
                 <div class="tool-actions">
                     <a href="https://github.com/${CONFIG.githubUsername}/${project.dirName}" class="btn" target="_blank">GitHub</a>
