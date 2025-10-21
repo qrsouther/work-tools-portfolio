@@ -24,7 +24,9 @@ const CONFIG = {
     'node_modules',
     '.git',
     '.DS_Store',
-    '.claude'
+    '.claude',
+    'smart-excerpt-option1',
+    'smart-excerpt-option4'
   ],
   githubUsername: 'qrsouther'
 };

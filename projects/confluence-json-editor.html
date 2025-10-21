@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confluence JSON Editor - Work Tools Portfolio</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Confluence JSON Editor</h1>
+            <p class="subtitle">A Chrome extension that provides direct JSON editing capabilities for Confluence pages via the REST API, enabling advanced page modifications and bulk find/replace operations.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+        <div class="project-detail">
+            <div class="launch-buttons">
+                <a href="https://github.com/qrsouther/confluence-json-editor" class="btn btn-primary" target="_blank">View on GitHub</a>
+            </div>
+
+            <h2>Confluence JSON Editor</h2>
+
+<p>A Chrome extension that provides direct JSON editing capabilities for Confluence pages via the REST API, enabling advanced page modifications and bulk find/replace operations.</p>
+
+<h2>Overview</h2>
+
+<p>This Chrome extension opens a side panel that allows you to view and edit the raw JSON data of Confluence pages. It's particularly useful for making precise edits, bulk find/replace operations, or working with page structures that are difficult to modify through the standard Confluence editor.</p>
+
+<h2>Key Features</h2>
+
+<h3>🔧 Direct API Access</h3>
+<ul><li>Fetches page data directly from Confluence REST API</li>
+<li>Displays complete page JSON including content, metadata, and version information</li>
+<li>Saves changes back to Confluence with proper version management</li>
+
+<h3>🔍 Advanced Find & Replace</h3>
+<li><strong>Find functionality</strong>: Locate text within the JSON with match count</li>
+<li><strong>Navigate matches</strong>: Jump between all occurrences with next/previous buttons</li>
+<li><strong>Replace current</strong>: Replace individual matches one at a time</li>
+<li><strong>Replace all</strong>: Bulk replace all occurrences in one action</li>
+<li>Visual highlighting and smooth scrolling to matches</li>
+
+<h3>📝 JSON Editing Tools</h3>
+<li>Built-in JSON formatter with syntax validation</li>
+<li>Real-time JSON parsing error detection</li>
+<li>Large textarea editor for comfortable editing</li>
+<li>Automatic version increment on save</li>
+
+<h3>🔐 Secure Configuration</h3>
+<li>Stores Confluence credentials in Chrome sync storage</li>
+<li>Basic authentication with email and API token</li>
+<li>Configurable base URL for different Confluence instances</li>
+<li>Settings page for easy credential management</li>
+
+<h2>Technical Details</h2>
+
+<h3>Technologies</h3>
+<li><strong>Manifest Version</strong>: 3</li>
+<li><strong>Platform</strong>: Chrome Extension</li>
+<li><strong>Architecture</strong>: Side panel with background service worker</li>
+<li><strong>API</strong>: Confluence REST API v1</li>
+
+<h3>Permissions</h3>
+<li><code>activeTab</code>: Access to current Confluence page</li>
+<li><code>scripting</code>: Page interaction capabilities</li>
+<li><code>sidePanel</code>: Side panel UI display</li>
+<li><code>storage</code>: Secure credential storage</li>
+<li><code>host_permissions</code>: Limited to configured Confluence domain</li>
+
+<h3>Architecture</h3>
+<li><strong>Background Worker</strong>: Handles extension lifecycle</li>
+<li><strong>Side Panel</strong>: Main editor interface</li>
+<li><strong>Settings Page</strong>: Credential configuration UI</li>
+<li><strong>Storage</strong>: Chrome sync for cross-device settings</li>
+
+<h2>Use Cases</h2>
+
+<h3>Content Migration</h3>
+<li>Export page JSON for backup or migration</li>
+<li>Modify page structure before import</li>
+<li>Bulk update page properties</li>
+
+<h3>Bulk Edits</h3>
+<li>Find and replace text across entire page JSON</li>
+<li>Update multiple instances of links or references</li>
+<li>Modify macro parameters in bulk</li>
+
+<h3>Debug & Troubleshooting</h3>
+<li>Inspect page structure and hidden metadata</li>
+<li>Diagnose rendering issues</li>
+<li>View raw storage format and version information</li>
+
+<h3>Advanced Modifications</h3>
+<li>Edit page properties not accessible via UI</li>
+<li>Modify macro configurations directly</li>
+<li>Update metadata and custom properties</li>
+
+<h2>Configuration Required</h2>
+
+<p>To use this extension, you need to configure:</p>
+<li><strong>Email</strong>: Your Atlassian account email</li>
+<li><strong>API Token</strong>: Generated from Atlassian account settings</li>
+<li><strong>Base URL</strong>: Your Confluence instance URL (e.g., <code>https://yourcompany.atlassian.net</code>)</li>
+
+<p>Configure these in the extension's options/settings page.</p>
+
+<h2>Workflow</h2>
+
+<li>Navigate to any Confluence page</li>
+<li>Click the extension icon to open the side panel</li>
+<li>View the page JSON in the editor</li>
+<li>Use find/replace to locate and modify content</li>
+<li>Format JSON if needed for better readability</li>
+<li>Save changes back to Confluence</li>
+
+<h2>Safety Features</h2>
+
+<li>Version conflict detection and automatic increment</li>
+<li>JSON validation before save</li>
+<li>Error handling with user-friendly messages</li>
+<li>Non-destructive operations (requires explicit save)</li>
+</ul>
+<h2>Status</h2>
+
+<p><strong>Status</strong>: Active development and in use</p>
+<p><strong>Deployment</strong>: Chrome extension (local installation)</p>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>

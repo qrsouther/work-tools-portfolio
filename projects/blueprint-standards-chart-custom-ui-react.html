@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forge Hello World - Work Tools Portfolio</title>
+    <title>Blueprint Standards Chart - Work Tools Portfolio</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Forge Hello World</h1>
-            <p class="subtitle">This project contains a Forge app written in Javascript that displays `Hello World!` in a Confluence macro with custom configuration.</p>
+            <h1>Blueprint Standards Chart</h1>
+            <p class="subtitle">A Confluence Forge app that automatically analyzes status lozenges in page headers and displays an interactive pie chart showing the breakdown of standards adherence across Blueprint chapters.</p>
         </div>
     </header>
 
@@ -22,50 +22,213 @@
                 <a href="https://github.com/qrsouther/blueprint-standards-chart-custom-ui-react" class="btn btn-primary" target="_blank">View on GitHub</a>
             </div>
 
-            <h2>Forge Hello World</h2>
+            <h2>Blueprint Standards Chart</h2>
 
-<p>This project contains a Forge app written in Javascript that displays <code>Hello World!</code> in a Confluence macro with custom configuration. </p>
+<p>A Confluence Forge app that automatically analyzes status lozenges in page headers and displays an interactive pie chart showing the breakdown of standards adherence across Blueprint chapters.</p>
 
-<p>See [developer.atlassian.com/platform/forge/](https://developer.atlassian.com/platform/forge) for documentation and tutorials explaining Forge.</p>
+<h2>What It Does</h2>
+
+<p>This Confluence macro scans the current page for status lozenges within headers (h1-h6 tags) and generates a visual breakdown of how solutions are categorized. The macro is specifically designed to track Blueprint chapter standards using status lozenges.</p>
+
+<h3>Features</h3>
+
+<ul><li><strong>Automatic Lozenge Detection</strong>: Scans all headers on the page for Confluence status macros</li>
+<li><strong>Visual Pie Chart</strong>: Displays an interactive pie chart with color-coded segments</li>
+<li><strong>Detailed Legend</strong>: Shows counts and percentages for each standard type</li>
+<li><strong>Real-time Refresh</strong>: Includes a refresh button to update the chart after page changes</li>
+<li><strong>Custom Color Mapping</strong>: Easily customizable color scheme in <code>static/hello-world/src/App.jsx</code></li>
+
+<h3>Standard Categories</h3>
+
+<p>The default configuration recognizes these standards:</p>
+<li><strong>Standard</strong> (Green)</li>
+<li><strong>Semi-Standard</strong> (Yellow/Orange)</li>
+<li><strong>Non-Standard</strong> (Red)</li>
+<li><strong>Bespoke</strong> (Purple)</li>
+<li><strong>N/A</strong> (Gray)</li>
+<li><strong>TBD</strong> (Gray)</li>
+
+<h2>How It Works</h2>
+
+<li>The macro is inserted into a Confluence page</li>
+<li>When the page loads, the app backend (src/index.js) fetches the page content using the Confluence API</li>
+<li>The resolver function parses the page HTML looking for status macros within header tags</li>
+<li>The frontend (static/hello-world/src/App.jsx) receives the lozenge data and renders:</li>
+<p>   - A pie chart visualization</p>
+<p>   - A legend with counts and percentages</p>
+<p>   - Total chapter count</p>
 
 <h2>Requirements</h2>
 
-<p>See [Set up Forge](https://developer.atlassian.com/platform/forge/set-up-forge/) for instructions to get set up.</p>
+<li>[Forge CLI](https://developer.atlassian.com/platform/forge/set-up-forge/) installed and configured</li>
+<li>Node.js (version 22.x runtime)</li>
+<li>Access to a Confluence Cloud site for testing and installation</li>
 
-<h2>Quick start</h2>
-<ul><li>Install dependencies (from root):</li>
-<p>``<code></p>
+<h2>Installation & Deployment</h2>
+
+<h3>1. Install Dependencies</h3>
+
+<p>From the project root:</p>
+<p>``<code>bash</p>
 <p>npm install</p>
 <p></code>`<code></p>
 
-<li>Modify your app frontend by editing the files in </code>static/hello-world/src/<code>.</li>
-<li>Modify your app's configuration frontend by editing the files in </code>static/config/src/<code>.</li>
-
-<li>Build your app (from root):</li>
+<p>Install dependencies for both frontend modules:</p>
+<p></code>`<code>bash</p>
+<p>cd static/hello-world && npm install</p>
+<p>cd ../config && npm install</p>
+<p>cd ../..</p>
 <p></code>`<code></p>
+
+<h3>2. Build the Application</h3>
+
+<p>Build both the macro and configuration UIs:</p>
+<p></code>`<code>bash</p>
 <p>npm run build</p>
 <p></code>`<code></p>
 
-<li>Modify your app backend by editing the </code>src/resolvers/index.js<code> file to define resolver functions. See [Forge resolvers](https://developer.atlassian.com/platform/forge/runtime-reference/custom-ui-resolver/) for documentation on resolver functions.</li>
+<p>This runs:</p>
+<li></code>npm run build:macro<code> - Builds the main chart visualization</li>
+<li></code>npm run build:custom-config<code> - Builds the configuration interface</li>
 
-<li>Deploy your app by running:</li>
-<p></code>`<code></p>
+<h3>3. Deploy to Forge</h3>
+
+<p>Deploy the app to the Forge platform:</p>
+<p></code>`<code>bash</p>
 <p>forge deploy</p>
 <p></code>`<code></p>
 
-<li>Install your app in an Atlassian site by running:</li>
-<p></code>`<code></p>
+<h3>4. Install on Confluence Site</h3>
+
+<p>Install the app on your Confluence site:</p>
+<p></code>`<code>bash</p>
 <p>forge install</p>
 <p></code>`<code></p>
 
-<h3>Notes</h3>
-<li>Use the </code>forge deploy<code> command when you want to persist code changes.</li>
-<li>Use the </code>forge install` command when you want to install the app on a new site.</li>
-<li>Once the app is installed on a site, the site picks up the new app changes you deploy without needing to rerun the install command.</li>
-</ul>
+<p>You'll be prompted to:</p>
+<li>Select your product (Confluence)</li>
+<li>Choose your Confluence site</li>
+<li>Confirm the installation</li>
+
+<h2>Usage</h2>
+
+<h3>Adding the Macro to a Page</h3>
+
+<li>Edit a Confluence page</li>
+<li>Type </code>/<code> to open the macro browser</li>
+<li>Search for "Blueprint Standards Chart"</li>
+<li>Insert the macro into your page</li>
+<li>Publish the page</li>
+
+<p>The macro will automatically scan the page and display the chart.</p>
+
+<h3>Customizing Colors</h3>
+
+<p>Edit the </code>LABEL_COLOR_MAP<code> in </code>static/hello-world/src/App.jsx<code>:</p>
+
+<p></code>`<code>javascript</p>
+<p>const LABEL_COLOR_MAP = {</p>
+<p>  'standard': '#36B37E',        // Green</p>
+<p>  'semi-standard': '#FFAB00',   // Yellow/Orange</p>
+<p>  'non-standard': '#FF5630',    // Red</p>
+<p>  'bespoke': '#6554C0',         // Purple</p>
+<p>  'n/a': '#808080',             // Gray</p>
+<p>  'tbd': '#808080'              // Gray</p>
+<p>};</p>
+<p></code>`<code></p>
+
+<p>After making changes:</p>
+<li>Run </code>npm run build<code></li>
+<li>Run </code>forge deploy<code></li>
+<li>Refresh your Confluence page (the installed app automatically picks up new deployments)</li>
+
+<h2>Project Structure</h2>
+
+<p></code>`<code></p>
+<p>.</p>
+<p>├── manifest.yml                    # Forge app configuration</p>
+<p>├── package.json                    # Root dependencies and build scripts</p>
+<p>├── src/</p>
+<p>│   └── index.js                   # Backend resolver (fetches page content)</p>
+<p>└── static/</p>
+<p>    ├── hello-world/               # Main macro UI</p>
+<p>    │   ├── src/</p>
+<p>    │   │   ├── App.jsx           # Pie chart and legend components</p>
+<p>    │   │   └── index.jsx         # React entry point</p>
+<p>    │   ├── build/                # Built assets (deployed to Forge)</p>
+<p>    │   └── package.json</p>
+<p>    └── config/                    # Configuration UI (currently unused)</p>
+<p>        ├── src/</p>
+<p>        │   ├── Config.jsx</p>
+<p>        │   └── index.jsx</p>
+<p>        └── package.json</p>
+<p></code>`<code></p>
+
+<h2>Development</h2>
+
+<h3>Making Changes</h3>
+
+<li><strong>Frontend Changes</strong>: Edit files in </code>static/hello-world/src/<code></li>
+<li><strong>Backend Changes</strong>: Edit </code>src/index.js<code></li>
+<li><strong>Build</strong>: Run </code>npm run build<code></li>
+<li><strong>Deploy</strong>: Run </code>forge deploy<code></li>
+<li><strong>Test</strong>: Refresh the Confluence page containing the macro</li>
+
+<h3>Viewing Logs</h3>
+
+<p>Monitor app logs during development:</p>
+<p></code>`<code>bash</p>
+<p>forge logs</p>
+<p></code>`<code></p>
+
+<h3>Local Development</h3>
+
+<p>For faster development iteration:</p>
+<p></code>`<code>bash</p>
+<p>forge tunnel</p>
+<p></code>`<code></p>
+
+<p>This creates a tunnel to your local code, allowing you to test changes without deploying.</p>
+
+<h2>Permissions</h2>
+
+<p>The app requires the following Confluence permissions (defined in manifest.yml):</p>
+<li></code>read:page:confluence<code> - Read page content to scan for status lozenges</li>
+
+<h2>Architecture</h2>
+
+<li><strong>Runtime</strong>: Node.js 22.x (ARM64)</li>
+<li><strong>Memory</strong>: 256MB</li>
+<li><strong>Frontend</strong>: React with Atlaskit components</li>
+<li><strong>Build Tool</strong>: Vite</li>
+<li><strong>Macro Type</strong>: Custom UI with custom configuration</li>
+
+<h2>Troubleshooting</h2>
+
+<h3>No lozenges detected</h3>
+<li>Ensure status lozenges are placed within header tags (h1-h6)</li>
+<li>Check that lozenges use the standard Confluence status macro format</li>
+<li>Use the "Refresh" button after adding new lozenges</li>
+
+<h3>Chart not updating</h3>
+<li>Click the "Refresh" button in the macro</li>
+<li>Check browser console for errors</li>
+<li>View app logs with </code>forge logs<code></li>
+
+<h3>Deployment issues</h3>
+<li>Ensure Forge CLI is logged in: </code>forge login`</li>
+<li>Verify you have the correct permissions on the Confluence site</li>
+<li>Check that the build completed successfully before deploying</li>
+
 <h2>Support</h2>
 
-<p>See [Get help](https://developer.atlassian.com/platform/forge/get-help/) for how to get help and provide feedback.</p>
+<li>[Forge Documentation](https://developer.atlassian.com/platform/forge/)</li>
+<li>[Forge Community](https://community.developer.atlassian.com/c/forge/)</li>
+<li>[Get Help](https://developer.atlassian.com/platform/forge/get-help/)</li>
+</ul>
+<h2>License</h2>
+
+<p>MIT</p>
 
         </div>
     </main>

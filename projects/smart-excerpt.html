@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartExcerpt - Confluence Forge App - Work Tools Portfolio</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>SmartExcerpt - Confluence Forge App</h1>
+            <p class="subtitle">A high-performance Forge app for Confluence that enables reusable content blocks with variable substitution and automatic updates.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+        <div class="project-detail">
+            <div class="launch-buttons">
+                <a href="https://github.com/qrsouther/smart-excerpt" class="btn btn-primary" target="_blank">View on GitHub</a>
+            </div>
+
+            <h2>SmartExcerpt - Confluence Forge App</h2>
+
+<p>A high-performance Forge app for Confluence that enables reusable content blocks with variable substitution and automatic updates.</p>
+
+<h2>🎯 Current Implementation</h2>
+
+<p><strong>Version:</strong> 3.55.0</p>
+<p><strong>Architecture:</strong> Option 4 - Optimistic Rendering with Background Refresh</p>
+
+<h3>How It Works</h3>
+
+<li><strong>SmartExcerpt Source Macro</strong> - Create reusable content blocks with variables</li>
+<li><strong>SmartExcerpt Include Macro</strong> - Reference and display excerpts with variable substitution</li>
+<li><strong>Performance Strategy:</strong></li>
+<p>   - Cached content stored in Include config for instant display</p>
+<p>   - Background refresh from source ensures content stays up-to-date</p>
+<p>   - Best of both worlds: instant rendering + automatic updates</p>
+
+<h3>On Page Load (Detailed Flow)</h3>
+
+<p>When a page with Include macros loads, here's exactly what happens:</p>
+
+<h4>1. <strong>Instant Display (0-100ms)</strong></h4>
+<p>   - Include macro reads <code>cachedContent</code> from its config</p>
+<p>   - Immediately displays the cached content</p>
+<p>   - <strong>User sees content right away</strong> - no "Loading..." message</p>
+<p>   - Page is interactive and ready to use</p>
+
+<h4>2. <strong>Background Check (happens simultaneously, doesn't block display)</strong></h4>
+<p>   - Include calls <code>invoke('getExcerpt', { excerptId })</code> in the background</p>
+<p>   - Fetches the latest Source excerpt from storage</p>
+<p>   - Performs variable substitution with current variable values</p>
+<p>   - Compares the fresh content to the cached content</p>
+
+<h4>3. <strong>Conditional Update (if needed)</strong></h4>
+<p>   - <strong>If content unchanged:</strong> Does nothing, keeps showing cached version</p>
+<p>   - <strong>If content changed:</strong> Silently updates the display with fresh content</p>
+<p>   - User might briefly see old content (~500ms-1s), then it smoothly updates</p>
+
+<h3>Example Timeline</h3>
+
+<p>``<code></p>
+<p>0ms:    Page loads</p>
+<p>100ms:  Include displays cached "They are a full stack client." ← User sees this</p>
+<p>100ms:  Background fetch starts (doesn't block anything)</p>
+<p>500ms:  Source excerpt fetched and compared</p>
+<p>600ms:  Content changed! Update display to "They are a full-stack agency."</p>
+<p></code>`<code></p>
+
+<h3>What Gets Cached</h3>
+
+<p>When you save an Include config, it stores:</p>
+<p></code>`<code>javascript</p>
+<p>{</p>
+<p>  excerptId: "abc-123",</p>
+<p>  variableValues: {</p>
+<p>    "stack-model": "full stack",</p>
+<p>    "client": "Acme"</p>
+<p>  },</p>
+<p>  cachedContent: "Acme is a full stack organization."  // ← Pre-rendered result</p>
+<p>}</p>
+<p></code>`<code></p>
+
+<p>The </code>cachedContent<code> is the fully rendered excerpt with all variables substituted, ready for instant display.</p>
+
+<p>---</p>
+
+<h2>📦 Installation</h2>
+
+<h3>Prerequisites</h3>
+<ul><li>Forge CLI installed (</code>npm install -g @forge/cli<code>)</li>
+<li>Logged in to Forge (</code>forge login<code>)</li>
+
+<h3>Deploy & Install</h3>
+
+<p></code>`<code>bash</p>
+<p>cd "/Users/quinnsouther/Documents/Code projects/smart-excerpt"</p>
+<p>forge deploy</p>
+<p>forge install --site qrsouther.atlassian.net</p>
+<p></code>`<code></p>
+
+<h3>Upgrade Existing Installation</h3>
+
+<p></code>`<code>bash</p>
+<p>forge install --upgrade</p>
+<p></code>`<code></p>
+
+<p>---</p>
+
+<h2>✨ Features</h2>
+
+<h3>Current Features (v3.55.0)</h3>
+
+<p>✅ <strong>ID-Based References</strong> - UUID-based excerpt identification for rename-safe references</p>
+<p>✅ <strong>Variable Substitution</strong> - Mad-libs style variables using </code>{{variable-name}}<code> syntax</p>
+<p>✅ <strong>Category Organization</strong> - Group excerpts by category (General, Pricing, Technical, Legal, Marketing)</p>
+<p>✅ <strong>Live Preview</strong> - See rendered content as you configure Includes</p>
+<p>✅ <strong>Optimistic Rendering</strong> - Instant page loads with background content refresh</p>
+<p>✅ <strong>Automatic Updates</strong> - Includes update when Source excerpts are edited</p>
+<p>✅ <strong>Hyphenated Variable Names</strong> - Full support for variable names with hyphens (e.g., </code>{{stack-model}}<code>)</p>
+<p>✅ <strong>Rich Text Content</strong> - Full WYSIWYG editing for Source macros with bold, italic, tables, and more</p>
+
+<h3>In Development</h3>
+
+<p>⏳ Advanced search and filtering for excerpts</p>
+<p>⏳ Bulk excerpt management tools</p>
+<p>⏳ Content versioning and history</p>
+
+<p>---</p>
+
+<h2>🏗️ Architecture</h2>
+
+<h3>Performance Strategy Evolution</h3>
+
+<p>We evaluated three approaches to optimize Include macro rendering:</p>
+
+<h4><strong>Original Approach (Baseline)</strong></h4>
+<li>Each Include calls backend on page load</li>
+<li>Fetches excerpt from storage, performs variable substitution</li>
+<li>Performance: ~1-2 second initial load per Include</li>
+
+<h4><strong>Option 1: Pre-rendered Content (Not Implemented)</strong></h4>
+<li>Store fully rendered content in Include config</li>
+<li>Zero backend calls, instant display</li>
+<li><strong>Trade-off:</strong> Manual refresh needed when Source changes</li>
+<li><strong>Performance:</strong> Instant (0ms) - best possible</li>
+<li><strong>Use case:</strong> Ideal when Sources rarely change</li>
+
+<h4><strong>Option 4: Optimistic Rendering (Current Implementation)</strong> ⭐</h4>
+<li>Store cached content in Include config</li>
+<li>Display cached content immediately</li>
+<li>Refresh from source in background</li>
+<li><strong>Trade-off:</strong> Brief network activity after initial display</li>
+<li><strong>Performance:</strong> Instant perceived load (~100ms) + background refresh</li>
+<li><strong>Use case:</strong> Balance of performance and maintainability</li>
+
+<p>---</p>
+
+<h2>🔮 Future Enhancement: Push-Based Updates (Not Implemented)</h2>
+
+<h3>Concept: Option 1 + Indexed Push Updates</h3>
+
+<p>We explored a hybrid approach that would combine Option 1's instant performance with automatic updates:</p>
+
+<h4>How It Would Work</h4>
+
+<li><strong>Normal Operation</strong></li>
+<p>   - Includes display pre-rendered content (instant, zero backend calls)</p>
+<p>   - Zero overhead during page loads</p>
+
+<li><strong>When Source Excerpt Edited</strong></li>
+<p>   - Backend maintains an index: </code>excerpt:{excerptId} → [pageIds using it]<code></p>
+<p>   - On Source save, trigger bulk update of all Include configs</p>
+<p>   - Update stored </code>renderedContent<code> for each Include</p>
+
+<li><strong>Benefits</strong></li>
+<p>   - Option 1 performance (instant loads, zero network overhead)</p>
+<p>   - Automatic updates when Sources change</p>
+<p>   - No continuous background fetching</p>
+
+<h4>Technical Requirements</h4>
+
+<p><strong>New Permissions Needed:</strong></p>
+<p></code>`<code>yaml</p>
+<p>permissions:</p>
+<p>  scopes:</p>
+<p>    - write:confluence-content  # To update page content</p>
+<p>    - search:confluence          # To find pages with Includes</p>
+<p></code>`<code></p>
+
+<p><strong>Implementation Components:</strong></p>
+
+<li><strong>Include Usage Index</strong></li>
+<p></code>`<code>javascript</p>
+<p>// Stored in Forge storage</p>
+<p>{</p>
+<p>  "excerpt-usage:{excerptId}": {</p>
+<p>    "pages": [</p>
+<p>      { pageId: "123", macroId: "abc" },</p>
+<p>      { pageId: "456", macroId: "def" }</p>
+<p>    ]</p>
+<p>  }</p>
+<p>}</p>
+<p></code>`<code></p>
+
+<li><strong>Registration on Include Save</strong></li>
+<p></code>`<code>javascript</p>
+<p>// When Include is configured</p>
+<p>await invoke('registerIncludeUsage', {</p>
+<p>  excerptId: selectedExcerptId,</p>
+<p>  pageId: context.extension.content.id,</p>
+<p>  macroId: context.extension.macro.id</p>
+<p>});</p>
+<p></code>`<code></p>
+
+<li><strong>Bulk Update on Source Edit</strong></li>
+<p></code>`<code>javascript</p>
+<p>// When Source is saved</p>
+<p>async function updateAllIncludes({ excerptId, newContent, variables }) {</p>
+<p>  const usage = await storage.get(</code>excerpt-usage:${excerptId}<code>);</p>
+
+<p>  for (const { pageId, macroId } of usage.pages) {</p>
+<p>    await updateMacroOnPage(pageId, macroId, newContent);</p>
+<p>  }</p>
+<p>}</p>
+<p></code>`<code></p>
+
+<h4>Technical Challenges</h4>
+
+<p>⚠️ <strong>Risk Level: Medium-High</strong></p>
+
+<p><strong>Challenges:</strong></p>
+<li><strong>XML Manipulation</strong> - Must parse and modify Confluence storage format XML safely</li>
+<li><strong>Macro Targeting</strong> - Macro IDs may not be reliable for targeting specific instances</li>
+<li><strong>Permissions</strong> - App may not have permission to edit all pages</li>
+<li><strong>Version Conflicts</strong> - Pages being edited during update could cause conflicts</li>
+<li><strong>Page History Spam</strong> - Each update creates a page version</li>
+<li><strong>Error Handling</strong> - Failed updates could leave Includes out of sync</li>
+<li><strong>Performance</strong> - Updating 50+ pages on Source edit could be slow</li>
+
+<p><strong>Confidence Level:</strong> 70-75%</p>
+<li>Core concept is sound</li>
+<li>Forge API limitations create uncertainty around page modification</li>
+<li>Would require significant testing and error handling</li>
+
+<h4>Decision Criteria for Implementation</h4>
+
+<p>Consider this approach if:</p>
+<li>✅ You frequently have 20+ Includes per page</li>
+<li>✅ Option 4's background refresh causes noticeable lag</li>
+<li>✅ Sources are edited frequently (daily)</li>
+<li>✅ You have developer resources for XML parsing and error handling</li>
+
+<p>Current recommendation: <strong>Stick with Option 4</strong> unless performance issues emerge.</p>
+
+<p>---</p>
+
+<h2>📁 Project Structure</h2>
+
+<p></code>`<code></p>
+<p>smart-excerpt/</p>
+<p>├── manifest.yml              # Forge app configuration</p>
+<p>├── package.json              # Dependencies</p>
+<p>├── src/</p>
+<p>│   ├── index.js             # Backend resolver (storage operations)</p>
+<p>│   ├── source-display.jsx   # Source macro display view</p>
+<p>│   ├── source-config.jsx    # Source macro configuration UI</p>
+<p>│   ├── include-display.jsx  # Include macro display (optimistic rendering)</p>
+<p>│   └── include-config.jsx   # Include macro configuration UI (with preview)</p>
+<p>└── README.md                # This file</p>
+<p></code>`<code></p>
+
+<p>---</p>
+
+<h2>🔧 Configuration</h2>
+
+<h3>Available Categories</h3>
+<li>General</li>
+<li>Pricing</li>
+<li>Technical</li>
+<li>Legal</li>
+<li>Marketing</li>
+
+<p>These can be customized in </code>src/source-config.jsx<code>.</p>
+
+<h3>Variable Syntax</h3>
+<p>Use double curly braces to define variables in excerpt content:</p>
+<p></code>`<code></p>
+<p>The {{client}} is a {{stack-model}} organization.</p>
+<p></code>`<code></p>
+
+<p>Variables are automatically detected and can be filled in when configuring Includes.</p>
+
+<p>---</p>
+
+<h2>🐛 Troubleshooting</h2>
+
+<h3>Includes Showing Old Content</h3>
+<li>Re-edit the Include and save to update cached content</li>
+<li>Check browser console for background refresh errors</li>
+
+<h3>Variables Not Substituting</h3>
+<li>Ensure variable names match exactly (case-sensitive)</li>
+<li>Check console logs for camelCase conversion messages</li>
+<li>Hyphenated variables are supported (e.g., </code>{{stack-model}}<code>)</li>
+
+<h3>Slow Page Loads</h3>
+<li>Check Network tab for multiple concurrent </code>invoke<code> calls</li>
+<li>Each Include makes one background refresh call</li>
+<li>Consider page design: spread Includes across multiple pages</li>
+
+<h3>Deployment Issues</h3>
+<p></code>`<code>bash</p>
+<h2>View detailed logs</h2>
+<p>forge logs --follow</p>
+
+<h2>Force redeploy</h2>
+<p>forge deploy --verbose</p>
+
+<h2>Reinstall on site</h2>
+<p>forge install --upgrade</p>
+<p></code>``</p>
+
+<p>---</p>
+
+<h2>📊 Performance Characteristics</h2>
+
+<h3>With Option 4 (Current)</h3>
+
+<p>| Scenario | Performance |</p>
+<p>|----------|-------------|</p>
+<p>| Single Include | Instant display (~100ms) + 500ms background refresh |</p>
+<p>| 5 Includes | Instant display (~100ms) + 1-2s background refresh |</p>
+<p>| 20 Includes | Instant display (~100ms) + 3-5s background refresh |</p>
+<p>| 50+ Includes | Instant display (~100ms) + 5-10s background refresh |</p>
+
+<p><strong>Note:</strong> Background refresh happens after content is already visible, so user experience remains fast even with many Includes.</p>
+
+<p>---</p>
+
+<h2>🚀 Roadmap</h2>
+
+<h3>Completed</h3>
+<li>✅ Core excerpt storage and retrieval</li>
+<li>✅ Variable detection and substitution</li>
+<li>✅ Category organization</li>
+<li>✅ Live preview in config</li>
+<li>✅ Optimistic rendering for performance</li>
+<li>✅ Hyphenated variable name support</li>
+<li>✅ Background content refresh</li>
+<li>✅ Rich text editing with ADF support</li>
+
+<h3>Next Features</h3>
+<li>Search and filter UI for excerpts</li>
+<li>Excerpt usage reporting (which pages use which excerpts)</li>
+<li>Bulk operations (update multiple excerpts)</li>
+<li>Content versioning</li>
+<li>Export/import excerpts</li>
+</ul>
+<p>---</p>
+
+<h2>📝 Development Log</h2>
+
+<p><strong>v3.55.0</strong> - Added rich text editing support for Source macros using bodied macro layout</p>
+<p><strong>v3.54.0</strong> - Merged Option 4 (Optimistic Rendering) into main app</p>
+<p><strong>v3.53.0</strong> - Fixed loading state display (no more error flash)</p>
+<p><strong>v3.52.0</strong> - Fixed variable persistence when re-opening Include editor</p>
+<p><strong>v3.49.0</strong> - Fixed Source excerpt edit form not showing current values</p>
+<p><strong>v3.46.0</strong> - Fixed hyphenated variable name substitution</p>
+<p><strong>v3.0.0</strong> - Initial working version with all core features</p>
+
+<p>---</p>
+
+<h2>🤝 Contributing</h2>
+
+<p>This is a custom internal Forge app. For questions or issues, contact the development team.</p>
+
+<p>---</p>
+
+<h2>📄 License</h2>
+
+<p>Internal use only - SeatGeek</p>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Work Tools Portfolio. Built with Claude Code.</p>
+        </div>
+    </footer>
+</body>
+</html>
