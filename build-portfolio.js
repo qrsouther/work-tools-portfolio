@@ -229,7 +229,7 @@ function generateToolItem(project) {
     : '';
 
   return `            <!-- ${project.title} -->
-            <div class="tool-item${dependentClass}">
+            <a href="https://github.com/${CONFIG.githubUsername}/${project.dirName}" class="tool-item${dependentClass}" target="_blank">
                 <img src="thumbnails/${thumbnail}" alt="${project.title}" class="tool-thumbnail">
                 <div class="tool-info">
                     <h2>${project.title}</h2>
@@ -237,10 +237,7 @@ function generateToolItem(project) {
                     ${executionTypesHtml}
                     ${lastCommitHtml}
                 </div>
-                <div class="tool-actions">
-                    <a href="https://github.com/${CONFIG.githubUsername}/${project.dirName}" class="btn" target="_blank">GitHub</a>
-                </div>
-            </div>`;
+            </a>`;
 }
 
 /**
